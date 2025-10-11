@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}Registro - Atlas Suplementos{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-12">
+    <div class="max-w-lg w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-user-plus text-3xl text-gray-900"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2">Criar Conta</h2>
+            <p class="text-gray-300">Junte-se à família ATLAS</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <form id="registroForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nome Completo *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" name="nome" id="nome" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                               placeholder="Nome e sobrenome">
+                    </div>
+                    <div id="nomeFeedback" class="hidden text-sm mt-1"></div>
+                    <small class="text-gray-500 text-xs">Nome e sobrenome (sem números)</small>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" name="email" id="email" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                               placeholder="seu@email.com">
+                    </div>
+                    <div id="emailFeedback" class="hidden text-sm mt-1"></div>
+                    <small class="text-gray-500 text-xs">Use um email válido (gmail, hotmail, etc.)</small>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Senha *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="senha" id="senha" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                               placeholder="••••••••">
+                    </div>
+                    <div id="senhaFeedback" class="hidden text-sm mt-1"></div>
+                    <small class="text-gray-500 text-xs">Mínimo 6 caracteres</small>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Confirmar Senha *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="confirmar_senha" id="confirmar_senha" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                               placeholder="••••••••">
+                    </div>
+                    <div id="confirmarSenhaFeedback" class="hidden text-sm mt-1"></div>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-green-400 hover:to-green-500 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+                    <i class="fas fa-user-plus"></i>
+                    Criar Conta
+                </button>
+                
+                <div class="text-center">
+                    <p class="text-gray-600">Já tem uma conta?</p>
+                    <a href="/login" class="text-green-600 hover:text-green-500 font-semibold">Faça login aqui</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Erro -->
+<div id="erroModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Erro no Registro</h3>
+            <p id="erroMensagem" class="text-gray-600 mb-6"></p>
+            <button onclick="fecharModalErro()" class="w-full bg-red-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-red-700 transition-colors">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Sucesso -->
+<div id="sucessoModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                <i class="fas fa-check-circle text-green-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Sucesso!</h3>
+            <p class="text-gray-600 mb-6">Conta criada com sucesso! Você será redirecionado para a página inicial.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Validações em tempo real
+document.getElementById('nome').addEventListener('input', function() {
+    validarNome(this);
+});
+
+document.getElementById('email').addEventListener('input', function() {
+    validarEmail(this);
+});
+
+document.getElementById('senha').addEventListener('input', function() {
+    validarSenha(this);
+});
+
+document.getElementById('confirmar_senha').addEventListener('input', function() {
+    validarConfirmarSenha(this);
+});
+
+// Funções de validação
+function validarNome(input) {
+    const nome = input.value.trim();
+    const feedback = document.getElementById('nomeFeedback');
+    
+    // Remove espaços extras
+    const nomeLimpo = nome.replace(/\s+/g, ' ');
+    
+    if (nomeLimpo.length < 5) {
+        mostrarFeedback(input, feedback, 'Nome deve ter pelo menos 5 caracteres', false);
+        return false;
+    }
+    
+    if (/\d/.test(nomeLimpo)) {
+        mostrarFeedback(input, feedback, 'Nome não pode conter números', false);
+        return false;
+    }
+    
+    const palavras = nomeLimpo.split(' ');
+    if (palavras.length < 2) {
+        mostrarFeedback(input, feedback, 'Nome deve ter pelo menos nome e sobrenome', false);
+        return false;
+    }
+    
+    for (let palavra of palavras) {
+        if (palavra.length < 2) {
+            mostrarFeedback(input, feedback, 'Cada palavra deve ter pelo menos 2 caracteres', false);
+            return false;
+        }
+    }
+    
+    mostrarFeedback(input, feedback, '', true);
+    return true;
+}
+
+function validarEmail(input) {
+    const email = input.value.trim();
+    const feedback = document.getElementById('emailFeedback');
+    
+    // Regex para formato básico
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    if (!emailRegex.test(email)) {
+        mostrarFeedback(input, feedback, 'Formato de email inválido', false);
+        return false;
+    }
+    
+    // Lista de domínios válidos
+    const dominiosValidos = [
+        'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'icloud.com',
+        'uol.com.br', 'bol.com.br', 'terra.com.br', 'ig.com.br', 'r7.com',
+        'live.com', 'msn.com', 'aol.com', 'protonmail.com', 'tutanota.com'
+    ];
+    
+    const dominio = email.split('@')[1].toLowerCase();
+    if (!dominiosValidos.includes(dominio)) {
+        mostrarFeedback(input, feedback, 'Domínio não reconhecido. Use um provedor válido.', false);
+        return false;
+    }
+    
+    mostrarFeedback(input, feedback, '', true);
+    return true;
+}
+
+function validarSenha(input) {
+    const senha = input.value;
+    const feedback = document.getElementById('senhaFeedback');
+    
+    if (senha.length < 6) {
+        mostrarFeedback(input, feedback, 'Senha deve ter pelo menos 6 caracteres', false);
+        return false;
+    }
+    
+    mostrarFeedback(input, feedback, '', true);
+    return true;
+}
+
+function validarConfirmarSenha(input) {
+    const senha = document.getElementById('senha').value;
+    const confirmarSenha = input.value;
+    const feedback = document.getElementById('confirmarSenhaFeedback');
+    
+    if (confirmarSenha !== senha) {
+        mostrarFeedback(input, feedback, 'As senhas não coincidem', false);
+        return false;
+    }
+    
+    mostrarFeedback(input, feedback, '', true);
+    return true;
+}
+
+function mostrarFeedback(input, feedback, mensagem, valido) {
+    if (valido) {
+        input.classList.remove('border-red-500', 'focus:ring-red-500');
+        input.classList.add('border-green-500', 'focus:ring-green-500');
+        feedback.classList.add('hidden');
+    } else {
+        input.classList.remove('border-green-500', 'focus:ring-green-500');
+        input.classList.add('border-red-500', 'focus:ring-red-500');
+        feedback.textContent = mensagem;
+        feedback.classList.remove('hidden');
+        feedback.classList.add('text-red-600');
+    }
+}
+
+// Validação do formulário
+document.getElementById('registroForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Valida todos os campos
+    const nomeValido = validarNome(document.getElementById('nome'));
+    const emailValido = validarEmail(document.getElementById('email'));
+    const senhaValida = validarSenha(document.getElementById('senha'));
+    const confirmarSenhaValida = validarConfirmarSenha(document.getElementById('confirmar_senha'));
+    
+    if (!nomeValido || !emailValido || !senhaValida || !confirmarSenhaValida) {
+        mostrarErro('Por favor, corrija os erros no formulário.');
+        return;
+    }
+    
+    const formData = new FormData(this);
+    const data = {
+        nome: formData.get('nome'),
+        email: formData.get('email'),
+        senha: formData.get('senha'),
+        confirmar_senha: formData.get('confirmar_senha')
+    };
+    
+    // Desabilita botão durante requisição
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando...';
+    
+    fetch('/api/registro', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Registro bem-sucedido
+            mostrarSucesso();
+            
+            // Redireciona após 2 segundos
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 2000);
+        } else {
+            // Mostra erro
+            mostrarErro(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        mostrarErro('Erro ao criar conta. Tente novamente.');
+    })
+    .finally(() => {
+        // Reabilita botão
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+});
+
+function mostrarErro(mensagem) {
+    document.getElementById('erroMensagem').textContent = mensagem;
+    document.getElementById('erroModal').classList.remove('hidden');
+}
+
+function mostrarSucesso() {
+    document.getElementById('sucessoModal').classList.remove('hidden');
+}
+
+function fecharModalErro() {
+    document.getElementById('erroModal').classList.add('hidden');
+}
+
+// Fechar modais ao clicar fora
+document.getElementById('erroModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+
+document.getElementById('sucessoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
+{% endblock %} 

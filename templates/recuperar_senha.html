@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Recuperar Senha - Atlas Suplementos{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-12">
+    <div class="max-w-lg w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-key text-3xl text-gray-900"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2">Recuperar Senha</h2>
+            <p class="text-gray-300">Digite seu email para receber um link de recuperação</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <form id="recuperarForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" name="email" id="email" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                               placeholder="seu@email.com">
+                    </div>
+                </div>
+                
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-400 hover:to-blue-500 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i>
+                    Enviar Link de Recuperação
+                </button>
+                
+                <div class="text-center">
+                    <p class="text-gray-600">Lembrou da senha?</p>
+                    <a href="/login" class="text-blue-600 hover:text-blue-500 font-semibold">Fazer login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Sucesso -->
+<div id="sucessoModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                <i class="fas fa-check text-green-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Senha Alterada!</h3>
+            <p id="sucessoMensagem" class="text-gray-600 mb-6"></p>
+            <button onclick="fecharModalSucesso()" class="w-full bg-green-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-green-700 transition-colors">
+                Fazer Login
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Erro -->
+<div id="erroModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Erro</h3>
+            <p id="erroMensagem" class="text-gray-600 mb-6"></p>
+            <button onclick="fecharModalErro()" class="w-full bg-red-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-red-700 transition-colors">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('recuperarForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    
+    if (!email) {
+        mostrarErro('Por favor, digite seu email');
+        return;
+    }
+    
+    // Desabilita botão durante requisição
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+    
+    fetch('/api/recuperar-senha', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Mostra o token para demo (em produção, enviaria por email)
+            mostrarSucesso(`Token gerado: ${data.token}. Clique no link para alterar sua senha.`);
+            // Em produção, redirecionaria para uma página de confirmação
+            setTimeout(() => {
+                window.location.href = `/nova-senha/${data.token}`;
+            }, 2000);
+        } else {
+            mostrarErro(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        mostrarErro('Erro de conexão. Tente novamente.');
+    })
+    .finally(() => {
+        // Reabilita botão
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+});
+
+function mostrarSucesso(mensagem) {
+    document.getElementById('sucessoMensagem').textContent = mensagem;
+    document.getElementById('sucessoModal').classList.remove('hidden');
+}
+
+function fecharModalSucesso() {
+    document.getElementById('sucessoModal').classList.add('hidden');
+    window.location.href = '/login';
+}
+
+function mostrarErro(mensagem) {
+    document.getElementById('erroMensagem').textContent = mensagem;
+    document.getElementById('erroModal').classList.remove('hidden');
+}
+
+function fecharModalErro() {
+    document.getElementById('erroModal').classList.add('hidden');
+}
+
+// Fechar modais ao clicar fora
+document.getElementById('sucessoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+
+document.getElementById('erroModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
+{% endblock %}

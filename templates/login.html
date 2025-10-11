@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Atlas Suplementos{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-12">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-20 w-20 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center mb-6">
+                <i class="fas fa-dumbbell text-3xl text-gray-900"></i>
+            </div>
+            <h2 class="text-3xl font-bold text-white mb-2">Login</h2>
+            <p class="text-gray-300">Acesse sua conta ATLAS</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-envelope text-gray-400"></i>
+                        </div>
+                        <input type="email" name="email" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                               placeholder="seu@email.com">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Senha</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" name="senha" required 
+                               class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
+                               placeholder="••••••••">
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-600">Lembrar de mim</span>
+                    </label>
+                    <a href="/recuperar-senha" class="text-sm text-yellow-600 hover:text-yellow-500 font-medium">Esqueceu a senha?</a>
+                </div>
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 py-3 px-4 rounded-xl font-semibold hover:from-yellow-400 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Entrar
+                </button>
+                
+                <div class="text-center">
+                    <p class="text-gray-600">Não tem uma conta?</p>
+                    <a href="/registro" class="text-yellow-600 hover:text-yellow-500 font-semibold">Registre-se aqui</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Erro -->
+<div id="erroModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Erro no Login</h3>
+            <p id="erroMensagem" class="text-gray-600 mb-6"></p>
+            <button onclick="fecharModalErro()" class="w-full bg-red-600 text-white py-2 px-4 rounded-xl font-semibold hover:bg-red-700 transition-colors">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+console.log('🔧 JavaScript de login carregado!');
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM carregado, configurando formulário de login...');
+    
+    const loginForm = document.getElementById('loginForm');
+    if (!loginForm) {
+        console.error('❌ Formulário de login não encontrado!');
+        return;
+    }
+    
+    console.log('✅ Formulário de login encontrado, adicionando event listener...');
+    
+    loginForm.addEventListener('submit', function(e) {
+        console.log('🖱️ Formulário de login submetido!');
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const data = {
+            email: formData.get('email'),
+            senha: formData.get('senha')
+        };
+        
+        console.log('📝 Dados do formulário:', data);
+        
+        // Desabilita botão durante requisição
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+        
+        console.log('🌐 Enviando requisição para /api/login...');
+        
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            console.log('📤 Resposta recebida:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('📋 Dados da resposta:', data);
+            if (data.success) {
+                console.log('✅ Login bem-sucedido, redirecionando...');
+                window.location.href = data.redirect;
+            } else {
+                console.log('❌ Erro no login:', data.error);
+                mostrarErro(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Erro na requisição:', error);
+            mostrarErro('Erro ao fazer login. Tente novamente.');
+        })
+        .finally(() => {
+            // Reabilita botão
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        });
+    });
+    
+    console.log('✅ Event listener adicionado com sucesso!');
+});
+
+function mostrarErro(mensagem) {
+    document.getElementById('erroMensagem').textContent = mensagem;
+    document.getElementById('erroModal').classList.remove('hidden');
+}
+
+function fecharModalErro() {
+    document.getElementById('erroModal').classList.add('hidden');
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('erroModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
+{% endblock %} 

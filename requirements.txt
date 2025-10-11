@@ -1,0 +1,28 @@
+# Core Flask
+Flask==2.3.3
+Flask-CORS==4.0.0
+Flask-Mail==0.9.1
+Flask-SQLAlchemy==3.0.5
+
+# Environment
+python-dotenv==1.0.0
+
+# Data Processing
+pandas==2.0.3
+openpyxl==3.1.2
+numpy<2
+
+# HTTP Requests
+requests==2.32.5
+
+# Google Sheets (opcional)
+gspread==5.12.0
+google-auth==2.23.4
+google-auth-oauthlib==1.1.0
+google-auth-httplib2==0.1.1
+
+# Mercado Pago
+mercadopago==2.3.0
+
+# Production Server
+gunicorn==21.2.0

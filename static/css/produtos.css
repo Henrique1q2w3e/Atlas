@@ -1,0 +1,1875 @@
+/* Estilos específicos para a página de produtos */
+
+/* Barra de Pesquisa */
+#barra-pesquisa {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#barra-pesquisa:focus {
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
+    transform: translateY(-2px);
+}
+
+#barra-pesquisa::placeholder {
+    color: #9CA3AF;
+    font-style: italic;
+}
+
+/* Botão Limpar Pesquisa */
+#limpar-pesquisa {
+    transition: all 0.2s ease;
+}
+
+#limpar-pesquisa:hover {
+    transform: scale(1.1);
+}
+
+/* Filtros de Categoria */
+[data-categoria] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-categoria]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+[data-categoria]:hover::before {
+    left: 100%;
+}
+
+[data-categoria].active {
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Resultados da Pesquisa */
+#resultados-pesquisa {
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading */
+#loading-produtos {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Grid de Produtos - RESPONSIVO MELHORADO */
+#produtos-container {
+    animation: fadeInUp 0.6s ease-out;
+    display: grid;
+    gap: 1.5rem;
+    width: 100%;
+    
+    /* Grid responsivo inteligente */
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Breakpoints específicos para melhor controle */
+@media (min-width: 640px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    #produtos-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    #produtos-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+@media (min-width: 1536px) {
+    #produtos-container {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Cards de Produtos */
+.product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0; /* Evita overflow */
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+    transition: left 0.6s;
+    z-index: 1;
+}
+
+.product-card:hover::before {
+    left: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Imagem do produto responsiva */
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 640px) {
+    .product-card img {
+        height: 220px;
+    }
+}
+
+@media (min-width: 768px) {
+    .product-card img {
+        height: 240px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .product-card img {
+        height: 260px;
+    }
+}
+
+/* Badges */
+.product-card .badge {
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botão de Favorito */
+.product-card .favorite-btn {
+    transition: all 0.3s ease;
+}
+
+.product-card .favorite-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Sabores */
+.product-card .flavor-tag {
+    transition: all 0.2s ease;
+}
+
+.product-card .flavor-tag:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Botão Ver Detalhes */
+.product-card .details-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-top: auto; /* Empurra o botão para baixo */
+}
+
+.product-card .details-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.product-card .details-btn:hover::before {
+    left: 100%;
+}
+
+.product-card .details-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Mensagem de Nenhum Resultado */
+#nenhum-resultado {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+#nenhum-resultado .icon-container {
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border: 2px dashed #d1d5db;
+}
+
+/* MODAL DE PRODUTO - MOBILE OTIMIZADO */
+#modal-produto {
+    z-index: 9999;
+}
+
+#modal-produto .bg-white {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Carousel responsivo */
+#carousel-produto {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+#carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+#carousel-inner > div {
+    min-width: 100%;
+    flex-shrink: 0;
+}
+
+#carousel-inner img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+/* Indicadores responsivos */
+#carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+#carousel-indicators button {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Sabores responsivos */
+#sabores-container {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+/* RESPONSIVIDADE MELHORADA PARA MOBILE */
+
+/* Mobile pequeno (320px - 480px) */
+@media (max-width: 480px) {
+    #produtos-container {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1rem;
+        padding: 0 0.75rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        margin: 0;
+        width: 100%;
+    }
+    
+    .product-card img {
+        height: 180px;
+    }
+    
+    /* Filtros em coluna única */
+    .filters-container {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    [data-categoria] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Barra de pesquisa menor */
+    #barra-pesquisa {
+        font-size: 0.875rem;
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        margin: 0 0.5rem;
+    }
+    
+    /* Modal mobile ULTRA COMPACTO - CORREÇÃO FINAL */
+    #modal-produto {
+        padding: 0.25rem;
+        align-items: flex-start;
+        padding-top: 0.5rem;
+    }
+    
+    #modal-produto .bg-white {
+        max-width: 96vw;
+        max-height: 85vh;
+        margin: 0.25rem;
+        overflow-y: auto;
+        position: relative;
+        min-height: auto;
+    }
+    
+    #modal-produto .grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 100px;
+    }
+    
+    #sabores-container {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Garantir que os botões sejam visíveis - CORREÇÃO CRÍTICA */
+    #modal-produto .space-y-2 {
+        padding-bottom: 0.5rem;
+        margin-bottom: 0;
+    }
+    
+    #modal-produto button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Reduzir espaçamentos em mobile */
+    #modal-produto .space-y-2 > div {
+        margin-bottom: 0.25rem;
+    }
+    
+    #modal-produto .space-y-2 > div:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Ajustar altura das imagens para economizar espaço */
+    #carousel-produto {
+        margin-bottom: 0.25rem;
+    }
+    
+    #carousel-indicators {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Ajustar posicionamento do modal */
+    #modal-produto .flex {
+        align-items: flex-start;
+        padding-top: 0.5rem;
+        min-height: auto;
+    }
+    
+    /* Reduzir espaçamentos internos */
+    #modal-produto .p-3 {
+        padding: 0.75rem;
+    }
+    
+    #modal-produto .space-y-2 > div {
+        margin-bottom: 0.25rem;
+    }
+    
+    #modal-produto .space-y-2 > div:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Reduzir margens dos labels */
+    #modal-produto label {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Reduzir padding dos botões */
+    #modal-produto .space-y-2.pt-2 {
+        padding-top: 0.5rem;
+    }
+}
+
+/* Mobile médio (481px - 639px) */
+@media (min-width: 481px) and (max-width: 639px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        padding: 0 1rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 160px;
+    }
+    
+    /* Filtros em 2 colunas */
+    .filters-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        padding: 0 0.75rem;
+    }
+    
+    [data-categoria] {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.75rem;
+        width: 100%;
+    }
+    
+    /* Modal mobile médio ULTRA COMPACTO - CORREÇÃO FINAL */
+    #modal-produto {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 0.75rem;
+    }
+    
+    #modal-produto .bg-white {
+        max-width: 92vw;
+        max-height: 88vh;
+        margin: 0.5rem;
+        overflow-y: auto;
+        position: relative;
+        min-height: auto;
+    }
+    
+    #modal-produto .grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 120px;
+    }
+    
+    #sabores-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Garantir que os botões sejam visíveis */
+    #modal-produto .space-y-2 {
+        padding-bottom: 0.75rem;
+        margin-bottom: 0;
+    }
+    
+    /* Reduzir espaçamentos */
+    #modal-produto .space-y-2 > div {
+        margin-bottom: 0.5rem;
+    }
+    
+    #modal-produto .space-y-2 > div:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Ajustar posicionamento do modal */
+    #modal-produto .flex {
+        align-items: flex-start;
+        padding-top: 0.75rem;
+        min-height: auto;
+    }
+    
+    /* Reduzir espaçamentos internos */
+    #modal-produto .p-4 {
+        padding: 1rem;
+    }
+    
+    #modal-produto .space-y-2 > div {
+        margin-bottom: 0.5rem;
+    }
+    
+    #modal-produto .space-y-2 > div:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Reduzir margens dos labels */
+    #modal-produto label {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Reduzir padding dos botões */
+    #modal-produto .space-y-2.pt-2 {
+        padding-top: 0.75rem;
+    }
+}
+
+/* Tablet pequeno (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+        padding: 0 1.5rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 200px;
+    }
+    
+    /* Filtros em 3 colunas */
+    .filters-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        padding: 0 1rem;
+    }
+    
+    /* Modal tablet pequeno - COMPACTO */
+    #modal-produto .bg-white {
+        max-width: 88vw;
+        max-height: 90vh;
+        margin: 1rem;
+        overflow-y: auto;
+        min-height: auto;
+    }
+    
+    #modal-produto .grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 160px;
+    }
+    
+    #sabores-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    #produtos-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        padding: 0 2rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 220px;
+    }
+    
+    /* Filtros em linha com wrap */
+    .filters-container {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+        padding: 0 1.5rem;
+    }
+    
+    [data-categoria] {
+        flex: 0 1 auto;
+        min-width: 140px;
+    }
+    
+    /* Modal tablet */
+    #modal-produto .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 240px;
+    }
+}
+
+/* Desktop pequeno (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+    #produtos-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        padding: 0 2.5rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 240px;
+    }
+    
+    /* Modal desktop pequeno */
+    #modal-produto .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 260px;
+    }
+}
+
+/* Desktop (1280px+) */
+@media (min-width: 1280px) {
+    #produtos-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        padding: 0 3rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 260px;
+    }
+    
+    /* Modal desktop */
+    #modal-produto .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+    
+    #carousel-inner img {
+        max-height: 280px;
+    }
+}
+
+/* Desktop grande (1536px+) */
+@media (min-width: 1536px) {
+    #produtos-container {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 2rem;
+        padding: 0 3rem;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+    
+    .product-card {
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 280px;
+    }
+    
+    #carousel-inner img {
+        max-height: 300px;
+    }
+}
+
+/* Animações de entrada para os cards */
+.product-card:nth-child(1) { animation-delay: 0.1s; }
+.product-card:nth-child(2) { animation-delay: 0.2s; }
+.product-card:nth-child(3) { animation-delay: 0.3s; }
+.product-card:nth-child(4) { animation-delay: 0.4s; }
+.product-card:nth-child(5) { animation-delay: 0.5s; }
+.product-card:nth-child(6) { animation-delay: 0.6s; }
+.product-card:nth-child(7) { animation-delay: 0.7s; }
+.product-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* Efeitos de hover para os filtros */
+[data-categoria]:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+[data-categoria].active:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* Melhorias na barra de pesquisa */
+#barra-pesquisa:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+/* Estilo para o botão de limpar pesquisa */
+#limpar-pesquisa {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+}
+
+#limpar-pesquisa:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: scale(1.1);
+}
+
+/* Melhorias nos filtros de categoria */
+[data-categoria] {
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+[data-categoria]:not(.active) {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border: 2px solid #e5e7eb;
+}
+
+[data-categoria]:not(.active):hover {
+    background: linear-gradient(135deg, #fefefe 0%, #f3f4f6 100%);
+    border-color: #D4AF37;
+    color: #D4AF37;
+}
+
+[data-categoria].active {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%);
+    color: #1a1a1a;
+    border: 2px solid #D4AF37;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Efeitos de transição suaves */
+* {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Melhorias na responsividade dos filtros */
+@media (max-width: 1024px) {
+    .filters-container {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0 1rem;
+    }
+    
+    [data-categoria] {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .filters-container {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0 0.75rem;
+    }
+    
+    [data-categoria] {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Melhorias específicas para mobile */
+@media (max-width: 767px) {
+    /* Reduzir padding geral */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* Ajustar espaçamento dos cards */
+    .product-card {
+        padding: 1rem;
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card h3 {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+    
+    .product-card p {
+        font-size: 0.875rem;
+        line-height: 1.4;
+    }
+    
+    /* Ajustar preços */
+    .product-card .price {
+        font-size: 1.25rem;
+    }
+    
+    /* Ajustar botões */
+    .product-card button {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Otimizações para telas muito pequenas */
+@media (max-width: 360px) {
+    #produtos-container {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 0 0.5rem;
+        margin: 0 auto;
+    }
+    
+    .product-card {
+        padding: 0.75rem;
+        width: 100%;
+        min-width: 0;
+    }
+    
+    .product-card img {
+        height: 160px;
+    }
+    
+    [data-categoria] {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Correções específicas para evitar cortes laterais */
+.product-card {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.product-card * {
+    box-sizing: border-box;
+}
+
+/* Garantir que o container principal não tenha overflow */
+.container {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* Ajustar padding da seção de produtos */
+@media (max-width: 767px) {
+    .py-16 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+} 
+/* ============ MELHORIAS MODAL MOBILE - SABORES RESPONSIVOS ============ */
+
+/* Mobile extra pequeno (320px - 400px) */
+@media (max-width: 400px) {
+    /* Modal mais compacto */
+    #modal-produto {
+        padding: 0.125rem !important;
+        align-items: flex-start !important;
+        padding-top: 0.25rem !important;
+    }
+    
+    #modal-produto .bg-white {
+        max-width: 98vw !important;
+        max-height: 90vh !important;
+        margin: 0.125rem !important;
+        border-radius: 1rem !important;
+    }
+    
+    /* Conteúdo modal mais compacto */
+    #modal-produto .p-2 {
+        padding: 0.5rem !important;
+    }
+    
+    #modal-produto .space-y-1 > div {
+        margin-bottom: 0.25rem !important;
+    }
+    
+    /* Imagem do produto menor */
+    #carousel-inner img {
+        max-height: 60px !important;
+    }
+    
+    /* SABORES RESPONSIVOS - MOBILE EXTRA PEQUENO */
+    #sabores-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.125rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+    
+    #sabores-container button {
+        padding: 0.375rem 0.125rem !important;
+        font-size: 0.6rem !important;
+        line-height: 1.1 !important;
+        min-height: 2rem !important;
+        border-radius: 0.375rem !important;
+        word-break: break-word !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Título e preço menores */
+    #modal-title {
+        font-size: 0.875rem !important;
+    }
+    
+    #modal-preco {
+        font-size: 1rem !important;
+    }
+    
+    /* Botões de ação mais compactos */
+    #modal-produto .space-y-1.pt-1 button {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.75rem !important;
+    }
+}
+
+/* Mobile pequeno (401px - 480px) */
+@media (min-width: 401px) and (max-width: 480px) {
+    /* Modal compacto */
+    #modal-produto {
+        padding: 0.25rem !important;
+        align-items: flex-start !important;
+        padding-top: 0.5rem !important;
+    }
+    
+    #modal-produto .bg-white {
+        max-width: 96vw !important;
+        max-height: 88vh !important;
+        margin: 0.25rem !important;
+    }
+    
+    /* Imagem do produto */
+    #carousel-inner img {
+        max-height: 80px !important;
+    }
+    
+    /* SABORES RESPONSIVOS - MOBILE PEQUENO */
+    #sabores-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.25rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    #sabores-container button {
+        padding: 0.5rem 0.25rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+        min-height: 2.25rem !important;
+        border-radius: 0.5rem !important;
+        word-break: break-word !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Mobile médio (481px - 640px) */
+@media (min-width: 481px) and (max-width: 640px) {
+    /* Modal */
+    #modal-produto .bg-white {
+        max-width: 94vw !important;
+        max-height: 90vh !important;
+    }
+    
+    /* Imagem do produto */
+    #carousel-inner img {
+        max-height: 100px !important;
+    }
+    
+    /* SABORES RESPONSIVOS - MOBILE MÉDIO */
+    #sabores-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.375rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    
+    #sabores-container button {
+        padding: 0.625rem 0.375rem !important;
+        font-size: 0.8rem !important;
+        line-height: 1.25 !important;
+        min-height: 2.5rem !important;
+        border-radius: 0.5rem !important;
+        word-break: break-word !important;
+        text-align: center !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+
+/* Tablet pequeno (641px - 768px) */
+@media (min-width: 641px) and (max-width: 768px) {
+    /* SABORES RESPONSIVOS - TABLET PEQUENO */
+    #sabores-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 0.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    #sabores-container button {
+        padding: 0.75rem 0.5rem !important;
+        font-size: 0.875rem !important;
+        line-height: 1.3 !important;
+        min-height: 3rem !important;
+        border-radius: 0.75rem !important;
+    }
+}
+
+/* ============ FIXES GERAIS PARA SABORES ============ */
+
+/* Garantir que os sabores não quebrem o layout */
+#sabores-container {
+    overflow: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+#sabores-container button {
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    max-width: 100% !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Efeito hover para sabores */
+#sabores-container button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Sabor selecionado */
+#sabores-container button.border-atlas-gold {
+    background-color: #D4AF37 !important;
+    color: white !important;
+    border-color: #D4AF37 !important;
+    font-weight: 600 !important;
+}
+
+/* Responsividade em telas muito pequenas */
+@media (max-width: 320px) {
+    #sabores-container {
+        grid-template-columns: 1fr !important;
+        gap: 0.25rem !important;
+    }
+    
+    #sabores-container button {
+        padding: 0.5rem !important;
+        font-size: 0.75rem !important;
+        min-height: 2.5rem !important;
+        white-space: normal !important;
+        text-overflow: unset !important;
+    }
+}
+
+/* ============ MELHORIAS EXTRAS PARA MODAL MOBILE ============ */
+
+/* Corrigir sobreposição do modal em mobile */
+@media (max-width: 480px) {
+    #modal-produto {
+        z-index: 9999 !important;
+    }
+    
+    /* Garantir que o conteúdo não seja cortado */
+    #modal-produto .overflow-y-auto {
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Melhorar a altura do modal para não cortar botões */
+    #modal-produto .bg-white {
+        min-height: fit-content !important;
+    }
+    
+    /* Ajustar espaçamento do último elemento */
+    #modal-produto .space-y-1:last-child,
+    #modal-produto .space-y-2:last-child {
+        padding-bottom: 1rem !important;
+    }
+}
+
+
+
+/* FORÇAR 2 CARDS POR LINHA NO MOBILE */
+@media (max-width: 639px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1rem !important;
+        padding: 0 1rem !important;
+    }
+    
+    .product-card {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+        padding: 0 0.75rem !important;
+    }
+}
+
+
+/* MELHORIAS VISUAIS DOS CARDS - MAIS LARGOS E BONITOS */
+.product-card {
+    border-radius: 24px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid rgba(212, 175, 55, 0.1) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.product-card:hover {
+    transform: translateY(-12px) scale(1.02) !important;
+    box-shadow: 0 25px 50px rgba(212, 175, 55, 0.25) !important;
+    border-color: #D4AF37 !important;
+}
+
+.product-card::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 6px !important;
+    background: linear-gradient(90deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%) !important;
+    opacity: 1 !important;
+    transition: opacity 0.3s ease !important;
+    z-index: 1 !important;
+}
+
+.product-card:hover::before {
+    opacity: 1 !important;
+}
+
+/* Imagem do produto mais bonita */
+.product-card img {
+    height: 220px !important;
+    object-fit: cover !important;
+    transition: transform 0.4s ease !important;
+    border-radius: 0 !important;
+}
+
+.product-card:hover img {
+    transform: scale(1.08) !important;
+}
+
+/* Badges mais bonitos */
+.product-card .badge {
+    backdrop-filter: blur(12px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Botão de favorito mais bonito */
+.product-card .favorite-btn {
+    backdrop-filter: blur(15px) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s ease !important;
+}
+
+.product-card .favorite-btn:hover {
+    transform: scale(1.15) !important;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Conteúdo do card mais espaçado */
+.product-card .p-6 {
+    padding: 24px !important;
+}
+
+/* Título mais bonito */
+.product-card h3 {
+    font-size: 1.125rem !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 12px !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Preço mais destacado */
+.product-card .price {
+    font-size: 1.75rem !important;
+    font-weight: 900 !important;
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Botão mais bonito */
+.product-card .details-btn {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%) !important;
+    border: none !important;
+    border-radius: 16px !important;
+    padding: 16px 24px !important;
+    font-weight: 800 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.product-card .details-btn::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+    transition: left 0.5s ease !important;
+}
+
+.product-card .details-btn:hover::before {
+    left: 100% !important;
+}
+
+.product-card .details-btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 35px rgba(212, 175, 55, 0.4) !important;
+    background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%) !important;
+}
+
+/* Sabores mais bonitos */
+.product-card .flavor-tag {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.product-card .flavor-tag:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 100%) !important;
+    color: white !important;
+    border-color: #D4AF37 !important;
+}
+
+/* Ajustes de responsividade para cards mais largos */
+@media (max-width: 639px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+        padding: 0 1.5rem !important;
+    }
+    
+    .product-card {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+    
+    .product-card img {
+        height: 180px !important;
+    }
+    
+    .product-card .p-6 {
+        padding: 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #produtos-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.25rem !important;
+        padding: 0 1.25rem !important;
+    }
+    
+    .product-card img {
+        height: 160px !important;
+    }
+    
+    .product-card .p-6 {
+        padding: 18px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 1rem !important;
+    }
+    
+    .product-card .price {
+        font-size: 1.5rem !important;
+    }
+}
+
+
+/* ANIMAÇÕES E EFEITOS EXTRAS PARA CARDS MAIS BONITOS */
+@keyframes cardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.product-card {
+}
+
+.product-card:nth-child(odd) {
+    animation-delay: 0s !important;
+}
+
+.product-card:nth-child(even) {
+    animation-delay: 3s !important;
+}
+
+.product-card:hover {
+    animation-play-state: paused !important;
+}
+
+/* Efeito de brilho no hover */
+.product-card::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
+    transition: left 0.6s ease !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+}
+
+.product-card:hover::after {
+    left: 100% !important;
+}
+
+/* Melhorar o gradiente do preço */
+.product-card .price {
+    background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%) !important;
+    background-size: 200% 200% !important;
+    animation: priceShine 3s ease-in-out infinite !important;
+}
+
+@keyframes priceShine {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Efeito de pulso no botão */
+.product-card .details-btn {
+    animation: buttonPulse 2s ease-in-out infinite !important;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
+}
+
+.product-card .details-btn:hover {
+    animation-play-state: paused !important;
+}
+
+/* Melhorar os badges com efeito de brilho */
+.product-card .badge {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.product-card .badge::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent) !important;
+    transition: left 0.5s ease !important;
+}
+
+.product-card:hover .badge::before {
+    left: 100% !important;
+}
+
+/* Efeito de escala suave nos sabores */
+.product-card .flavor-tag {
+    transform: scale(1) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.product-card .flavor-tag:hover {
+    transform: scale(1.05) translateY(-2px) !important;
+}
+
+/* Melhorar a imagem com efeito de zoom suave */
+.product-card img {
+    filter: brightness(1) contrast(1) saturate(1) !important;
+    transition: all 0.4s ease !important;
+}
+
+.product-card:hover img {
+    filter: brightness(1.1) contrast(1.1) saturate(1.2) !important;
+}
+
+/* Efeito de loading suave para as imagens */
+.product-card img {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%) !important;
+    background-size: 200% 100% !important;
+    animation: imageLoading 1.5s infinite !important;
+}
+
+.product-card img[src*="produto-placeholder"] {
+    animation: none !important;
+    background: #f8fafc !important;
+}
+
+@keyframes imageLoading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Melhorar o espaçamento geral */
+#produtos-container {
+    padding: 2rem 0 !important;
+}
+
+/* Efeito de entrada dos cards */
+.product-card {
+    opacity: 1 !important;
+    transform: translateY(30px) !important;
+}
+
+.product-card:nth-child(1) { animation-delay: 0.1s !important; }
+.product-card:nth-child(2) { animation-delay: 0.2s !important; }
+.product-card:nth-child(3) { animation-delay: 0.3s !important; }
+.product-card:nth-child(4) { animation-delay: 0.4s !important; }
+.product-card:nth-child(5) { animation-delay: 0.5s !important; }
+.product-card:nth-child(6) { animation-delay: 0.6s !important; }
+
+@keyframes cardEntry {
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+
+
+/* MELHORIAS FINAIS PARA CARDS PROFISSIONAIS */
+.product-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%) !important;
+    border: 1px solid rgba(212, 175, 55, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* Melhorar o contraste dos textos */
+.product-card h3 {
+    color: #1a202c !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+.product-card p {
+    color: #4a5568 !important;
+    line-height: 1.5 !important;
+}
+
+/* Efeito de profundidade melhorado */
+.product-card {
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 0 0 1px rgba(212, 175, 55, 0.05) !important;
+}
+
+.product-card:hover {
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(212, 175, 55, 0.2),
+        0 0 0 4px rgba(212, 175, 55, 0.1) !important;
+}
+
+/* Melhorar a responsividade final */
+@media (max-width: 375px) {
+    #produtos-container {
+        padding: 0 1rem !important;
+        gap: 1rem !important;
+    }
+    
+    .product-card {
+        border-radius: 20px !important;
+    }
+    
+    .product-card img {
+        height: 140px !important;
+    }
+    
+    .product-card .p-6 {
+        padding: 16px !important;
+    }
+    
+    .product-card h3 {
+        font-size: 0.95rem !important;
+    }
+    
+    .product-card .price {
+        font-size: 1.4rem !important;
+    }
+    
+    .product-card .details-btn {
+        padding: 14px 20px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+/* Garantir que os cards não quebrem em telas muito pequenas */
+@media (max-width: 320px) {
+    #produtos-container {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 0.75rem !important;
+    }
+    
+    .product-card {
+        max-width: 100% !important;
+    }
+}
+
+
+/* CORREÇÃO URGENTE - CARDS VISÍVEIS */
+.product-card {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    transform: none !important;
+    animation: none !important;
+}
+
+/* Manter apenas efeitos básicos de hover */
+.product-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Garantir que o grid funcione */
+#produtos-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+    padding: 1rem !important;
+}
+
+/* Responsividade básica */
+@media (min-width: 768px) {
+    #produtos-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #produtos-container {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+@media (min-width: 1280px) {
+    #produtos-container {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+}
+
+/* Garantir que os cards sejam visíveis */
+.product-card {
+    background: white !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(212, 175, 55, 0.1) !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 400px !important;
+}
+
+.product-card img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.product-card .p-6 {
+    padding: 20px !important;
+    display: block !important;
+}
+
+.product-card h3 {
+    font-size: 1.125rem !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+.product-card .price {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #D4AF37 !important;
+    display: block !important;
+}
+
+.product-card .details-btn {
+    width: 100% !important;
+    background: #D4AF37 !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    display: block !important;
+    margin-top: 16px !important;
+}
+
+.product-card .details-btn:hover {
+    background: #FFD700 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Garantir que badges sejam visíveis */
+.product-card .badge {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    background: #D4AF37 !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    z-index: 10 !important;
+    display: block !important;
+}
+
+/* Garantir que botão de favorito seja visível */
+.product-card .favorite-btn {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+}
+
+.product-card .favorite-btn i {
+    color: #9ca3af !important;
+    font-size: 1rem !important;
+}
+
+
+/* CORREÇÃO DEFINITIVA - FORÇAR VISIBILIDADE DOS CARDS */
+#produtos-container {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+    padding: 1rem !important;
+    width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: white !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(212, 175, 55, 0.1) !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 400px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.product-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2) !important;
+}
+
+.product-card img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card .p-6 {
+    padding: 20px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card h3 {
+    font-size: 1.125rem !important;
+    font-weight: 700 !important;
+    color: #1a1a1a !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card .price {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #D4AF37 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card .details-btn {
+    width: 100% !important;
+    background: #D4AF37 !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    display: block !important;
+    margin-top: 16px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.product-card .details-btn:hover {
+    background: #FFD700 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Responsividade */
+@media (min-width: 768px) {
+    #produtos-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #produtos-container {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+@media (min-width: 1280px) {
+    #produtos-container {
+        grid-template-columns: repeat(5, 1fr) !important;
+    }
+}
+
+/* Garantir que todos os elementos sejam visíveis */
+.product-card * {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+.product-card .flex {
+    display: flex !important;
+}
+
+.product-card .inline-flex {
+    display: inline-flex !important;
+}
+
+.product-card .hidden {
+    display: none !important;
+}

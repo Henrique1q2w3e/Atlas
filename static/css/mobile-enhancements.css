@@ -1,0 +1,339 @@
+/* ========================================
+   ATLAS SUPPLEMENTS - MOBILE ENHANCEMENTS
+   ======================================== */
+
+/* ===== MOBILE-FIRST IMPROVEMENTS ===== */
+
+/* Touch-friendly buttons */
+@media (max-width: 768px) {
+  .btn-modern {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+
+  .nav-link-modern {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+  }
+
+  /* Improved card spacing */
+  .card-modern {
+    margin-bottom: 16px;
+  }
+
+  .card-modern-body {
+    padding: 16px;
+  }
+
+  /* Better text sizing */
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+
+  /* Improved hero section */
+  .hero-modern {
+    min-height: 100vh;
+    padding: 20px 0;
+  }
+
+  .hero-title-modern {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle-modern {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+
+  /* Better spacing for mobile */
+  .py-20 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .py-16 {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  /* Improved grid layouts */
+  .grid-cols-1 {
+    gap: 1rem;
+  }
+
+  /* Better carousel spacing */
+  .flex.space-x-4 > * + * {
+    margin-left: 1rem;
+  }
+
+  /* Improved scrollbar for mobile */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /* Better focus states for touch */
+  .btn-modern:focus,
+  .nav-link-modern:focus {
+    outline: 3px solid var(--atlas-gold);
+    outline-offset: 2px;
+  }
+
+  /* Improved loading states */
+  .loading::after {
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+  }
+}
+
+/* ===== VERY SMALL SCREENS ===== */
+@media (max-width: 480px) {
+  .hero-title-modern {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle-modern {
+    font-size: 1rem;
+  }
+
+  .btn-modern {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .card-modern-body {
+    padding: 12px;
+  }
+
+  /* Better text hierarchy */
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  /* Improved spacing */
+  .py-20 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .py-16 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Better button groups */
+  .flex.flex-col.gap-4 {
+    gap: 0.75rem;
+  }
+
+  /* Improved carousel items */
+  .flex-shrink-0 {
+    min-width: 140px;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-modern {
+    min-height: 80vh;
+  }
+
+  .hero-title-modern {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle-modern {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .py-20 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* ===== TOUCH GESTURES ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .card-modern:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-modern:hover {
+    transform: none;
+  }
+
+  .nav-link-modern:hover {
+    transform: none;
+  }
+
+  /* Add active states for touch */
+  .btn-modern:active {
+    transform: scale(0.98);
+  }
+
+  .card-modern:active {
+    transform: scale(0.98);
+  }
+
+  .nav-link-modern:active {
+    background: rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+@media (max-width: 768px) {
+  /* Reduce animations on mobile for better performance */
+  .animate-float {
+    animation: none;
+  }
+
+  .animate-pulse {
+    animation: none;
+  }
+
+  /* Optimize transforms */
+  .card-modern {
+    will-change: transform;
+  }
+
+  .btn-modern {
+    will-change: transform;
+  }
+
+  /* Reduce blur effects on mobile */
+  .hero-modern::before {
+    backdrop-filter: none;
+  }
+
+  /* Optimize shadows */
+  .card-modern {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-modern:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+@media (max-width: 768px) {
+  /* Better contrast for mobile */
+  .text-atlas-gray {
+    color: #4b5563;
+  }
+
+  /* Improved focus indicators */
+  .btn-modern:focus-visible {
+    outline: 3px solid var(--atlas-gold);
+    outline-offset: 2px;
+  }
+
+  .nav-link-modern:focus-visible {
+    outline: 3px solid var(--atlas-gold);
+    outline-offset: 2px;
+  }
+
+  /* Better text selection */
+  ::selection {
+    background: var(--atlas-gold);
+    color: var(--atlas-dark);
+  }
+
+  /* Improved tap targets */
+  a, button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  :root {
+    --atlas-dark: #ffffff;
+    --atlas-gray: #d1d5db;
+    --atlas-gray-light: #1f2937;
+  }
+
+  body {
+    background-color: #111827;
+    color: #ffffff;
+  }
+
+  .card-modern {
+    background: #1f2937;
+    border-color: rgba(212, 175, 55, 0.2);
+  }
+
+  .navbar-modern {
+    background: rgba(31, 41, 55, 0.95);
+    border-bottom-color: rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in-left,
+  .animate-fade-in-right,
+  .animate-float,
+  .animate-pulse {
+    animation: none;
+  }
+
+  .card-modern,
+  .btn-modern,
+  .nav-link-modern {
+    transition: none;
+  }
+
+  .auto-scroll {
+    animation: none;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  .card-modern {
+    border: 2px solid var(--atlas-gold);
+  }
+
+  .btn-modern {
+    border: 2px solid var(--atlas-gold);
+  }
+
+  .nav-link-modern {
+    border: 1px solid var(--atlas-gold);
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .navbar-modern,
+  .hero-modern,
+  footer {
+    display: none;
+  }
+
+  .card-modern {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+}

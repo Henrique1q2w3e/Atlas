@@ -1,0 +1,2134 @@
+{% extends "base.html" %}
+
+{% block title %}Atlas - Suplementos Premium{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center relative overflow-hidden">
+    <!-- Elementos flutuantes -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 right-10 w-20 h-20 bg-yellow-400 bg-opacity-20 rounded-full animate-pulse"></div>
+        <div class="absolute top-60 right-20 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-40 left-10 w-16 h-16 bg-yellow-400 bg-opacity-15 rounded-full animate-pulse delay-2000"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <!-- Logo Atlas Flutuante -->
+            <style>
+                .animate-float {
+                    animation: float 3s ease-in-out infinite !important;
+                }
+                
+                @keyframes float {
+                    0% { 
+                        transform: translateY(0px); 
+                    }
+                    50% { 
+                        transform: translateY(-20px); 
+                    }
+                    100% { 
+                        transform: translateY(0px); 
+                    }
+                }
+                
+                .glow-effect {
+                    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+                }
+                
+            </style>
+            <div class="flex justify-center mb-8 logo-container" style="padding: 50px 0; min-height: 450px; overflow: visible;">
+                <img src="/static/images/logo.png" alt="Atlas Suplementos" 
+                     class="h-64 md:h-80 lg:h-96 w-auto animate-float glow-effect">
+            </div>
+            
+            <!-- Subtítulo -->
+            <h2 class="text-2xl md:text-3xl text-white mb-8 font-light text-center">
+                Força que move você
+            </h2>
+            
+            <!-- Descrição -->
+            <p class="text-lg text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed text-center">
+                Suplementos premium para transformar seus objetivos em realidade. 
+                Qualidade garantida, resultados comprovados.
+            </p>
+            
+            <!-- Estatísticas -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">10K+</div>
+                    <div class="text-white text-sm font-medium">Clientes Satisfeitos</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">50+</div>
+                    <div class="text-white text-sm font-medium">Produtos Premium</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">99%</div>
+                    <div class="text-white text-sm font-medium">Satisfação</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">24h</div>
+                    <div class="text-white text-sm font-medium">Entrega Rápida</div>
+                </div>
+            </div>
+            
+            <!-- Botões de Ação -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="/produtos" class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-500 hover:to-yellow-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+                    <i class="fas fa-chart-line"></i>
+                    Conheça nossos suplementos
+                </a>
+                <a href="/contato" class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 hover:text-black transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fas fa-info-circle"></i>
+                    Sobre nós
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seção de Benefícios -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Por que escolher a Atlas?</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Nossa missão é fornecer suplementos de alta qualidade que realmente funcionam, 
+                com ingredientes premium e resultados comprovados.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-award text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Qualidade Premium</h3>
+                <p class="text-gray-600">
+                    Ingredientes selecionados e processos rigorosos de qualidade para garantir a máxima eficácia.
+                </p>
+            </div>
+            
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-shipping-fast text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Entrega Rápida</h3>
+                <p class="text-gray-600">
+                    Receba seus produtos em até 24 horas com nossa rede de distribuição otimizada.
+                </p>
+            </div>
+            
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-headset text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Suporte Especializado</h3>
+                <p class="text-gray-600">
+                    Nossa equipe de especialistas está sempre pronta para te ajudar com dúvidas.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seção: Encontre o que você precisa -->
+<section class="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-400 bg-opacity-5 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-24 h-24 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-400 bg-opacity-8 rounded-full animate-pulse delay-2000"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Desktop Layout -->
+        <div class="hidden lg:flex lg:items-center lg:space-x-12">
+            <!-- Coluna esquerda - Texto -->
+            <div class="flex-shrink-0 w-80">
+                <div class="inline-flex items-center px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium mb-6">
+                    <i class="fas fa-search mr-2"></i>
+                    Categorias Premium
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+                    Encontre o que você 
+                    <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                        precisa
+                    </span>
+                </h2>
+                <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                    Descubra os melhores suplementos organizados por categoria. 
+                    Encontre exatamente o que você procura para seus objetivos de treino.
+                </p>
+                <div class="flex items-center text-sm text-gray-500">
+                    <i class="fas fa-shield-alt text-yellow-500 mr-2"></i>
+                    <span>Produtos testados e aprovados</span>
+                </div>
+            </div>
+            
+            <!-- Coluna direita - Grid de 6 cards -->
+            <div class="flex-1 grid grid-cols-6 gap-6 gap-y-8">
+                <!-- Whey Protein -->
+                <a href="/produtos?categoria=whey" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Whey Protein"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-whey.png" 
+                             alt="Whey Protein" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Whey Protein
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Proteína premium
+                    </div>
+                </a>
+                
+                <!-- Creatina -->
+                <a href="/produtos?categoria=creatina" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Creatina"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-creatina.png" 
+                             alt="Creatina" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Creatina
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Força e energia
+                    </div>
+                </a>
+                
+                <!-- Pré-Treino -->
+                <a href="/produtos?categoria=pre_treino" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Pré-Treino"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-pre.png" 
+                             alt="Pré-Treino" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Pré-Treino
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Performance máxima
+                    </div>
+                </a>
+                
+                <!-- Vitaminas -->
+                <a href="/produtos?categoria=vitaminas" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Vitaminas"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-vitamina.png" 
+                             alt="Vitaminas" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Vitaminas
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Saúde completa
+                    </div>
+                </a>
+                
+                <!-- Hipercalórico -->
+                <a href="/produtos?categoria=hipercalorico" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Hipercalórico"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-hiper.png" 
+                             alt="Hipercalórico" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Hipercalórico
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Ganho de peso
+                    </div>
+                </a>
+                
+                <!-- Barrinhas -->
+                <a href="/produtos?categoria=barrinhas" 
+                   class="flex flex-col items-center group focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-4 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Barrinhas"
+                   role="listitem">
+                    <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-xl hover:shadow-2xl hover:scale-110 transition-all duration-500 group-hover:rotate-3">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-barrinha.png" 
+                             alt="Barrinhas" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-4 text-sm md:text-base font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Barrinhas
+                    </p>
+                    <div class="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Snack saudável
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Layout -->
+        <div class="lg:hidden">
+            <!-- Título centralizado para mobile -->
+            <div class="text-center mb-8 px-4">
+                <div class="inline-flex items-center px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium mb-4">
+                    <i class="fas fa-search mr-1.5 text-xs"></i>
+                    Categorias Premium
+                </div>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-3 leading-tight px-2">
+                    Encontre o que você 
+                    <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                        precisa
+                    </span>
+                </h2>
+                <p class="text-sm sm:text-base text-gray-600 leading-relaxed px-2">
+                    Descubra os melhores suplementos organizados por categoria.
+                </p>
+            </div>
+            
+            <!-- Carrossel horizontal -->
+            <div class="flex overflow-x-auto space-x-3 snap-x snap-mandatory pb-6 px-4 scrollbar-hide" role="list">
+                <!-- Whey Protein Mobile -->
+                <a href="/produtos?categoria=whey" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Whey Protein"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-whey-mobile.png" 
+                             alt="Whey Protein" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Whey Protein
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Proteína premium
+                    </div>
+                </a>
+                
+                <!-- Creatina Mobile -->
+                <a href="/produtos?categoria=creatina" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Creatina"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-creatina-mobile.png" 
+                             alt="Creatina" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Creatina
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Força e energia
+                    </div>
+                </a>
+                
+                <!-- Pré-Treino Mobile -->
+                <a href="/produtos?categoria=pre_treino" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Pré-Treino"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-pre-mobile.png" 
+                             alt="Pré-Treino" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Pré-Treino
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Performance máxima
+                    </div>
+                </a>
+                
+                <!-- Vitaminas Mobile -->
+                <a href="/produtos?categoria=vitaminas" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Vitaminas"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-vitamina-mobile.png" 
+                             alt="Vitaminas" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Vitaminas
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Saúde completa
+                    </div>
+                </a>
+                
+                <!-- Hipercalórico Mobile -->
+                <a href="/produtos?categoria=hipercalorico" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Hipercalórico"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-hiper-mobile.png" 
+                             alt="Hipercalórico" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Hipercalórico
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Ganho de peso
+                    </div>
+                </a>
+                
+                <!-- Barrinhas Mobile -->
+                <a href="/produtos?categoria=barrinhas" 
+                   class="flex-shrink-0 snap-start flex flex-col items-center w-36 sm:w-40 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2 sm:p-3 hover:bg-yellow-50 transition-all duration-300"
+                   aria-label="Ir para categoria Barrinhas"
+                   role="listitem">
+                    <div class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-yellow-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <img src="/static/images/avatar-barrinha-mobile.png" 
+                             alt="Barrinhas" 
+                             class="w-full h-full object-cover relative z-10"
+                             onerror="this.src='/static/images/produto-placeholder.svg'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <p class="mt-2 text-xs sm:text-sm font-semibold text-gray-900 text-center group-hover:text-yellow-600 transition-colors duration-300">
+                        Barrinhas
+                    </p>
+                    <div class="text-xs text-gray-500 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
+                        Snack saudável
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO: Explore nossas categorias - NOVA VERSÃO -->
+<section class="categories-section bg-gradient-to-br from-gray-50 via-white to-gray-100 py-20 relative overflow-hidden">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 left-20 w-40 h-40 bg-yellow-400 bg-opacity-5 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-20 right-20 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 right-1/4 w-24 h-24 bg-yellow-400 bg-opacity-8 rounded-full animate-pulse delay-2000"></div>
+        <div class="absolute top-1/3 left-1/3 w-16 h-16 bg-yellow-400 bg-opacity-6 rounded-full animate-pulse delay-3000"></div>
+    </div>
+    
+    <!-- Título da seção -->
+    <div class="text-center mb-16 relative z-10">
+        <div class="inline-flex items-center px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium mb-6">
+            <i class="fas fa-dumbbell mr-2"></i>
+            Categorias Premium
+        </div>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Explore nossas 
+            <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                categorias
+            </span>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Descubra produtos organizados por categoria para encontrar exatamente o que você precisa
+        </p>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- Desktop Layout -->
+        <div class="hidden lg:grid lg:grid-cols-2 lg:gap-8">
+            <!-- Card Proteínas -->
+            <div class="lg:col-span-1">
+                <a href="/produtos?categoria=whey" 
+                   aria-label="Ir para Proteínas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1">
+                        <div class="w-full h-[1048px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/proteinas.png" 
+                                 alt="Proteínas" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-8 left-8 text-white hover:translate-y-[-8px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-4xl font-bold mt-2 hover:text-yellow-300 transition-colors duration-300">PROTEÍNAS</h3>
+                            <div class="mt-3 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-sm text-yellow-200 font-medium">Construa músculos mais fortes</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-6 right-6 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-lg"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Grid de 2 cards -->
+            <div class="lg:col-span-1 grid grid-rows-2 gap-8">
+                <!-- Card Aminoácidos -->
+                <a href="/produtos?categoria=aminoacidos" 
+                   aria-label="Ir para Aminoácidos" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:rotate-1">
+                        <div class="w-full h-[520px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/aminoacido.png" 
+                                 alt="Aminoácidos" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-6 left-6 text-white hover:translate-y-[-4px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-2xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
+                            <div class="mt-2 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-xs text-yellow-200 font-medium">Recuperação acelerada</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-sm"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Card Vitaminas -->
+                <a href="/produtos?categoria=vitaminas" 
+                   aria-label="Ir para Vitaminas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1">
+                        <div class="w-full h-[520px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/vitaminas.png" 
+                                 alt="Vitaminas" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-6 left-6 text-white hover:translate-y-[-4px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-2xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
+                            <div class="mt-2 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-xs text-yellow-200 font-medium">Saúde e bem-estar</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-sm"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Layout -->
+        <div class="lg:hidden space-y-6">
+            <!-- Card Proteínas Mobile -->
+            <a href="/produtos?categoria=whey" 
+               aria-label="Ir para Proteínas" 
+               class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                    <div class="w-full h-[210px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                        <img src="/static/images/proteinas-mobile.png" 
+                             alt="Proteínas" 
+                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                             onerror="this.src='/static/images/placeholder.png'">
+                        <!-- Overlay gradiente -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                        <!-- Efeito de brilho -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                    </div>
+                    <!-- Conteúdo -->
+                    <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                        <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                        <h3 class="text-xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">PROTEÍNAS</h3>
+                        <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                            <p class="text-xs text-yellow-200 font-medium">Construa músculos</p>
+                        </div>
+                    </div>
+                    <!-- Ícone -->
+                    <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                        <i class="fas fa-arrow-right text-white text-xs"></i>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Grid 2 colunas -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Card Aminoácidos Mobile -->
+                <a href="/produtos?categoria=aminoacidos" 
+                   aria-label="Ir para Aminoácidos" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                        <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                            <img src="/static/images/aminoacido-mobile.png" 
+                                 alt="Aminoácidos" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
+                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <p class="text-xs text-yellow-200 font-medium">Recuperação</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-xs"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Card Vitaminas Mobile -->
+                <a href="/produtos?categoria=vitaminas" 
+                   aria-label="Ir para Vitaminas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                        <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                            <img src="/static/images/vitaminas-mobile.png" 
+                                 alt="Vitaminas" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
+                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <p class="text-xs text-yellow-200 font-medium">Saúde</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-xs"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COLE AQUI - SEÇÃO: Qual seu esporte -->
+<section aria-labelledby="sports-title" class="sports-section bg-gradient-to-br from-gray-900 via-black to-gray-800 py-24 relative overflow-hidden">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-24 h-24 bg-yellow-400 bg-opacity-15 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 right-1/3 w-16 h-16 bg-yellow-400 bg-opacity-8 rounded-full animate-pulse delay-2000"></div>
+        <div class="absolute top-1/4 left-1/4 w-20 h-20 bg-yellow-400 bg-opacity-12 rounded-full animate-pulse delay-3000"></div>
+    </div>
+    
+    <h2 id="sports-title" class="sr-only">Qual seu esporte</h2>
+    
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Desktop Layout -->
+        <div class="hidden lg:grid lg:grid-cols-3 lg:gap-12 lg:items-start">
+            <!-- Coluna do título -->
+            <div class="lg:col-span-1">
+                <!-- Badge decorativo -->
+                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-full text-sm font-bold mb-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-dumbbell mr-2"></i>
+                    ESCOLHA SEU ESPORTE
+                </div>
+                
+                <h2 class="text-6xl font-black text-white leading-tight mb-6">
+                    QUAL SEU<br>
+                    <span class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+                        ESPORTE?
+                    </span>
+                </h2>
+                
+                <p class="text-lg text-gray-300 leading-relaxed max-w-md">
+                    Descubra os suplementos ideais para o seu esporte e alcance seus objetivos com produtos de alta qualidade.
+                </p>
+                
+                <!-- Elementos decorativos -->
+                <div class="mt-8 flex items-center space-x-4">
+                    <div class="w-12 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+                    <div class="w-8 h-1 bg-yellow-400 bg-opacity-50 rounded-full"></div>
+                    <div class="w-4 h-1 bg-yellow-400 bg-opacity-30 rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- Área de cards (coluna 2 e 3 juntas) -->
+            <div class="lg:col-span-2 grid grid-cols-2 gap-6">
+                <!-- Musculação -->
+                <a href="URL-MUSCULACAO" 
+                   aria-label="Ir para Musculação" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/muculacao.png" 
+                                 alt="Musculação" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">MUSCULAÇÃO</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Força e massa muscular</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-dumbbell text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Luta -->
+                <a href="URL-LUTA" 
+                   aria-label="Ir para Luta" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/luta.png" 
+                                 alt="Luta" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">LUTA</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Resistência e agilidade</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-fist-raised text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Bike -->
+                <a href="URL-BIKE" 
+                   aria-label="Ir para Bike" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/bike.png" 
+                                 alt="Bike" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">BIKE</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Endurance e velocidade</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-bicycle text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Corrida -->
+                <a href="URL-CORRIDA" 
+                   aria-label="Ir para Corrida" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/corrida.png" 
+                                 alt="Corrida" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">CORRIDA</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Performance e resistência</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-running text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Layout -->
+        <div class="lg:hidden">
+            <!-- Título centralizado -->
+            <div class="text-center mb-12">
+                <!-- Badge decorativo mobile -->
+                <div class="inline-flex items-center px-4 py-2 bg-yellow-400 bg-opacity-20 text-yellow-300 rounded-full text-sm font-medium mb-6 border border-yellow-400 border-opacity-30">
+                    <i class="fas fa-dumbbell mr-2"></i>
+                    Escolha seu esporte
+                </div>
+                
+                <h2 class="text-4xl font-black text-white leading-tight mb-4">
+                    QUAL SEU<br>
+                    <span class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+                        ESPORTE?
+                    </span>
+                </h2>
+                
+                <p class="text-base text-gray-300 leading-relaxed max-w-sm mx-auto">
+                    Descubra os suplementos ideais para o seu esporte
+                </p>
+                
+                <!-- Elementos decorativos mobile -->
+                <div class="mt-6 flex items-center justify-center space-x-3">
+                    <div class="w-8 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+                    <div class="w-6 h-1 bg-yellow-400 bg-opacity-50 rounded-full"></div>
+                    <div class="w-4 h-1 bg-yellow-400 bg-opacity-30 rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- Carrossel horizontal -->
+            <div class="flex overflow-x-auto space-x-6 snap-x snap-mandatory pb-6 scrollbar-hide">
+                <!-- Musculação Mobile -->
+                <a href="URL-MUSCULACAO" 
+                   aria-label="Ir para Musculação" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/muculacao.png" 
+                                     alt="Musculação" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">MUSCULAÇÃO</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Força e massa</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-dumbbell text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Luta Mobile -->
+                <a href="URL-LUTA" 
+                   aria-label="Ir para Luta" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/luta.png" 
+                                     alt="Luta" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">LUTA</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Resistência</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-fist-raised text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Bike Mobile -->
+                <a href="URL-BIKE" 
+                   aria-label="Ir para Bike" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/bike.png" 
+                                     alt="Bike" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">BIKE</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Endurance</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-bicycle text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Corrida Mobile -->
+                <a href="URL-CORRIDA" 
+                   aria-label="Ir para Corrida" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/corrida.png" 
+                                     alt="Corrida" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">CORRIDA</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Performance</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-running text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- COLE AQUI - SEÇÃO: Marcas Parceiras -->
+<!-- INSTRUÇÕES: 
+- Substitua URL-MARCA pelas URLs reais das marcas
+- Para adicionar mais marcas: copie um bloco <a>...</a> e altere href, src e alt
+- Para remover marcas: delete o bloco <a>...</a> correspondente
+- Se imagem não existir, será usado /static/images/placeholder.png
+-->
+<section class="brands-section bg-white py-16" role="region" aria-labelledby="brands-title">
+    <div class="text-center mb-12 px-4">
+        <!-- Badge decorativo -->
+        <div class="inline-flex items-center bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <i class="fas fa-handshake mr-2"></i>
+            Parceiros Oficiais
+        </div>
+        
+        <!-- Título da seção -->
+        <h2 id="brands-title" class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            NOSSAS MARCAS PARCEIRAS
+        </h2>
+        
+        <!-- Descrição -->
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Trabalhamos apenas com as melhores marcas do mercado, garantindo qualidade e confiança em todos os produtos.
+        </p>
+    </div>
+    
+    <!-- Desktop Layout - Carrossel horizontal -->
+    <div class="hidden lg:flex lg:overflow-hidden lg:no-scrollbar lg:w-screen">
+        <div class="flex animate-scroll gap-6" style="animation-duration: 30s;">
+            <!-- MAX -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca MAX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-max.png" 
+                         alt="MAX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Adaptogen -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Adaptogen" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-adaptogen.png" 
+                         alt="Adaptogen" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Nutrata -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Nutrata" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-nutra.png" 
+                         alt="Nutrata" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- DUX -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca DUX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-dux.png" 
+                         alt="DUX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Atlética -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Atlética" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-atlhetica.png" 
+                         alt="Atlética" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Probiotica -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Probiotica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-probiotica.png" 
+                         alt="Probiotica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Bold -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Bold" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-bold.png" 
+                         alt="Bold" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Under -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Under" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-under.png" 
+                         alt="Under" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Integral Médica -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Integral Médica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-integral.png" 
+                         alt="Integral Médica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- FTW -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca FTW" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-ftw.png" 
+                         alt="FTW" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Shark Pro -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Shark Pro" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-shark.png" 
+                         alt="Shark Pro" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Duplicação para loop contínuo -->
+            <!-- MAX -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca MAX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-max.png" 
+                         alt="MAX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Adaptogen -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Adaptogen" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-adaptogen.png" 
+                         alt="Adaptogen" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Nutrata -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Nutrata" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-nutra.png" 
+                         alt="Nutrata" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- DUX -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca DUX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-dux.png" 
+                         alt="DUX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Atlética -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Atlética" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-atlhetica.png" 
+                         alt="Atlética" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Probiotica -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Probiotica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-probiotica.png" 
+                         alt="Probiotica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Bold -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Bold" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-bold.png" 
+                         alt="Bold" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Under -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Under" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-under.png" 
+                         alt="Under" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Integral Médica -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Integral Médica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-integral.png" 
+                         alt="Integral Médica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- FTW -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca FTW" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-ftw.png" 
+                         alt="FTW" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Shark Pro -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Shark Pro" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-shark.png" 
+                         alt="Shark Pro" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Mobile Layout - Carrossel horizontal -->
+    <div class="lg:hidden overflow-hidden no-scrollbar w-screen">
+        <div class="flex animate-scroll gap-6" style="animation-duration: 25s;">
+            <!-- MAX Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca MAX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-max.png" 
+                         alt="MAX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Adaptogen Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Adaptogen" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-adaptogen.png" 
+                         alt="Adaptogen" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Nutrata Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Nutrata" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-nutra.png" 
+                         alt="Nutrata" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- DUX Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca DUX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-dux.png" 
+                         alt="DUX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Atlética Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Atlética" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-atlhetica.png" 
+                         alt="Atlética" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Probiotica Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Probiotica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-probiotica.png" 
+                         alt="Probiotica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Bold Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Bold" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-bold.png" 
+                         alt="Bold" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Under Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Under" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-under.png" 
+                         alt="Under" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Integral Médica Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Integral Médica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-integral.png" 
+                         alt="Integral Médica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- FTW Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca FTW" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-ftw.png" 
+                         alt="FTW" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Shark Pro Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Shark Pro" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-shark.png" 
+                         alt="Shark Pro" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Duplicação para loop contínuo Mobile -->
+            <!-- MAX Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca MAX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-max.png" 
+                         alt="MAX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Adaptogen Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Adaptogen" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-adaptogen.png" 
+                         alt="Adaptogen" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Nutrata Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Nutrata" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-nutra.png" 
+                         alt="Nutrata" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- DUX Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca DUX" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-dux.png" 
+                         alt="DUX" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Atlética Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Atlética" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-atlhetica.png" 
+                         alt="Atlética" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Probiotica Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Probiotica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-probiotica.png" 
+                         alt="Probiotica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Bold Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Bold" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-bold.png" 
+                         alt="Bold" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Under Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Under" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-under.png" 
+                         alt="Under" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Integral Médica Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Integral Médica" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-integral.png" 
+                         alt="Integral Médica" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- FTW Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca FTW" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-ftw.png" 
+                         alt="FTW" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+            
+            <!-- Shark Pro Mobile -->
+            <a href="URL-MARCA" 
+               aria-label="Ir para a marca Shark Pro" 
+               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
+                    <img src="/static/images/logo-shark.png" 
+                         alt="Shark Pro" 
+                         class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
+                         onerror="this.src='/static/images/placeholder.png'">
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CSS para animação de scroll contínuo -->
+<style>
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll linear infinite;
+    width: 200%;
+    display: flex;
+}
+
+/* Pausar animação no hover para melhor UX */
+.animate-scroll:hover {
+    animation-play-state: paused;
+}
+
+/* Garantir que o container tenha overflow hidden */
+.brands-section .lg\\:overflow-hidden {
+    overflow: hidden !important;
+}
+
+.brands-section .overflow-hidden {
+    overflow: hidden !important;
+}
+
+/* Forçar animação */
+.animate-scroll {
+    animation-name: scroll !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+}
+
+/* Estilos para cards de produtos */
+.product-card {
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.product-card img {
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Line clamp para títulos */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+/* Animações suaves para imagens */
+.category-main-image {
+    transition: opacity 0.3s ease;
+}
+
+/* Melhorar aparência dos botões */
+.category-tab {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-tab::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.category-tab:hover::before {
+    left: 100%;
+}
+
+/* Estilos premium para cards de produtos */
+.product-card {
+    background: linear-gradient(145deg, #1e293b, #334155);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border-radius: 1rem;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-16px) scale(1.05);
+    box-shadow: 
+        0 40px 80px -12px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(251, 191, 36, 0.3),
+        0 0 40px rgba(251, 191, 36, 0.2);
+}
+
+/* Efeito de brilho animado */
+.product-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(251, 191, 36, 0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s ease;
+    opacity: 0;
+}
+
+.product-card:hover::after {
+    animation: shine 0.8s ease-in-out;
+}
+
+/* Botão de compra Atlas */
+.product-card a {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.product-card a:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706, #b45309);
+    box-shadow: 0 12px 35px rgba(251, 191, 36, 0.6);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.product-card a:active {
+    transform: translateY(-1px);
+}
+
+/* Efeito de shimmer dourado */
+.product-card a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.8s;
+}
+
+.product-card a:hover::after {
+    left: 100%;
+}
+
+/* Badges Atlas */
+.product-card .discount-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    animation: pulse 2s infinite;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.product-card .product-badge {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Animações Atlas */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+    50% { 
+        transform: scale(1.05); 
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.6);
+    }
+}
+
+/* Hover effects para imagens */
+.product-card img {
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 200px;
+}
+
+.product-card:hover img {
+    transform: scale(1.08) rotate(0.5deg);
+}
+
+/* Otimizar espaço das imagens */
+.product-card .aspect-\[3\/2\] {
+    min-height: 240px;
+}
+
+/* Ajustar altura dos cards para dar mais espaço às imagens */
+.product-card {
+    min-height: 400px;
+}
+
+/* Animações premium */
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* Efeitos de hover para tabs */
+.category-tab[aria-selected="true"] {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(251, 191, 36, 0.5);
+    transform: scale(1.05);
+}
+
+/* Benefícios com estilo premium */
+.product-card .benefits {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.product-card .benefits svg {
+    color: #34d399;
+}
+
+/* Badges premium */
+.product-card .discount-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    animation: pulse 2s infinite;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.product-card .product-badge {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Títulos e preços premium */
+.product-card .title {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: white;
+}
+
+.product-card:hover .title {
+    color: #fbbf24;
+}
+
+.product-card .price {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+    color: #fbbf24;
+}
+
+/* Títulos e preços Atlas */
+.product-card .title {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #1f2937, #374151);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.product-card:hover .title {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.product-card .price {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.025em;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Benefícios com estilo Atlas */
+.product-card .benefits {
+    color: #059669;
+    font-weight: 600;
+}
+
+.product-card .benefits svg {
+    color: #10b981;
+}
+
+/* CSS para cards de categoria - hover isolado */
+.category-card {
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    z-index: 10;
+}
+
+/* Animações personalizadas para os cards */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+.category-card:hover .relative {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Efeito de partículas brilhantes */
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.category-card .animate-pulse {
+    animation: sparkle 2s ease-in-out infinite;
+}
+</style>
+
+<!-- 
+INSTRUÇÕES DE PERSONALIZAÇÃO:
+
+1. URLs das categorias: Substitua os href="URL-PROTEINAS", "URL-AMINOACIDOS", "URL-VITAMINAS" pelas URLs reais das suas categorias
+2. Imagens desktop: Substitua os src="/static/images/proteinas.png", "aminoacido.png", "vitaminas.png" pelas suas imagens desktop
+3. Imagens mobile: Substitua os src="/static/images/proteinas-mobile.png", "aminoacido-mobile.png", "vitaminas-mobile.png" pelas suas imagens mobile
+4. Placeholder: Se as imagens não existirem, será usado /static/images/placeholder.png
+5. Cores: A classe focus:ring-yellow-400 assume que você tem a cor yellow-400 definida no Tailwind
+6. Acessibilidade: Todos os links têm aria-label e focus rings para navegação por teclado
+
+ESTRUTURA RESPONSIVA:
+- Desktop (lg+): Grid 2 colunas com card grande à esquerda (1048px altura) e 2 cards menores à direita (520px altura cada)
+- Mobile (<lg): Stack vertical com proteínas em cima (210px altura) e grid 2 colunas embaixo (353px altura cada)
+- Hover effects: Scale e shadow transitions em todos os cards
+- Overlays: Gradientes escuros para melhor contraste do texto branco
+-->
+
+<!-- CTA Final -->
+<section class="py-20 relative overflow-hidden" style="background-color: #111827;">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-400/20 rounded-full blur-sm"></div>
+    <div class="absolute top-32 right-20 w-16 h-16 bg-orange-500/20 rounded-full blur-sm"></div>
+    <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-yellow-400/30 rounded-full blur-sm"></div>
+    <div class="absolute bottom-32 right-1/3 w-14 h-14 bg-orange-500/20 rounded-full blur-sm"></div>
+    
+    <div class="container mx-auto px-4 text-center relative z-10">
+        <!-- Título principal -->
+        <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6">
+            Pronto para transformar seus resultados?
+        </h2>
+        
+        <!-- Subtítulo -->
+        <p class="text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Descubra nossa linha completa de suplementos premium e comece sua jornada rumo aos seus objetivos.
+        </p>
+        
+        <!-- Botões -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
+            <a href="/produtos" class="bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl inline-flex items-center gap-3">
+                <i class="fas fa-shopping-cart"></i>
+                Conheça nossos suplementos
+            </a>
+            
+            <a href="/contato" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl inline-flex items-center gap-3 border border-yellow-400/30">
+                <i class="fas fa-info-circle"></i>
+                Sobre nós
+            </a>
+        </div>
+        
+        <!-- Estatísticas -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800">
+                <div class="text-3xl font-bold text-yellow-400 mb-2">10K+</div>
+                <div class="text-gray-300 text-sm">Clientes Satisfeitos</div>
+            </div>
+            
+            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800">
+                <div class="text-3xl font-bold text-yellow-400 mb-2">50+</div>
+                <div class="text-gray-300 text-sm">Produtos Premium</div>
+            </div>
+            
+            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800">
+                <div class="text-3xl font-bold text-yellow-400 mb-2">99%</div>
+                <div class="text-gray-300 text-sm">Satisfação</div>
+            </div>
+            
+            <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800">
+                <div class="text-3xl font-bold text-yellow-400 mb-2">24h</div>
+                <div class="text-gray-300 text-sm">Entrega Rápida</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- COLE AQUI - SEÇÃO: Outlet Atlas -->
+    <section class="outlet-section relative overflow-hidden" style="height: 56.25vw; min-height: 100vh; background-image: url('/static/images/fundo-desktop.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <!-- Imagem para mobile -->
+        <style>
+            @media (max-width: 768px) {
+                .outlet-section {
+                    background-image: url('/static/images/fundo-mobile.png') !important;
+                    height: 100vh !important;
+                    min-height: 100vh !important;
+                    background-size: cover !important;
+                    background-position: center !important;
+                    background-repeat: no-repeat !important;
+                }
+            }
+        </style>
+        <!-- Botão centralizado para acessar outlet -->
+        <div class="absolute inset-0 flex items-center justify-center" style="margin-top: 93px;">
+                        <a href="/outlet" 
+               class="group relative inline-flex items-center bg-gradient-to-r from-red-600 via-red-500 to-orange-500 hover:from-red-700 hover:via-red-600 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-red-500/50 transform hover:scale-105 overflow-hidden">
+                <!-- Efeito de brilho animado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                
+                <!-- Ícone de sacola -->
+                <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                
+                <!-- Texto do botão -->
+                <span class="relative z-10 text-lg font-black tracking-wide">
+                    ACESSAR OUTLET
+                </span>
+                
+                <!-- Seta indicativa -->
+                <svg class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Scripts da página inicial -->
+<script>
+    // Scripts específicos da página inicial
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('✅ Página inicial carregada com sucesso');
+        
+        // Animações de entrada
+        const heroElements = document.querySelectorAll('.animate-float, .glow-effect');
+        heroElements.forEach((element, index) => {
+            element.style.animationDelay = `${index * 0.2}s`;
+        });
+        
+        // Efeitos de hover para cards
+        const cards = document.querySelectorAll('.bg-white\\/10');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+
+{% endblock %}

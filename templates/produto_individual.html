@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ produto.nome }} - Atlas Suplementos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'atlas-gold': '#D4AF37',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .atlas-hero {
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 50%, #000000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .atlas-section {
+            background: linear-gradient(135deg, #000000 0%, #1F1F1F 50%, #DC2626 100%);
+            position: relative;
+        }
+        
+        .atlas-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(220, 38, 38, 0.1) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .atlas-button {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            color: #000;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .atlas-button:hover {
+            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #FFD700 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .atlas-text {
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .atlas-badge {
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+            color: #D4AF37;
+            border: 2px solid #D4AF37;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 800px;
+            background: linear-gradient(135deg, #000000 0%, #1F1F1F 50%, #DC2626 100%);
+            border: 2px solid #D4AF37;
+            border-radius: 20px;
+            padding: 2rem;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #D4AF37;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body class="atlas-section min-h-screen">
+    <!-- Navigation com Carrinho -->
+    <nav class="bg-black/50 backdrop-blur-md fixed w-full top-0 z-50 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-2xl font-bold gradient-text">ATLAS</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-white hover:text-[#D4AF37] transition-colors">Home</a>
+                    <a href="/produtos" class="text-white hover:text-[#D4AF37] transition-colors">Produtos</a>
+                    <a href="/outlet" class="text-white hover:text-[#D4AF37] transition-colors">Outlet</a>
+                    <a href="/contato" class="text-white hover:text-[#D4AF37] transition-colors">Contato</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Carrinho -->
+                    <button onclick="abrirCarrinho()" class="relative p-2 text-white hover:text-[#D4AF37] transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Section -->
+    <section class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Product Image -->
+                <div class="relative">
+                    <div class="relative atlas-card rounded-3xl overflow-hidden shadow-2xl">
+                        {% if produto_id == 'camiseta-juice' %}
+                            <img id="product-image" src="/static/images/frente-juice.png" alt="{{ produto.nome }}" 
+                                 class="w-full h-96 object-cover cursor-pointer transition-all duration-500" 
+                                 onclick="abrirModalImagem()" 
+                                 onerror="this.src='/static/images/placeholder.png'">
+                        {% elif produto_id == 'camiseta-golden' %}
+                            <img id="product-image" src="/static/images/frente-golden.png" alt="{{ produto.nome }}" 
+                                 class="w-full h-96 object-cover cursor-pointer transition-all duration-500" 
+                                 onclick="abrirModalImagem()" 
+                                 onerror="this.src='/static/images/placeholder.png'">
+                        {% else %}
+                            <img id="product-image" src="/static/images/{{ produto_id }}.jpg" alt="{{ produto.nome }}" 
+                                 class="w-full h-96 object-cover cursor-pointer transition-all duration-500" 
+                                 onclick="abrirModalImagem()" 
+                                 onerror="this.src='/static/images/placeholder.png'">
+                        {% endif %}
+                        <div class="absolute top-4 left-4 atlas-badge px-4 py-2 rounded-full text-sm font-bold">
+                            -50% OFF
+                        </div>
+                        <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-full p-2">
+                            <button onclick="abrirModalImagem()" class="text-white hover:text-[#D4AF37] transition-colors">
+                                <i class="fas fa-expand-arrows-alt text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Miniaturas embaixo da imagem -->
+                    <div class="flex justify-center space-x-3 mt-4">
+                        <!-- Miniatura Frente -->
+                        <div class="relative">
+                            {% if produto_id == 'camiseta-juice' %}
+                                <img id="thumb-frente" src="/static/images/frente-juice.png" alt="Frente" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-[#D4AF37] shadow-lg transition-all duration-300 hover:scale-105" 
+                                     onclick="mostrarFrentePrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% elif produto_id == 'camiseta-golden' %}
+                                <img id="thumb-frente" src="/static/images/frente-golden.png" alt="Frente" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-[#D4AF37] shadow-lg transition-all duration-300 hover:scale-105" 
+                                     onclick="mostrarFrentePrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% else %}
+                                <img id="thumb-frente" src="/static/images/{{ produto_id }}.jpg" alt="Frente" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-[#D4AF37] shadow-lg transition-all duration-300 hover:scale-105" 
+                                     onclick="mostrarFrentePrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% endif %}
+                            <div class="absolute inset-0 bg-[#D4AF37]/20 rounded-lg pointer-events-none"></div>
+                            <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                                <span class="text-xs font-bold text-white bg-black/50 px-2 py-1 rounded">Frente</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Miniatura Verso -->
+                        <div class="relative">
+                            {% if produto_id == 'camiseta-juice' %}
+                                <img id="thumb-verso" src="/static/images/verso-juice.png" alt="Verso" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-gray-400 shadow-lg transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]" 
+                                     onclick="mostrarVersoPrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% elif produto_id == 'camiseta-golden' %}
+                                <img id="thumb-verso" src="/static/images/verso-golden.png" alt="Verso" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-gray-400 shadow-lg transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]" 
+                                     onclick="mostrarVersoPrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% else %}
+                                <img id="thumb-verso" src="/static/images/{{ produto_id }}-verso.jpg" alt="Verso" 
+                                     class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 border-gray-400 shadow-lg transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]" 
+                                     onclick="mostrarVersoPrincipal()"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                            {% endif %}
+                            <div class="absolute inset-0 bg-gray-400/20 rounded-lg pointer-events-none"></div>
+                            <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2">
+                                <span class="text-xs font-bold text-white bg-black/50 px-2 py-1 rounded">Verso</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Info -->
+                <div class="text-white">
+                    <h1 class="text-4xl font-bold mb-4">{{ produto.nome }}</h1>
+                    <div class="mb-6">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <span class="text-4xl font-bold text-[#D4AF37]">R$ {{ "%.2f"|format(produto.preco) }}</span>
+                            <span class="text-2xl text-gray-400 line-through">R$ {{ "%.2f"|format(produto.preco_original) }}</span>
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">50% OFF</span>
+                        </div>
+                        <p class="text-gray-300 text-lg">Você economiza <span class="text-[#D4AF37] font-bold">R$ {{ "%.2f"|format(produto.preco_original - produto.preco) }}</span></p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4">Descrição do Produto</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>100% Algodão Premium</li>
+                            <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Estampa de alta qualidade</li>
+                            <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Conforto garantido</li>
+                            <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Lavagem segura</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <button id="btn-comprar" class="flex-1 atlas-button px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl" onclick="adicionarAoCarrinho()">
+                            <i class="fas fa-shopping-cart mr-2"></i>
+                            <span class="btn-text">Adicionar ao Carrinho</span>
+                        </button>
+                        <button onclick="abrirModalImagem()" class="w-14 h-14 border border-[#D4AF37]/30 rounded-full flex items-center justify-center hover:border-[#D4AF37] hover:bg-[#D4AF37]/20 transition-all">
+                            <i class="fas fa-eye atlas-text"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Imagem -->
+    <div id="modal-imagem" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModalImagem()">&times;</span>
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-white mb-4">{{ produto.nome }}</h2>
+                
+                <!-- Controles do modal -->
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button id="btn-frente" onclick="mostrarFrente()" class="atlas-button px-6 py-2 rounded-full font-bold text-sm">
+                        <i class="fas fa-eye mr-2"></i>
+                        Frente
+                    </button>
+                    <button id="btn-verso" onclick="mostrarVerso()" class="border-2 border-[#D4AF37] text-[#D4AF37] px-6 py-2 rounded-full font-bold text-sm hover:bg-[#D4AF37] hover:text-black transition-all">
+                        <i class="fas fa-undo mr-2"></i>
+                        Verso
+                    </button>
+                </div>
+                
+                <!-- Imagem do modal -->
+                <div class="relative">
+                    <div class="relative w-full max-w-md mx-auto">
+                        {% if produto_id == 'camiseta-juice' %}
+                            <img id="modal-image" src="/static/images/frente-juice.png" alt="{{ produto.nome }}" 
+                                 class="w-full rounded-lg shadow-2xl transition-all duration-500 opacity-100">
+                            
+                            <!-- Imagem de transição -->
+                            <img id="modal-image-transition" src="/static/images/frente-juice.png" alt="{{ produto.nome }}" 
+                                 class="absolute inset-0 w-full rounded-lg shadow-2xl transition-all duration-500 opacity-0">
+                        {% elif produto_id == 'camiseta-golden' %}
+                            <img id="modal-image" src="/static/images/frente-golden.png" alt="{{ produto.nome }}" 
+                                 class="w-full rounded-lg shadow-2xl transition-all duration-500 opacity-100">
+                            
+                            <!-- Imagem de transição -->
+                            <img id="modal-image-transition" src="/static/images/frente-golden.png" alt="{{ produto.nome }}" 
+                                 class="absolute inset-0 w-full rounded-lg shadow-2xl transition-all duration-500 opacity-0">
+                        {% else %}
+                            <img id="modal-image" src="/static/images/{{ produto_id }}.jpg" alt="{{ produto.nome }}" 
+                                 class="w-full rounded-lg shadow-2xl transition-all duration-500 opacity-100">
+                            
+                            <!-- Imagem de transição -->
+                            <img id="modal-image-transition" src="/static/images/{{ produto_id }}.jpg" alt="{{ produto.nome }}" 
+                                 class="absolute inset-0 w-full rounded-lg shadow-2xl transition-all duration-500 opacity-0">
+                        {% endif %}
+                        
+                        <!-- Indicador de carregamento -->
+                        <div id="loading-indicator" class="hidden absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg">
+                            <i class="fas fa-spinner fa-spin text-4xl text-[#D4AF37]"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-gray-300 mt-4">Clique nos botões para ver frente e verso da camisa</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="atlas-section py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <div class="text-3xl font-bold gradient-text mb-4">ATLAS</div>
+                <p class="text-gray-300 mb-6">Suplementos e Roupas Premium</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sistema de estoque do outlet
+        let estoqueData = {};
+
+        // Carregar status do estoque ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarEstoque();
+        });
+
+        // Carregar estoque do servidor
+        async function carregarEstoque() {
+            try {
+                const response = await fetch('/api/outlet/estoque');
+                const data = await response.json();
+                
+                if (data.success) {
+                    estoqueData = data.estoque;
+                    atualizarBotao();
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estoque:', error);
+            }
+        }
+
+        // Atualizar botão baseado no estoque
+        function atualizarBotao() {
+            const btnComprar = document.getElementById('btn-comprar');
+            const produto = estoqueData['{{ produto_id }}'];
+            
+            if (produto && produto.vendido) {
+                btnComprar.classList.remove('atlas-button');
+                btnComprar.classList.add('bg-gray-500', 'cursor-not-allowed');
+                btnComprar.disabled = true;
+                btnComprar.innerHTML = '<i class="fas fa-times mr-2"></i><span class="btn-text">Esgotado</span>';
+            }
+        }
+
+        // Função para adicionar ao carrinho
+        function adicionarAoCarrinho() {
+            const button = document.getElementById('btn-comprar');
+            
+            // Verificar se já está esgotado
+            if (button.disabled) {
+                return;
+            }
+
+            // Verificar se o item está disponível
+            const produto = estoqueData['{{ produto_id }}'];
+            if (!produto || produto.vendido) {
+                alert('Este item já foi vendido!');
+                return;
+            }
+
+            // Criar objeto do produto para o carrinho
+            const itemCarrinho = {
+                produto_id: '{{ produto_id }}',
+                nome: '{{ produto.nome }}',
+                marca: 'Atlas',
+                preco: {{ produto.preco }},
+                sabor: 'único',
+                quantidade: 1,
+                {% if produto_id == 'camiseta-juice' %}
+                imagem: '/static/images/frente-juice.png',
+                {% elif produto_id == 'camiseta-golden' %}
+                imagem: '/static/images/frente-golden.png',
+                {% else %}
+                imagem: '/static/images/{{ produto_id }}.jpg',
+                {% endif %}
+            };
+
+            // Adicionar ao carrinho via API
+            fetch('/api/carrinho/adicionar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(itemCarrinho)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('✅ Produto adicionado com sucesso!');
+                    
+                    // Mostrar feedback visual
+                    button.innerHTML = '<i class="fas fa-check mr-2"></i><span class="btn-text">Adicionado!</span>';
+                    button.classList.add('bg-green-500');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i><span class="btn-text">Adicionar ao Carrinho</span>';
+                        button.classList.remove('bg-green-500');
+                    }, 2000);
+                    
+                    // Atualizar contador do carrinho
+                    atualizarContadorCarrinho();
+                } else {
+                    console.error('❌ Erro ao adicionar produto:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Erro ao adicionar produto:', error);
+            });
+        }
+
+        // Funções para controlar imagem principal
+        function mostrarFrentePrincipal() {
+            const productImage = document.getElementById('product-image');
+            const thumbFrente = document.getElementById('thumb-frente');
+            const thumbVerso = document.getElementById('thumb-verso');
+            
+            // Atualizar miniaturas - apenas bordas
+            thumbFrente.classList.remove('border-gray-400');
+            thumbFrente.classList.add('border-[#D4AF37]');
+            
+            thumbVerso.classList.remove('border-[#D4AF37]');
+            thumbVerso.classList.add('border-gray-400');
+            
+            // Carregar imagem da frente
+            const img = new Image();
+            {% if produto_id == 'camiseta-juice' %}
+            img.onload = function() {
+                productImage.src = '/static/images/frente-juice.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                productImage.src = '/static/images/frente-juice.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.src = '/static/images/frente-juice.png';
+            {% elif produto_id == 'camiseta-golden' %}
+            img.onload = function() {
+                productImage.src = '/static/images/frente-golden.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                productImage.src = '/static/images/frente-golden.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.src = '/static/images/frente-golden.png';
+            {% else %}
+            img.onload = function() {
+                productImage.src = '/static/images/{{ produto_id }}.jpg';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                productImage.src = '/static/images/{{ produto_id }}.jpg';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+            };
+            img.src = '/static/images/{{ produto_id }}.jpg';
+            {% endif %}
+        }
+
+        function mostrarVersoPrincipal() {
+            const productImage = document.getElementById('product-image');
+            const thumbFrente = document.getElementById('thumb-frente');
+            const thumbVerso = document.getElementById('thumb-verso');
+            
+            // Atualizar miniaturas - apenas bordas
+            thumbVerso.classList.remove('border-gray-400');
+            thumbVerso.classList.add('border-[#D4AF37]');
+            
+            thumbFrente.classList.remove('border-[#D4AF37]');
+            thumbFrente.classList.add('border-gray-400');
+            
+            // Carregar imagem do verso
+            const img = new Image();
+            {% if produto_id == 'camiseta-juice' %}
+            img.onload = function() {
+                productImage.src = '/static/images/verso-juice.png';
+                productImage.alt = 'Verso da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                productImage.src = '/static/images/frente-juice.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+                // Voltar para frente
+                mostrarFrentePrincipal();
+            };
+            img.src = '/static/images/verso-juice.png';
+            {% elif produto_id == 'camiseta-golden' %}
+            img.onload = function() {
+                productImage.src = '/static/images/verso-golden.png';
+                productImage.alt = 'Verso da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                productImage.src = '/static/images/frente-golden.png';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+                // Voltar para frente
+                mostrarFrentePrincipal();
+            };
+            img.src = '/static/images/verso-golden.png';
+            {% else %}
+            img.onload = function() {
+                productImage.src = '/static/images/{{ produto_id }}-verso.jpg';
+                productImage.alt = 'Verso da {{ produto.nome }}';
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                productImage.src = '/static/images/{{ produto_id }}.jpg';
+                productImage.alt = 'Frente da {{ produto.nome }}';
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+                // Voltar para frente
+                mostrarFrentePrincipal();
+            };
+            img.src = '/static/images/{{ produto_id }}-verso.jpg';
+            {% endif %}
+        }
+
+        // Funções do modal
+        function abrirModalImagem() {
+            document.getElementById('modal-imagem').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            // Mostrar frente por padrão
+            mostrarFrente();
+        }
+
+        function fecharModalImagem() {
+            document.getElementById('modal-imagem').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Funções para controlar frente e verso
+        function mostrarFrente() {
+            const modalImage = document.getElementById('modal-image');
+            const modalImageTransition = document.getElementById('modal-image-transition');
+            const btnFrente = document.getElementById('btn-frente');
+            const btnVerso = document.getElementById('btn-verso');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            // Mostrar loading
+            loadingIndicator.classList.remove('hidden');
+            
+            // Atualizar botões
+            btnFrente.classList.remove('border-2', 'border-[#D4AF37]', 'text-[#D4AF37]', 'hover:bg-[#D4AF37]', 'hover:text-black');
+            btnFrente.classList.add('atlas-button');
+            
+            btnVerso.classList.remove('atlas-button');
+            btnVerso.classList.add('border-2', 'border-[#D4AF37]', 'text-[#D4AF37]', 'hover:bg-[#D4AF37]', 'hover:text-black');
+            
+            // Carregar imagem da frente
+            const img = new Image();
+            {% if produto_id == 'camiseta-juice' %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/frente-juice.png';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/frente-juice.png';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                modalImage.src = '/static/images/frente-juice.png';
+                loadingIndicator.classList.add('hidden');
+            };
+            img.src = '/static/images/frente-juice.png';
+            {% elif produto_id == 'camiseta-golden' %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/frente-golden.png';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/frente-golden.png';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                modalImage.src = '/static/images/frente-golden.png';
+                loadingIndicator.classList.add('hidden');
+            };
+            img.src = '/static/images/frente-golden.png';
+            {% else %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/{{ produto_id }}.jpg';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/{{ produto_id }}.jpg';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                modalImage.src = '/static/images/{{ produto_id }}.jpg';
+                loadingIndicator.classList.add('hidden');
+            };
+            img.src = '/static/images/{{ produto_id }}.jpg';
+            {% endif %}
+        }
+
+        function mostrarVerso() {
+            const modalImage = document.getElementById('modal-image');
+            const modalImageTransition = document.getElementById('modal-image-transition');
+            const btnFrente = document.getElementById('btn-frente');
+            const btnVerso = document.getElementById('btn-verso');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            // Mostrar loading
+            loadingIndicator.classList.remove('hidden');
+            
+            // Atualizar botões
+            btnVerso.classList.remove('border-2', 'border-[#D4AF37]', 'text-[#D4AF37]', 'hover:bg-[#D4AF37]', 'hover:text-black');
+            btnVerso.classList.add('atlas-button');
+            
+            btnFrente.classList.remove('atlas-button');
+            btnFrente.classList.add('border-2', 'border-[#D4AF37]', 'text-[#D4AF37]', 'hover:bg-[#D4AF37]', 'hover:text-black');
+            
+            // Carregar imagem do verso
+            const img = new Image();
+            {% if produto_id == 'camiseta-juice' %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/verso-juice.png';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/verso-juice.png';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                modalImage.src = '/static/images/frente-juice.png';
+                loadingIndicator.classList.add('hidden');
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+            };
+            img.src = '/static/images/verso-juice.png';
+            {% elif produto_id == 'camiseta-golden' %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/verso-golden.png';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/verso-golden.png';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                modalImage.src = '/static/images/frente-golden.png';
+                loadingIndicator.classList.add('hidden');
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+            };
+            img.src = '/static/images/verso-golden.png';
+            {% else %}
+            img.onload = function() {
+                // Usar transição suave
+                modalImageTransition.src = '/static/images/{{ produto_id }}-verso.jpg';
+                modalImageTransition.classList.remove('opacity-0');
+                modalImageTransition.classList.add('opacity-100');
+                
+                setTimeout(() => {
+                    modalImage.src = '/static/images/{{ produto_id }}-verso.jpg';
+                    modalImageTransition.classList.remove('opacity-100');
+                    modalImageTransition.classList.add('opacity-0');
+                    loadingIndicator.classList.add('hidden');
+                }, 250);
+            };
+            img.onerror = function() {
+                // Se não existir imagem do verso, mostrar a frente
+                modalImage.src = '/static/images/{{ produto_id }}.jpg';
+                loadingIndicator.classList.add('hidden');
+                alert('Imagem do verso não disponível. Mostrando a frente.');
+            };
+            img.src = '/static/images/{{ produto_id }}-verso.jpg';
+            {% endif %}
+        }
+
+        // Fechar modal clicando fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal-imagem');
+            if (event.target === modal) {
+                fecharModalImagem();
+            }
+        }
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                fecharModalImagem();
+            }
+        });
+    </script>
+
+    <!-- Modal do Carrinho -->
+    <div id="modal-carrinho" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Header do Modal -->
+                <div class="bg-gradient-to-r from-[#D4AF37] to-yellow-600 text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            Seu Carrinho
+                        </h2>
+                        <button onclick="fecharModalCarrinho()" class="text-white hover:text-gray-200 text-2xl">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="p-6 overflow-y-auto max-h-[60vh]">
+                    <div id="carrinho-itens">
+                        <!-- Itens do carrinho serão inseridos aqui -->
+                    </div>
+                    
+                    <!-- Carrinho vazio -->
+                    <div id="carrinho-vazio" class="text-center py-12 hidden">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">Seu carrinho está vazio</h3>
+                        <p class="text-gray-500 mb-6">Adicione alguns produtos para começar suas compras!</p>
+                        <button onclick="fecharModalCarrinho()" class="bg-[#D4AF37] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Continuar Comprando
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer do Modal -->
+                <div id="carrinho-footer" class="border-t bg-gray-50 p-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-lg font-semibold text-gray-700">Total:</span>
+                        <span id="carrinho-total" class="text-2xl font-bold text-[#D4AF37]">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button onclick="fecharModalCarrinho()" class="flex-1 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                            Continuar Comprando
+                        </button>
+                        <button onclick="irParaCheckout()" class="flex-1 bg-[#D4AF37] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Finalizar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções do carrinho
+        function abrirCarrinho() {
+            document.getElementById('modal-carrinho').classList.remove('hidden');
+            carregarCarrinho();
+        }
+        
+        function fecharModalCarrinho() {
+            document.getElementById('modal-carrinho').classList.add('hidden');
+        }
+        
+        function irParaCheckout() {
+            window.location.href = '/checkout';
+        }
+        
+        // Função para carregar carrinho
+        function carregarCarrinho() {
+            fetch('/api/carrinho')
+                .then(response => response.json())
+                .then(carrinho => {
+                    console.log('🛒 Carrinho carregado:', carrinho);
+                    exibirCarrinho(carrinho);
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar carrinho:', error);
+                });
+        }
+        
+        // Função para exibir carrinho
+        function exibirCarrinho(carrinho) {
+            const container = document.getElementById('carrinho-itens');
+            const vazio = document.getElementById('carrinho-vazio');
+            const footer = document.getElementById('carrinho-footer');
+            
+            if (carrinho.length === 0) {
+                container.innerHTML = '';
+                vazio.classList.remove('hidden');
+                footer.classList.add('hidden');
+                return;
+            }
+            
+            vazio.classList.add('hidden');
+            footer.classList.remove('hidden');
+            
+            let html = '';
+            let total = 0;
+            
+            carrinho.forEach(item => {
+                const subtotal = item.preco * item.quantidade;
+                total += subtotal;
+                
+                html += `
+                    <div class="flex items-center space-x-4 p-4 border-b border-gray-200">
+                        <img src="${item.imagem}" alt="${item.nome}" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800">${item.nome}</h3>
+                            <p class="text-sm text-gray-600">${item.marca} - ${item.sabor}</p>
+                            <p class="text-sm text-gray-500">Qtd: ${item.quantidade}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-[#D4AF37]">R$ ${subtotal.toFixed(2)}</p>
+                            <button onclick="removerDoCarrinho('${item.produto_id}', '${item.sabor}')" class="text-red-500 hover:text-red-700 text-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('carrinho-total').textContent = `R$ ${total.toFixed(2)}`;
+        }
+        
+        // Função para remover do carrinho
+        function removerDoCarrinho(produtoId, sabor) {
+            fetch('/api/carrinho/remover', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    produto_id: produtoId,
+                    sabor: sabor
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    carregarCarrinho();
+                    atualizarContadorCarrinho();
+                }
+            });
+        }
+        
+        // Função para atualizar contador do carrinho
+        function atualizarContadorCarrinho() {
+            fetch('/api/carrinho')
+                .then(response => response.json())
+                .then(carrinho => {
+                    const total = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
+                    document.getElementById('cart-count').textContent = total;
+                });
+        }
+        
+        // Carregar contador inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarContadorCarrinho();
+        });
+    </script>
+</body>
+</html>

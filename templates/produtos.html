@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}Produtos - Atlas Suplementos{% endblock %}
+
+{% block content %}
+<!-- Hero Banner -->
+<section class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center relative overflow-hidden">
+    <!-- Elementos flutuantes -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 right-10 w-20 h-20 bg-yellow-400 bg-opacity-20 rounded-full animate-pulse"></div>
+        <div class="absolute top-60 right-20 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-40 left-10 w-16 h-16 bg-yellow-400 bg-opacity-15 rounded-full animate-pulse delay-2000"></div>
+        <div class="absolute bottom-20 left-20 w-24 h-24 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-3000"></div>
+        <div class="absolute bottom-40 right-40 w-28 h-28 bg-yellow-400 bg-opacity-15 rounded-full animate-pulse delay-1500"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-6xl mx-auto">
+            <!-- Logo Atlas Flutuante -->
+            <div class="flex justify-center mb-8 logo-container">
+                <img src="/static/images/logo.png" alt="Atlas Suplementos" 
+                     class="h-40 md:h-56 lg:h-72 w-auto animate-float glow-effect logo-hover">
+            </div>
+            
+            <!-- Título Principal -->
+            <h1 class="text-6xl md:text-8xl font-black mb-6 text-center">
+                <span class="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+                    Produtos
+                </span>
+            </h1>
+            
+            <!-- Subtítulo -->
+            <h2 class="text-2xl md:text-3xl text-white mb-8 font-light text-center">
+                Suplementos que transformam
+            </h2>
+            
+            <!-- Descrição -->
+            <p class="text-lg text-gray-300 mb-12 max-w-4xl mx-auto text-center leading-relaxed">
+                Descubra nossa linha completa de suplementos premium. Whey protein, creatina, pré-treinos, 
+                vitaminas e muito mais. Qualidade garantida, resultados comprovados.
+            </p>
+            
+            <!-- Estatísticas dos Produtos -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">50+</div>
+                    <div class="text-white text-sm font-medium">Produtos Premium</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">10+</div>
+                    <div class="text-white text-sm font-medium">Marcas Parceiras</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">6</div>
+                    <div class="text-white text-sm font-medium">Categorias</div>
+                </div>
+                <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-6 text-center border border-white border-opacity-20 hover:bg-opacity-20 transition-all duration-300">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">100%</div>
+                    <div class="text-white text-sm font-medium">Qualidade</div>
+                </div>
+            </div>
+            
+            <!-- Botões de Ação -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="document.getElementById('barra-pesquisa').focus()" 
+                        class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-500 hover:to-yellow-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+                    <i class="fas fa-search"></i>
+                    Buscar Produtos
+                </button>
+                <button onclick="filtrarCategoria('whey')" 
+                        class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 hover:text-black transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fas fa-dumbbell"></i>
+                    Ver Proteínas
+                </button>
+                <button onclick="filtrarCategoria('creatina')" 
+                        class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-yellow-400 hover:text-black transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fas fa-bolt"></i>
+                    Ver Creatina
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filters Section -->
+<section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+            <!-- Search Bar -->
+            <div class="relative max-w-3xl mx-auto mb-8">
+                <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400 text-xl"></i>
+                </div>
+                <input type="text" 
+                       id="barra-pesquisa" 
+                       placeholder="Buscar por produto, marca ou categoria..." 
+                       class="w-full pl-16 pr-16 py-5 text-xl border-2 border-gray-200 rounded-3xl focus:outline-none focus:ring-4 focus:ring-atlas-gold/20 focus:border-atlas-gold transition-all duration-300 shadow-lg hover:shadow-xl bg-gray-50 text-gray-900 placeholder-gray-500">
+                <div class="absolute inset-y-0 right-0 pr-6 flex items-center">
+                    <button id="limpar-pesquisa" 
+                            class="text-gray-400 hover:text-gray-600 transition-colors hidden">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Category Filters -->
+            <div class="flex flex-wrap gap-4 justify-center filters-container">
+                <button class="px-8 py-4 bg-gradient-to-r from-atlas-gold to-yellow-500 text-gray-900 rounded-2xl font-bold text-lg hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl active" 
+                        onclick="filtrarCategoria('')" 
+                        data-categoria="">
+                    <i class="fas fa-th-large mr-3"></i>Todas
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-green-400 hover:text-green-600 hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('whey')" 
+                        data-categoria="whey">
+                    <i class="fas fa-shake mr-2"></i>Whey
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-purple-400 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('creatina')" 
+                        data-categoria="creatina">
+                    <i class="fas fa-bolt mr-2"></i>Creatina
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-red-400 hover:text-red-600 hover:bg-red-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('pre_treino')" 
+                        data-categoria="pre_treino">
+                    <i class="fas fa-fire mr-2"></i>Pré-treino
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-pink-400 hover:text-pink-600 hover:bg-pink-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('vitaminas')" 
+                        data-categoria="vitaminas">
+                    <i class="fas fa-heart mr-2"></i>Vitaminas
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-yellow-400 hover:text-yellow-600 hover:bg-yellow-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('hipercalorico')" 
+                        data-categoria="hipercalorico">
+                    <i class="fas fa-weight-hanging mr-2"></i>Hipercalórico
+                </button>
+                <button class="px-6 py-3 bg-white text-gray-700 border-2 border-gray-200 rounded-2xl font-semibold hover:border-orange-400 hover:text-orange-600 hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg" 
+                        onclick="filtrarCategoria('barrinhas')" 
+                        data-categoria="barrinhas">
+                    <i class="fas fa-cookie-bite mr-2"></i>Barrinhas
+                </button>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="resultados-pesquisa" class="text-center mt-6 hidden">
+                <div class="inline-flex items-center gap-3 px-6 py-3 bg-blue-50 border-2 border-blue-200 rounded-2xl shadow-md">
+                    <i class="fas fa-search text-blue-500"></i>
+                    <span class="text-blue-700 font-medium">
+                        Resultados para: "<span id="termo-pesquisado" class="font-bold text-blue-800"></span>"
+                    </span>
+                    <span class="text-blue-600 text-sm">
+                        (<span id="quantidade-resultados">0</span> produtos encontrados)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Produtos -->
+<section class="py-12 sm:py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Loading -->
+        <div id="loading-produtos" class="text-center py-8 sm:py-12 hidden">
+            <div class="inline-flex items-center gap-3">
+                <div class="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-atlas-gold"></div>
+                <span class="text-gray-600 text-sm sm:text-base">Carregando produtos...</span>
+            </div>
+        </div>
+        
+        <!-- Grid de Produtos -->
+        <div id="produtos-container">
+            <!-- Produtos serão carregados dinamicamente -->
+        </div>
+        
+        <!-- Mensagem de Nenhum Resultado -->
+        <div id="nenhum-resultado" class="text-center py-12 sm:py-16 hidden">
+            <div class="max-w-md mx-auto">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                    <i class="fas fa-search text-gray-400 text-2xl sm:text-3xl"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-600 mb-2">Nenhum produto encontrado</h3>
+                <p class="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base">Tente ajustar sua pesquisa ou selecionar outra categoria.</p>
+                <button onclick="limparPesquisa()" 
+                        class="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-atlas-gold to-yellow-500 text-gray-900 rounded-lg sm:rounded-xl font-semibold hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 text-sm sm:text-base">
+                    <i class="fas fa-undo mr-2"></i>Limpar Pesquisa
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal de Produto -->
+<div id="modal-produto" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="flex items-start justify-center min-h-screen p-2 sm:p-4 pt-4 sm:pt-8">
+        <div class="bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-3 sm:p-4 md:p-6">
+                <!-- Header do Modal -->
+                <div class="flex justify-between items-center mb-3 sm:mb-4">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900" id="modal-title">Detalhes do Produto</h3>
+                    <button onclick="fecharModalProduto()" class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl p-1 hover:bg-gray-100 rounded-full transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                    <!-- Imagens do Produto -->
+                    <div>
+                        <div class="relative">
+                            <div id="carousel-produto" class="relative overflow-hidden rounded-lg">
+                                <div id="carousel-inner" class="flex transition-transform duration-300">
+                                    <!-- Imagens serão inseridas aqui -->
+                                </div>
+                                
+                                <!-- Controles do Carousel -->
+                                <button onclick="mudarImagem(-1)" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 text-gray-800 w-8 h-8 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all z-10">
+                                    <i class="fas fa-chevron-left text-sm"></i>
+                                </button>
+                                <button onclick="mudarImagem(1)" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-90 text-gray-800 w-8 h-8 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all z-10">
+                                    <i class="fas fa-chevron-right text-sm"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Indicadores -->
+                            <div id="carousel-indicators" class="flex justify-center mt-2 space-x-2">
+                                <!-- Indicadores serão inseridos aqui -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Informações do Produto -->
+                    <div class="space-y-3 sm:space-y-4">
+                        <h4 class="text-lg sm:text-xl font-bold text-gray-900" id="modal-nome"></h4>
+                        <p class="text-gray-600 text-sm sm:text-base" id="modal-categoria"></p>
+                        <p class="text-gray-700 text-sm sm:text-base" id="modal-descricao"></p>
+                        
+                        <div class="py-2">
+                            <span class="text-xl sm:text-2xl font-bold text-atlas-gold" id="modal-preco"></span>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Selecione o Sabor:</label>
+                            <div id="sabores-container" class="grid grid-cols-2 sm:grid-cols-3 gap-2 overflow-hidden">
+                                <!-- Sabores serão inseridos aqui -->
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Quantidade:</label>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="alterarQuantidade(-1)" class="w-8 h-8 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center">
+                                    <i class="fas fa-minus text-sm"></i>
+                                </button>
+                                <input type="number" id="quantidade-input" value="1" min="1" class="w-16 text-center border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-atlas-gold text-sm">
+                                <button onclick="alterarQuantidade(1)" class="w-8 h-8 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center">
+                                    <i class="fas fa-plus text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 pt-2">
+                            <button onclick="adicionarAoCarrinho()" class="w-full bg-atlas-gold text-white py-3 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-sm sm:text-base">
+                                <i class="fas fa-cart-plus mr-2"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                            <button onclick="comprarAgora()" class="w-full bg-gray-800 text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-700 transition-colors text-sm sm:text-base">
+                                <i class="fas fa-shopping-bag mr-2"></i>
+                                Comprar Agora
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+
+{% block extra_js %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/cards-simples.css') }}">
+<script src="{{ url_for('static', filename='js/produtos.js') }}"></script>
+{% endblock %}

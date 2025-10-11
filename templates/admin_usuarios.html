@@ -1,0 +1,402 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciamento de Usuários - Atlas Suplementos{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow-2xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                        <i class="fas fa-users text-yellow-600 mr-3"></i>
+                        Gerenciamento de Usuários
+                    </h1>
+                    <p class="text-gray-600">Gerencie usuários e permissões do sistema</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="exportarUsuarios()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-download mr-2"></i>
+                        Exportar Excel
+                    </button>
+                    <button onclick="atualizarDados()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt mr-2"></i>
+                        Atualizar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-full">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Total de Usuários</p>
+                        <p id="total-usuarios" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-full">
+                        <i class="fas fa-crown text-purple-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Administradores</p>
+                        <p id="total-admins" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-full">
+                        <i class="fas fa-user-plus text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Hoje</p>
+                        <p id="usuarios-hoje" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-orange-100 rounded-full">
+                        <i class="fas fa-calendar-week text-orange-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-gray-600">Esta Semana</p>
+                        <p id="usuarios-semana" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Usuários -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800">Lista de Usuários</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data Cadastro</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuarios-tabela" class="bg-white divide-y divide-gray-200">
+                        <!-- Usuários serão carregados aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação -->
+<div id="modal-confirmacao" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Confirmar Ação</h3>
+            <p id="modal-mensagem" class="text-gray-600 mb-6"></p>
+            <div class="flex space-x-3">
+                <button onclick="fecharModalConfirmacao()" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors">
+                    Cancelar
+                </button>
+                <button id="btn-confirmar" class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Sucesso -->
+<div id="modal-sucesso" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6">
+        <div class="flex items-center mb-4">
+            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                <i class="fas fa-check text-green-600"></i>
+            </div>
+        </div>
+        <div class="text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Sucesso!</h3>
+            <p id="sucesso-mensagem" class="text-gray-600 mb-6"></p>
+            <button onclick="fecharModalSucesso()" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let usuarios = [];
+let acaoPendente = null;
+
+// Carregar dados ao inicializar
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔧 Carregando página de gerenciamento de usuários...');
+    carregarEstatisticas();
+    carregarUsuarios();
+});
+
+// Carregar estatísticas
+async function carregarEstatisticas() {
+    try {
+        const response = await fetch('/api/usuarios/estatisticas');
+        const data = await response.json();
+        
+        if (data.error) {
+            console.error('❌ Erro ao carregar estatísticas:', data.error);
+            return;
+        }
+        
+        document.getElementById('total-usuarios').textContent = data.total_usuarios;
+        document.getElementById('total-admins').textContent = data.total_admins;
+        document.getElementById('usuarios-hoje').textContent = data.usuarios_hoje;
+        document.getElementById('usuarios-semana').textContent = data.usuarios_semana;
+        
+        console.log('✅ Estatísticas carregadas:', data);
+    } catch (error) {
+        console.error('❌ Erro ao carregar estatísticas:', error);
+    }
+}
+
+// Carregar lista de usuários
+async function carregarUsuarios() {
+    try {
+        const response = await fetch('/api/usuarios');
+        const data = await response.json();
+        
+        if (data.error) {
+            console.error('❌ Erro ao carregar usuários:', data.error);
+            return;
+        }
+        
+        usuarios = data.usuarios;
+        exibirUsuarios(usuarios);
+        console.log('✅ Usuários carregados:', usuarios.length);
+    } catch (error) {
+        console.error('❌ Erro ao carregar usuários:', error);
+    }
+}
+
+// Exibir usuários na tabela
+function exibirUsuarios(usuarios) {
+    const tbody = document.getElementById('usuarios-tabela');
+    tbody.innerHTML = '';
+    
+    usuarios.forEach(usuario => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10">
+                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center">
+                            <span class="text-white font-bold">${usuario.nome.charAt(0).toUpperCase()}</span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <div class="text-sm font-medium text-gray-900">${usuario.nome}</div>
+                    </div>
+                </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${usuario.email}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatarData(usuario.data_criacao)}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${usuario.admin ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'}">
+                    ${usuario.admin ? 'Administrador' : 'Usuário'}
+                </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                    <button onclick="toggleAdmin('${usuario.id}', ${usuario.admin})" 
+                            class="text-blue-600 hover:text-blue-900 ${usuario.admin ? 'text-purple-600 hover:text-purple-900' : ''}">
+                        <i class="fas ${usuario.admin ? 'fa-user-minus' : 'fa-user-plus'}"></i>
+                    </button>
+                    <button onclick="deletarUsuario('${usuario.id}', '${usuario.nome}')" 
+                            class="text-red-600 hover:text-red-900">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Alternar status de admin
+function toggleAdmin(userId, isAdmin) {
+    const acao = isAdmin ? 'remover' : 'conceder';
+    const mensagem = isAdmin ? 
+        'Tem certeza que deseja remover os privilégios de administrador deste usuário?' :
+        'Tem certeza que deseja conceder privilégios de administrador para este usuário?';
+    
+    mostrarModalConfirmacao(mensagem, () => {
+        executarToggleAdmin(userId);
+    });
+}
+
+// Executar toggle admin
+async function executarToggleAdmin(userId) {
+    try {
+        const response = await fetch(`/api/usuarios/${userId}/admin`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarModalSucesso(data.message);
+            carregarUsuarios();
+            carregarEstatisticas();
+        } else {
+            console.error('❌ Erro ao alterar status:', data.error);
+            alert('Erro: ' + data.error);
+        }
+    } catch (error) {
+        console.error('❌ Erro ao alterar status:', error);
+        alert('Erro ao alterar status do usuário');
+    }
+}
+
+// Deletar usuário
+function deletarUsuario(userId, nome) {
+    const mensagem = `Tem certeza que deseja deletar o usuário "${nome}"? Esta ação não pode ser desfeita.`;
+    
+    mostrarModalConfirmacao(mensagem, () => {
+        executarDeletarUsuario(userId);
+    });
+}
+
+// Executar deletar usuário
+async function executarDeletarUsuario(userId) {
+    try {
+        const response = await fetch(`/api/usuarios/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarModalSucesso(data.message);
+            carregarUsuarios();
+            carregarEstatisticas();
+        } else {
+            console.error('❌ Erro ao deletar usuário:', data.error);
+            alert('Erro: ' + data.error);
+        }
+    } catch (error) {
+        console.error('❌ Erro ao deletar usuário:', error);
+        alert('Erro ao deletar usuário');
+    }
+}
+
+// Exportar usuários
+async function exportarUsuarios() {
+    try {
+        const response = await fetch('/api/usuarios/exportar');
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarModalSucesso(`Backup criado com sucesso! Arquivo: ${data.arquivo}`);
+        } else {
+            console.error('❌ Erro ao exportar:', data.error);
+            alert('Erro: ' + data.error);
+        }
+    } catch (error) {
+        console.error('❌ Erro ao exportar:', error);
+        alert('Erro ao exportar usuários');
+    }
+}
+
+// Atualizar dados
+function atualizarDados() {
+    carregarEstatisticas();
+    carregarUsuarios();
+}
+
+// Mostrar modal de confirmação
+function mostrarModalConfirmacao(mensagem, callback) {
+    document.getElementById('modal-mensagem').textContent = mensagem;
+    document.getElementById('modal-confirmacao').classList.remove('hidden');
+    
+    acaoPendente = callback;
+}
+
+// Fechar modal de confirmação
+function fecharModalConfirmacao() {
+    document.getElementById('modal-confirmacao').classList.add('hidden');
+    acaoPendente = null;
+}
+
+// Mostrar modal de sucesso
+function mostrarModalSucesso(mensagem) {
+    document.getElementById('sucesso-mensagem').textContent = mensagem;
+    document.getElementById('modal-sucesso').classList.remove('hidden');
+}
+
+// Fechar modal de sucesso
+function fecharModalSucesso() {
+    document.getElementById('modal-sucesso').classList.add('hidden');
+}
+
+// Confirmar ação
+document.getElementById('btn-confirmar').addEventListener('click', function() {
+    if (acaoPendente) {
+        acaoPendente();
+        fecharModalConfirmacao();
+    }
+});
+
+// Fechar modais clicando fora
+document.getElementById('modal-confirmacao').addEventListener('click', function(e) {
+    if (e.target === this) {
+        fecharModalConfirmacao();
+    }
+});
+
+document.getElementById('modal-sucesso').addEventListener('click', function(e) {
+    if (e.target === this) {
+        fecharModalSucesso();
+    }
+});
+
+// Formatar data
+function formatarData(dataString) {
+    const data = new Date(dataString);
+    return data.toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+</script>
+{% endblock %}

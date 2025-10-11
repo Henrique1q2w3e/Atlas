@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Meus Pedidos</h1>
+            <p class="text-gray-600 mt-2">Acompanhe todos os seus pedidos e histórico de compras</p>
+        </div>
+
+        {% if pedidos %}
+            <!-- Lista de Pedidos -->
+            <div class="space-y-6">
+                {% for pedido in pedidos %}
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Pedido #{{ pedido.id }}</h3>
+                                <p class="text-sm text-gray-600">{{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-semibold text-gray-900">R$ {{ "%.2f"|format(pedido.total) }}</p>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    {% if pedido.status == 'entregue' %}bg-green-100 text-green-800
+                                    {% elif pedido.status == 'em_transito' %}bg-blue-100 text-blue-800
+                                    {% elif pedido.status == 'processando' %}bg-yellow-100 text-yellow-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ pedido.status|title }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 py-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Endereço de Entrega</h4>
+                                <p class="text-sm text-gray-600">{{ pedido.endereco }}</p>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-2">Método de Pagamento</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Estado Vazio -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-12 text-center">
+                    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-shopping-bag text-gray-400 text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Nenhum pedido encontrado</h3>
+                    <p class="text-gray-600 mb-6">Você ainda não realizou nenhum pedido. Que tal começar a comprar?</p>
+                    <a href="/produtos" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-medium rounded-md hover:from-yellow-600 hover:to-yellow-700 transition duration-200">
+                        <i class="fas fa-store mr-2"></i>
+                        Começar a Comprar
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Informações Adicionais -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Suporte -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-headset text-blue-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Precisa de Ajuda?</h3>
+                <p class="text-gray-600 mb-4">Nossa equipe está pronta para ajudar com qualquer dúvida sobre seus pedidos.</p>
+                <a href="/contato" class="text-blue-600 hover:text-blue-700 font-medium">Entrar em Contato</a>
+            </div>
+
+            <!-- Rastreamento -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-truck text-green-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Rastreamento</h3>
+                <p class="text-gray-600 mb-4">Acompanhe seus pedidos em tempo real e receba notificações de atualização.</p>
+                <span class="text-green-600 font-medium">Em Breve</span>
+            </div>
+
+            <!-- Devoluções -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-undo text-purple-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Devoluções</h3>
+                <p class="text-gray-600 mb-4">Política de devolução flexível para sua total satisfação.</p>
+                <span class="text-purple-600 font-medium">Em Breve</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

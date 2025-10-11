@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Atlas Suplementos{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Tailwind CSS - Versão otimizada para produção -->
+    <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product-cards.css') }}">
+    {% block extra_css %}{% endblock %}
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'atlas-gold': '#D4AF37',
+                        'atlas-dark': '#1a1a1a'
+                    }
+                }
+            },
+            // Otimizações para produção
+            corePlugins: {
+                preflight: true,
+            },
+            // Purge CSS para remover classes não utilizadas
+            content: [
+                './templates/**/*.html',
+                './static/js/**/*.js'
+            ]
+        }
+    </script>
+</head>
+<body class="font-poppins">
+    <!-- Menu Melhorado -->
+    <nav class="text-white shadow-xl fixed w-full top-0 z-50" style="background-color: rgb(25, 32, 47);">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors">
+                        Atlas
+                    </a>
+                </div>
+
+                <!-- Menu Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-white hover:text-yellow-400 transition-colors font-medium">Home</a>
+                    <a href="/produtos" class="text-white hover:text-yellow-400 transition-colors font-medium">Produtos</a>
+                    <a href="/outlet" class="text-white hover:text-yellow-400 transition-colors font-medium">Outlet</a>
+                    <a href="/contato" class="text-white hover:text-yellow-400 transition-colors font-medium">Contato</a>
+                </div>
+
+                <!-- Ações -->
+                <div class="flex items-center space-x-4">
+                    <!-- Carrinho -->
+                    <button onclick="abrirCarrinho()" class="relative p-2 text-white hover:text-yellow-400 transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                    </button>
+
+                    <!-- Usuário -->
+                    <div class="relative">
+                        <button id="user-menu-btn" class="p-2 text-white hover:text-yellow-400 transition-colors">
+                            <i class="fas fa-user text-xl"></i>
+                        </button>
+                        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-200">
+                            <div id="user-menu-content">
+                                <a href="/login" class="block px-4 py-3 text-sm text-gray-800 hover:bg-gray-100 font-medium">Login</a>
+                                <a href="/registro" class="block px-4 py-3 text-sm text-gray-800 hover:bg-gray-100 font-medium">Registrar</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botão Mobile -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 text-white hover:text-yellow-400 transition-colors">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile com Cor Personalizada -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-yellow-400" style="background-color: rgb(25, 32, 47);">
+            <div class="px-4 py-6 space-y-3">
+                <!-- Links principais -->
+                <a href="/" class="block px-4 py-4 text-white hover:text-yellow-400 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">🏠 Home</a>
+                <a href="/produtos" class="block px-4 py-4 text-white hover:text-yellow-400 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">📦 Produtos</a>
+                <a href="/outlet" class="block px-4 py-4 text-white hover:text-yellow-400 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">🔥 Outlet</a>
+                <a href="/contato" class="block px-4 py-4 text-white hover:text-yellow-400 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">📞 Contato</a>
+                
+                <!-- Separador -->
+                <div class="border-t border-yellow-400 my-6"></div>
+                
+                <!-- Links de usuário -->
+                <a href="/login" class="block px-4 py-4 text-yellow-400 hover:text-yellow-300 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">👤 Login</a>
+                <a href="/registro" class="block px-4 py-4 text-yellow-400 hover:text-yellow-300 hover:bg-gray-800 rounded-lg transition-all font-bold text-lg">📝 Registrar</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-atlas-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-atlas-gold mb-4">Atlas Suplementos</h3>
+                    <p class="text-gray-300 mb-4">
+                        Suplementos de qualidade para impulsionar seus resultados e transformar seus objetivos em realidade.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-gray-300 hover:text-atlas-gold transition-colors">Home</a></li>
+                        <li><a href="/produtos" class="text-gray-300 hover:text-atlas-gold transition-colors">Produtos</a></li>
+                        <li><a href="/contato" class="text-gray-300 hover:text-atlas-gold transition-colors">Contato</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contato</h4>
+                    <p class="text-gray-300">Email: contato@atlas.com</p>
+                    <p class="text-gray-300">Telefone: (11) 99999-9999</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2024 Atlas Suplementos. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal do Carrinho -->
+    <div id="modal-carrinho" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Header do Modal -->
+                <div class="bg-gradient-to-r from-atlas-gold to-yellow-600 text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            Seu Carrinho
+                        </h2>
+                        <button onclick="fecharModalCarrinho()" class="text-white hover:text-gray-200 text-2xl">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="p-6 overflow-y-auto max-h-[60vh]">
+                    <div id="carrinho-itens">
+                        <!-- Itens do carrinho serão inseridos aqui -->
+                    </div>
+                    
+                    <!-- Carrinho vazio -->
+                    <div id="carrinho-vazio" class="text-center py-12 hidden">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">Seu carrinho está vazio</h3>
+                        <p class="text-gray-500 mb-6">Adicione alguns produtos para começar suas compras!</p>
+                        <button onclick="fecharModalCarrinho()" class="bg-atlas-gold text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Continuar Comprando
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer do Modal -->
+                <div id="carrinho-footer" class="border-t bg-gray-50 p-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-lg font-semibold text-gray-700">Total:</span>
+                        <span id="carrinho-total" class="text-2xl font-bold text-atlas-gold">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button onclick="fecharModalCarrinho()" class="flex-1 bg-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-400 transition-colors font-semibold">
+                            Continuar Comprando
+                        </button>
+                        <button onclick="finalizarCompra()" class="flex-1 bg-atlas-gold text-white py-3 px-4 rounded-lg hover:bg-yellow-600 transition-colors font-semibold">
+                            <i class="fas fa-credit-card mr-2"></i>
+                            Finalizar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+    
+    <script>
+    // Menu Melhorado
+    document.addEventListener('DOMContentLoaded', function() {
+        // Menu Mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Fechar menu mobile ao clicar em um link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+        
+        // Menu do Usuário
+        const userMenuBtn = document.getElementById('user-menu-btn');
+        const userMenu = document.getElementById('user-menu');
+        
+        if (userMenuBtn && userMenu) {
+            userMenuBtn.addEventListener('click', function() {
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // Fechar menu ao clicar fora
+            document.addEventListener('click', function(e) {
+                if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+            });
+        }
+        
+        // Fechar menu mobile ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (mobileMenuBtn && mobileMenu && 
+                !mobileMenuBtn.contains(e.target) && 
+                !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+        
+        // Verificar status do usuário
+        verificarLogin();
+    });
+    
+    // Verificar login
+    async function verificarLogin() {
+        try {
+            const response = await fetch('/api/verificar-login');
+            const data = await response.json();
+            
+            const userMenuContent = document.getElementById('user-menu-content');
+            
+            if (data.logado) {
+                userMenuContent.innerHTML = `
+                    <a href="/perfil" class="block px-4 py-3 text-sm text-gray-800 hover:bg-gray-100 font-medium">Perfil</a>
+                    <a href="/pedidos" class="block px-4 py-3 text-sm text-gray-800 hover:bg-gray-100 font-medium">Pedidos</a>
+                    <a href="#" onclick="logout()" class="block px-4 py-3 text-sm text-red-600 hover:bg-red-50 font-medium">Sair</a>
+                `;
+            }
+        } catch (error) {
+            console.error('Erro ao verificar login:', error);
+        }
+    }
+    
+    // Função de logout
+    async function logout() {
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (response.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Erro no logout:', error);
+        }
+    }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

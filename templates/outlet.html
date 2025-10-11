@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlet Atlas - Roupas Premium</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'atlas-gold': '#D4AF37',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .atlas-hero {
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 50%, #000000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .atlas-section {
+            background: linear-gradient(135deg, #000000 0%, #1F1F1F 50%, #DC2626 100%);
+            position: relative;
+        }
+        
+        .atlas-card {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(220, 38, 38, 0.1) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .atlas-button {
+            background: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
+            color: #000;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .atlas-button:hover {
+            background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #FFD700 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .atlas-text {
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .atlas-badge {
+            background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+            color: #D4AF37;
+            border: 2px solid #D4AF37;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Animação de flutuação para as imagens */
+        .floating-image {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .floating-image:nth-child(even) {
+            animation-delay: -1.5s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Efeito hover adicional */
+        .floating-image:hover {
+            animation-play-state: paused;
+            transform: translateY(-15px) scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        /* Efeitos para a seção CTA */
+        .cta-glow {
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.5);
+        }
+        
+        .cta-glow:hover {
+            box-shadow: 0 0 50px rgba(255, 193, 7, 0.8);
+        }
+        
+        .gradient-text-animated {
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B, #4ECDC4, #45B7D1);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .floating-particles {
+            animation: floatParticles 6s ease-in-out infinite;
+        }
+        
+        .floating-particles:nth-child(2) {
+            animation-delay: 2s;
+        }
+        
+        .floating-particles:nth-child(3) {
+            animation-delay: 4s;
+        }
+        
+        .floating-particles:nth-child(4) {
+            animation-delay: 1s;
+        }
+        
+        @keyframes floatParticles {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(10px) rotate(240deg);
+            }
+        }
+    </style>
+</head>
+<body class="atlas-section min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-black/50 backdrop-blur-md fixed w-full top-0 z-50 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-2xl font-bold gradient-text">ATLAS</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-white hover:text-[#D4AF37] transition-colors">Home</a>
+                    <a href="/produtos" class="text-white hover:text-[#D4AF37] transition-colors">Produtos</a>
+                    <a href="/outlet" class="text-[#D4AF37] font-semibold">Outlet</a>
+                    <a href="/contato" class="text-white hover:text-[#D4AF37] transition-colors">Contato</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Carrinho -->
+                    <button onclick="abrirCarrinho()" class="relative p-2 text-white hover:text-[#D4AF37] transition-colors">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="atlas-hero relative pt-20 pb-16 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="text-center">
+                <div class="inline-flex items-center atlas-badge px-6 py-3 rounded-full text-sm font-semibold mb-6 shadow-lg">
+                    <i class="fas fa-fire mr-2"></i>
+                    OUTLET ATLAS - OFERTAS LIMITADAS
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold text-white mb-6">
+                    Roupas <span class="gradient-text">Premium</span><br>
+                    com <span class="atlas-text">Desconto</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
+                    Peças exclusivas da Atlas com preços imperdíveis. 
+                    <span class="font-semibold atlas-text">Oferta por tempo limitado!</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <!-- Camiseta Golden -->
+            <div class="mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Product Image -->
+                    <div class="relative">
+                        <div class="relative atlas-card rounded-3xl overflow-hidden shadow-2xl floating-image">
+                            <img src="{{ url_for('static', filename='images/camiseta-golden.jpg') }}" alt="Camiseta Golden Era" class="w-full h-96 object-cover" onerror="this.src='/static/images/placeholder.png'">
+                            <div class="absolute top-4 left-4 atlas-badge px-4 py-2 rounded-full text-sm font-bold">
+                                -50% OFF
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="text-white">
+                        <h2 class="text-4xl font-bold mb-4">Camiseta Golden Era</h2>
+                        <div class="mb-6">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-4xl font-bold text-[#D4AF37]">R$ 129,90</span>
+                                <span class="text-2xl text-gray-400 line-through">R$ 119,90</span>
+                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-10% OFF</span>
+                            </div>
+                            <p class="text-gray-300 text-lg">Você economiza <span class="text-[#D4AF37] font-bold">R$ 10,00</span></p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Descrição do Produto</h3>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Design Clássico e Elegante</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>100% Algodão Premium</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Estampa de Alta Qualidade</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Conforto Garantido</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <a href="/produto/camiseta-golden" class="flex-1 atlas-button px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl text-center">
+                                <i class="fas fa-eye mr-2"></i>
+                                Ver Detalhes
+                            </a>
+                            <button onclick="adicionarAoCarrinho('camiseta-golden', 'único', 1)" class="flex-1 atlas-button px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="w-14 h-14 border border-[#D4AF37]/30 rounded-full flex items-center justify-center hover:border-[#D4AF37] hover:bg-[#D4AF37]/20 transition-all">
+                                <i class="fas fa-heart atlas-text"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Camiseta Juice -->
+            <div class="mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- Product Info -->
+                    <div class="text-white lg:order-1 order-2">
+                        <h2 class="text-4xl font-bold mb-4">Camiseta Juice of God</h2>
+                        <div class="mb-6">
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-4xl font-bold text-[#D4AF37]">R$ 129,90</span>
+                                <span class="text-2xl text-gray-400 line-through">R$ 139,90</span>
+                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-10% OFF</span>
+                            </div>
+                            <p class="text-gray-300 text-lg">Você economiza <span class="text-[#D4AF37] font-bold">R$ 10,00</span></p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold mb-4">Descrição do Produto</h3>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Design Poderoso e Impactante</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>100% Algodão Premium</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Estampa de Alta Qualidade</li>
+                                <li class="flex items-center"><i class="fas fa-check text-[#D4AF37] mr-3"></i>Conforto Garantido</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <a href="/produto/camiseta-juice" class="flex-1 atlas-button px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl text-center">
+                                <i class="fas fa-eye mr-2"></i>
+                                Ver Detalhes
+                            </a>
+                            <button onclick="adicionarAoCarrinho('camiseta-juice', 'único', 1)" class="flex-1 atlas-button px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 shadow-2xl">
+                                <i class="fas fa-shopping-cart mr-2"></i>
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="w-14 h-14 border border-[#D4AF37]/30 rounded-full flex items-center justify-center hover:border-[#D4AF37] hover:bg-[#D4AF37]/20 transition-all">
+                                <i class="fas fa-heart atlas-text"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="relative lg:order-2 order-1">
+                        <div class="relative atlas-card rounded-3xl overflow-hidden shadow-2xl floating-image">
+                            <img src="{{ url_for('static', filename='images/camiseta-juice.jpg') }}" alt="Camiseta Juice of God" class="w-full h-96 object-cover" onerror="this.src='/static/images/placeholder.png'">
+                            <div class="absolute top-4 left-4 atlas-badge px-4 py-2 rounded-full text-sm font-bold">
+                                -50% OFF
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="relative py-20 overflow-hidden">
+        <!-- Background com gradiente mais vibrante -->
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
+        
+        <!-- Efeitos de partículas animadas -->
+        <div class="absolute inset-0">
+            <div class="absolute top-10 left-10 w-20 h-20 bg-yellow-400/20 rounded-full floating-particles"></div>
+            <div class="absolute top-32 right-20 w-16 h-16 bg-orange-400/20 rounded-full floating-particles"></div>
+            <div class="absolute bottom-20 left-1/4 w-12 h-12 bg-pink-400/20 rounded-full floating-particles"></div>
+            <div class="absolute bottom-32 right-1/3 w-14 h-14 bg-cyan-400/20 rounded-full floating-particles"></div>
+        </div>
+        
+        <!-- Conteúdo principal -->
+        <div class="relative z-10 max-w-6xl mx-auto px-4 text-center">
+            <!-- Badge de destaque -->
+            <div class="inline-flex items-center bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-8 py-3 rounded-full text-sm font-bold mb-8 shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <i class="fas fa-star mr-2"></i>
+                OFERTA ESPECIAL - OUTLET ATLAS
+            </div>
+            
+            <!-- Título principal com efeito gradiente -->
+            <h2 class="text-5xl lg:text-7xl font-black mb-8 leading-tight">
+                <span class="gradient-text-animated">
+                    Pronto para transformar
+                </span>
+                <br>
+                <span class="text-white drop-shadow-2xl">
+                    seus resultados?
+                </span>
+            </h2>
+            
+            <!-- Subtítulo -->
+            <p class="text-xl lg:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed mb-12">
+                Descubra nossa linha completa de 
+                <span class="text-yellow-400 font-bold">roupas premium</span> 
+                com 
+                <span class="text-orange-400 font-bold">descontos imperdíveis</span> 
+                e comece sua jornada rumo aos seus objetivos.
+            </p>
+            
+            <!-- Botão principal com efeitos -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a href="/produtos" class="group relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                    <button class="relative bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-12 py-6 rounded-full font-bold text-xl shadow-2xl transform hover:scale-105 transition-all duration-300 hover:shadow-yellow-500/50 cta-glow">
+                        <i class="fas fa-shopping-cart mr-3"></i>
+                        Ver Produtos
+                    </button>
+                </a>
+                
+                <!-- Botão secundário -->
+                <a href="/outlet" class="group">
+                    <button class="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-fire mr-2"></i>
+                        Ver Outlet
+                    </button>
+                </a>
+            </div>
+            
+            <!-- Estatísticas ou benefícios -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percentage text-2xl text-black"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Até 70% OFF</h3>
+                    <p class="text-gray-300">Descontos imperdíveis</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shipping-fast text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Frete Grátis</h3>
+                    <p class="text-gray-300">Para todo o Brasil</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Qualidade Premium</h3>
+                    <p class="text-gray-300">Garantia de qualidade</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="atlas-section py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center">
+                <div class="text-3xl font-bold gradient-text mb-4">ATLAS</div>
+                <p class="text-gray-300 mb-6">Suplementos e Roupas Premium</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal do Carrinho -->
+    <div id="modal-carrinho" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Header do Modal -->
+                <div class="bg-gradient-to-r from-[#D4AF37] to-yellow-600 text-white p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold">
+                            <i class="fas fa-shopping-cart mr-3"></i>
+                            Seu Carrinho
+                        </h2>
+                        <button onclick="fecharModalCarrinho()" class="text-white hover:text-gray-200 text-2xl">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Conteúdo do Modal -->
+                <div class="p-6 overflow-y-auto max-h-[60vh]">
+                    <div id="carrinho-itens">
+                        <!-- Itens do carrinho serão inseridos aqui -->
+                    </div>
+                    
+                    <!-- Carrinho vazio -->
+                    <div id="carrinho-vazio" class="text-center py-12 hidden">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">Seu carrinho está vazio</h3>
+                        <p class="text-gray-500 mb-6">Adicione alguns produtos para começar suas compras!</p>
+                        <button onclick="fecharModalCarrinho()" class="bg-[#D4AF37] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Continuar Comprando
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer do Modal -->
+                <div id="carrinho-footer" class="border-t bg-gray-50 p-6 hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-lg font-semibold text-gray-700">Total:</span>
+                        <span id="carrinho-total" class="text-2xl font-bold text-[#D4AF37]">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button onclick="fecharModalCarrinho()" class="flex-1 bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                            Continuar Comprando
+                        </button>
+                        <button onclick="irParaCheckout()" class="flex-1 bg-[#D4AF37] text-white px-6 py-3 rounded-lg hover:bg-yellow-600 transition-colors">
+                            Finalizar Compra
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/carrinho.js') }}"></script>
+    
+    <script>
+        // Página outlet com carrinho
+        console.log('✅ Página outlet carregada com carrinho');
+        
+        // Funções do carrinho
+        function abrirCarrinho() {
+            document.getElementById('modal-carrinho').classList.remove('hidden');
+            carregarCarrinho();
+        }
+        
+        function fecharModalCarrinho() {
+            document.getElementById('modal-carrinho').classList.add('hidden');
+        }
+        
+        function irParaCheckout() {
+            window.location.href = '/checkout';
+        }
+        
+        // Função para adicionar ao carrinho (compatível com produtos do outlet)
+        function adicionarAoCarrinho(produtoId, sabor, quantidade = 1) {
+            console.log('🛒 Adicionando ao carrinho:', produtoId, sabor, quantidade);
+            
+            // Dados dos produtos do outlet
+            const produtosOutlet = {
+                'camiseta-golden': {
+                    nome: 'Camiseta Golden Era',
+                    preco: 129.90,
+                    imagem: '/static/images/camiseta-golden.jpg'
+                },
+                'camiseta-juice': {
+                    nome: 'Camiseta Juice of God',
+                    preco: 129.90,
+                    imagem: '/static/images/camiseta-juice.jpg'
+                }
+            };
+            
+            const produto = produtosOutlet[produtoId];
+            if (!produto) {
+                alert('Produto não encontrado!');
+                return;
+            }
+            
+            const itemCarrinho = {
+                produto_id: produtoId,
+                nome: produto.nome,
+                marca: 'Atlas',
+                preco: produto.preco,
+                sabor: sabor,
+                quantidade: quantidade,
+                imagem: produto.imagem
+            };
+            
+            // Adicionar ao carrinho via API
+            fetch('/api/carrinho/adicionar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(itemCarrinho)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('✅ Produto adicionado com sucesso!');
+                    atualizarContadorCarrinho();
+                } else {
+                    console.error('❌ Erro ao adicionar produto:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Erro ao adicionar produto:', error);
+            });
+        }
+        
+        // Função para carregar carrinho
+        function carregarCarrinho() {
+            fetch('/api/carrinho')
+                .then(response => response.json())
+                .then(carrinho => {
+                    console.log('🛒 Carrinho carregado:', carrinho);
+                    exibirCarrinho(carrinho);
+                })
+                .catch(error => {
+                    console.error('❌ Erro ao carregar carrinho:', error);
+                });
+        }
+        
+        // Função para exibir carrinho
+        function exibirCarrinho(carrinho) {
+            const container = document.getElementById('carrinho-itens');
+            const vazio = document.getElementById('carrinho-vazio');
+            const footer = document.getElementById('carrinho-footer');
+            
+            if (carrinho.length === 0) {
+                container.innerHTML = '';
+                vazio.classList.remove('hidden');
+                footer.classList.add('hidden');
+                return;
+            }
+            
+            vazio.classList.add('hidden');
+            footer.classList.remove('hidden');
+            
+            let html = '';
+            let total = 0;
+            
+            carrinho.forEach(item => {
+                const subtotal = item.preco * item.quantidade;
+                total += subtotal;
+                
+                html += `
+                    <div class="flex items-center space-x-4 p-4 border-b border-gray-200">
+                        <img src="${item.imagem}" alt="${item.nome}" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800">${item.nome}</h3>
+                            <p class="text-sm text-gray-600">${item.marca} - ${item.sabor}</p>
+                            <p class="text-sm text-gray-500">Qtd: ${item.quantidade}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-[#D4AF37]">R$ ${subtotal.toFixed(2)}</p>
+                            <button onclick="removerDoCarrinho('${item.produto_id}', '${item.sabor}')" class="text-red-500 hover:text-red-700 text-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('carrinho-total').textContent = `R$ ${total.toFixed(2)}`;
+        }
+        
+        // Função para remover do carrinho
+        function removerDoCarrinho(produtoId, sabor) {
+            fetch('/api/carrinho/remover', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    produto_id: produtoId,
+                    sabor: sabor
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    carregarCarrinho();
+                    atualizarContadorCarrinho();
+                }
+            });
+        }
+        
+        // Função para atualizar contador do carrinho
+        function atualizarContadorCarrinho() {
+            fetch('/api/carrinho')
+                .then(response => response.json())
+                .then(carrinho => {
+                    const total = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
+                    document.getElementById('cart-count').textContent = total;
+                });
+        }
+        
+        // Carregar contador inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            atualizarContadorCarrinho();
+        });
+    </script>
+</body>
+</html>

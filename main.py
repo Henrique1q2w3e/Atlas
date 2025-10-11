@@ -273,6 +273,8 @@ def outlet():
 
 @app.route('/checkout')
 def checkout():
+    if not usuario_logado():
+        return redirect(url_for('login'))
     return render_template('checkout.html')
 
 @app.route('/login')

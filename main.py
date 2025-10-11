@@ -38,7 +38,34 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
+    # Criar diretório instance se não existir
+    os.makedirs('instance', exist_ok=True)
     return sqlite3.connect('instance/atlas.db')
+
+def criar_tabelas():
+    """Criar tabelas do banco de dados se não existirem"""
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Criar tabela de usuários
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuario (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                senha_hash TEXT NOT NULL,
+                data_criacao TEXT NOT NULL,
+                admin INTEGER DEFAULT 0
+            )
+        ''')
+        
+        conn.commit()
+        conn.close()
+        print("✅ Tabelas do banco de dados criadas/verificadas")
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar tabelas: {e}")
 
 def usuario_logado():
     """Verificar se usuário está logado"""
@@ -288,6 +315,18 @@ def registro():
 @app.route('/contato')
 def contato():
     return render_template('contato.html')
+
+@app.route('/recuperar-senha')
+def recuperar_senha():
+    return render_template('recuperar_senha.html')
+
+@app.route('/nova-senha')
+def nova_senha():
+    return render_template('nova_senha.html')
+
+@app.route('/produto/<produto_id>')
+def produto_individual(produto_id):
+    return render_template('produto_individual.html', produto_id=produto_id)
 
 @app.route('/perfil')
 def perfil():
@@ -578,12 +617,131 @@ def verificar_login():
         "usuario_email": None
     })
 
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        senha = data.get('senha')
+        
+        if not email or not senha:
+            return jsonify({"success": False, "error": "Email e senha são obrigatórios"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, nome, email, senha_hash FROM usuario WHERE email = ?', (email,))
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        if usuario and verificar_senha(senha, usuario[3]):
+            session['user_id'] = usuario[0]
+            return jsonify({
+                "success": True,
+                "message": "Login realizado com sucesso",
+                "usuario": {
+                    "id": usuario[0],
+                    "nome": usuario[1],
+                    "email": usuario[2]
+                }
+            })
+        else:
+            return jsonify({"success": False, "error": "Email ou senha incorretos"}), 401
+            
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/registro', methods=['POST'])
+def api_registro():
+    try:
+        data = request.get_json()
+        nome = data.get('nome')
+        email = data.get('email')
+        senha = data.get('senha')
+        
+        if not nome or not email or not senha:
+            return jsonify({"success": False, "error": "Todos os campos são obrigatórios"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Verificar se email já existe
+        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        if cursor.fetchone():
+            conn.close()
+            return jsonify({"success": False, "error": "Email já cadastrado"}), 400
+        
+        # Criar usuário
+        senha_hash = hash_senha(senha)
+        cursor.execute('''
+            INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (nome, email, senha_hash, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 0))
+        
+        conn.commit()
+        user_id = cursor.lastrowid
+        conn.close()
+        
+        # Fazer login automático
+        session['user_id'] = user_id
+        
+        return jsonify({
+            "success": True,
+            "message": "Usuário criado com sucesso",
+            "usuario": {
+                "id": user_id,
+                "nome": nome,
+                "email": email
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/logout', methods=['POST'])
+def api_logout():
+    session.clear()
+    return jsonify({"success": True, "message": "Logout realizado com sucesso"})
+
+@app.route('/api/recuperar-senha', methods=['POST'])
+def api_recuperar_senha():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        
+        if not email:
+            return jsonify({"success": False, "error": "Email é obrigatório"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        if usuario:
+            # Em produção, você enviaria um email aqui
+            return jsonify({
+                "success": True,
+                "message": "Se o email existir, você receberá instruções para redefinir sua senha"
+            })
+        else:
+            # Por segurança, não revelamos se o email existe
+            return jsonify({
+                "success": True,
+                "message": "Se o email existir, você receberá instruções para redefinir sua senha"
+            })
+            
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
 if __name__ == '__main__':
     print("✅ Sistema Atlas Suplementos iniciado!")
     print(f"📁 Diretório atual: {os.getcwd()}")
     print(f"📁 Templates: {os.path.exists('templates')}")
     print(f"📁 Static: {os.path.exists('static')}")
     print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+    
+    # Criar tabelas do banco de dados
+    criar_tabelas()
     
     # Configuração para produção
     port = int(os.environ.get('PORT', 5000))

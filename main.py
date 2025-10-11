@@ -38,34 +38,65 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Criar diretório instance se não existir
-    os.makedirs('instance', exist_ok=True)
-    return sqlite3.connect('instance/atlas.db')
+    # Verificar se tem DATABASE_URL (PostgreSQL no Render)
+    database_url = os.environ.get('DATABASE_URL')
+    
+    if database_url:
+        # PostgreSQL no Render
+        import psycopg2
+        print("🐘 Conectando ao PostgreSQL...")
+        return psycopg2.connect(database_url)
+    else:
+        # SQLite local para desenvolvimento
+        print("💾 Conectando ao SQLite local...")
+        db_path = os.path.join(os.getcwd(), 'atlas.db')
+        return sqlite3.connect(db_path)
 
 def criar_tabelas():
     """Criar tabelas do banco de dados se não existirem"""
     try:
+        print("🔧 Criando/conectando ao banco de dados...")
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Criar tabela de usuários
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS usuario (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL,
-                senha_hash TEXT NOT NULL,
-                data_criacao TEXT NOT NULL,
-                admin INTEGER DEFAULT 0
-            )
-        ''')
+        # Verificar se é PostgreSQL ou SQLite
+        database_url = os.environ.get('DATABASE_URL')
+        
+        if database_url:
+            # PostgreSQL
+            print("🐘 Criando tabelas no PostgreSQL...")
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS usuario (
+                    id SERIAL PRIMARY KEY,
+                    nome VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) UNIQUE NOT NULL,
+                    senha_hash TEXT NOT NULL,
+                    data_criacao TIMESTAMP NOT NULL,
+                    admin INTEGER DEFAULT 0
+                )
+            ''')
+        else:
+            # SQLite
+            print("💾 Criando tabelas no SQLite...")
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS usuario (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    senha_hash TEXT NOT NULL,
+                    data_criacao TEXT NOT NULL,
+                    admin INTEGER DEFAULT 0
+                )
+            ''')
         
         conn.commit()
         conn.close()
-        print("✅ Tabelas do banco de dados criadas/verificadas")
+        print("✅ Tabelas do banco de dados criadas/verificadas com sucesso!")
         
     except Exception as e:
         print(f"❌ Erro ao criar tabelas: {e}")
+        import traceback
+        traceback.print_exc()
 
 def usuario_logado():
     """Verificar se usuário está logado"""
@@ -620,35 +651,51 @@ def verificar_login():
 @app.route('/api/login', methods=['POST'])
 def api_login():
     try:
+        print("🔐 Tentativa de login...")
         data = request.get_json()
         email = data.get('email')
         senha = data.get('senha')
         
+        print(f"📧 Email: {email}")
+        
         if not email or not senha:
             return jsonify({"success": False, "error": "Email e senha são obrigatórios"}), 400
         
+        print("🔧 Conectando ao banco...")
         conn = conectar_db()
         cursor = conn.cursor()
+        
+        print("🔍 Buscando usuário...")
         cursor.execute('SELECT id, nome, email, senha_hash FROM usuario WHERE email = ?', (email,))
         usuario = cursor.fetchone()
         conn.close()
         
-        if usuario and verificar_senha(senha, usuario[3]):
-            session['user_id'] = usuario[0]
-            return jsonify({
-                "success": True,
-                "message": "Login realizado com sucesso",
-                "usuario": {
-                    "id": usuario[0],
-                    "nome": usuario[1],
-                    "email": usuario[2]
-                }
-            })
+        if usuario:
+            print(f"✅ Usuário encontrado: {usuario[1]}")
+            if verificar_senha(senha, usuario[3]):
+                session['user_id'] = usuario[0]
+                print("🎉 Login realizado com sucesso!")
+                return jsonify({
+                    "success": True,
+                    "message": "Login realizado com sucesso",
+                    "usuario": {
+                        "id": usuario[0],
+                        "nome": usuario[1],
+                        "email": usuario[2]
+                    }
+                })
+            else:
+                print("❌ Senha incorreta")
+                return jsonify({"success": False, "error": "Email ou senha incorretos"}), 401
         else:
+            print("❌ Usuário não encontrado")
             return jsonify({"success": False, "error": "Email ou senha incorretos"}), 401
             
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        print(f"💥 Erro no login: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": f"Erro interno: {str(e)}"}), 500
 
 @app.route('/api/registro', methods=['POST'])
 def api_registro():

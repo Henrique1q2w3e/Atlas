@@ -12,7 +12,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import mercadopago
 from datetime import datetime
 import uuid
-import pandas as pd
+# import pandas as pd  # Removido para compatibilidade com Render
 import json
 import sqlite3
 import hashlib
@@ -202,23 +202,25 @@ def obter_imagem_produto(marca, categoria):
     return '/static/images/produto-placeholder.svg'
 
 def carregar_produtos():
-    """Carrega produtos da planilha Excel"""
+    """Carrega produtos da planilha Excel usando openpyxl"""
     try:
-        df = pd.read_excel('atlas.xlsx')
-        df.columns = df.columns.str.strip()
+        from openpyxl import load_workbook
+        
+        wb = load_workbook('atlas.xlsx')
+        ws = wb.active
         
         produtos = []
-        for index, row in df.iterrows():
-            if pd.isna(row['MARCA']) or pd.isna(row['CATEGORIA']):
+        for index, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=1):
+            if not row[0] or not row[1]:  # MARCA e CATEGORIA
                 continue
                 
-            sabores_texto = str(row['SABORES']).strip() if not pd.isna(row['SABORES']) else 'N/A'
+            marca = str(row[0]).strip()
+            categoria = str(row[1]).strip()
+            sabores_texto = str(row[2]).strip() if row[2] else 'N/A'
+            
             sabores_lista = []
             if sabores_texto != 'N/A' and sabores_texto != 'NÃO TEM SABORES':
                 sabores_lista = [s.strip() for s in sabores_texto.split(',') if s.strip()]
-            
-            marca = str(row['MARCA']).strip()
-            categoria = str(row['CATEGORIA']).strip()
             
             # Determinar categoria para filtros
             categoria_filtro = 'whey'  # Padrão
@@ -580,4 +582,9 @@ if __name__ == '__main__':
     print(f"📁 Templates: {os.path.exists('templates')}")
     print(f"📁 Static: {os.path.exists('static')}")
     print(f"📁 index.html: {os.path.exists('templates/index.html')}")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    # Configuração para produção
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    
+    app.run(debug=debug, host='0.0.0.0', port=port)

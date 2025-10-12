@@ -963,6 +963,13 @@ def debug_pedidos():
         executar_query(cursor, 'SELECT DISTINCT email FROM pedidos')
         emails_unicos = cursor.fetchall()
         
+        # Buscar email do usuário logado
+        usuario_logado_email = "N/A"
+        if usuario_logado():
+            usuario = obter_usuario_logado()
+            if usuario:
+                usuario_logado_email = usuario['email']
+        
         conn.close()
         
         pedidos_formatados = []
@@ -981,7 +988,35 @@ def debug_pedidos():
             "success": True,
             "total_pedidos": len(pedidos_formatados),
             "emails_unicos": [email[0] for email in emails_unicos],
+            "usuario_logado_email": usuario_logado_email,
             "pedidos": pedidos_formatados
+        })
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/corrigir-email-pedidos', methods=['POST'])
+def corrigir_email_pedidos():
+    """Endpoint para corrigir o email dos pedidos"""
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Atualizar todos os pedidos com email antigo para o email correto
+        email_antigo = "henriqueangelogy@gmail.com"
+        email_novo = "henriqueangegelo@gmail.com"
+        
+        executar_query(cursor, '''
+            UPDATE pedidos SET email = ? WHERE email = ?
+        ''', (email_novo, email_antigo))
+        
+        pedidos_atualizados = cursor.rowcount
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Atualizados {pedidos_atualizados} pedidos de {email_antigo} para {email_novo}"
         })
         
     except Exception as e:

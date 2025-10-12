@@ -5,8 +5,15 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Meus Pedidos</h1>
-            <p class="text-gray-600 mt-2">Acompanhe todos os seus pedidos e histórico de compras</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Meus Pedidos</h1>
+                    <p class="text-gray-600 mt-2">Acompanhe todos os seus pedidos e histórico de compras</p>
+                </div>
+                <button onclick="debugPedidos()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                    🔍 Debug Pedidos
+                </button>
+            </div>
         </div>
 
         {% if pedidos %}
@@ -143,4 +150,23 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function debugPedidos() {
+    fetch('/api/debug-pedidos')
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Total de pedidos no banco: ${data.total_pedidos}\n\nPedidos:\n${JSON.stringify(data.pedidos, null, 2)}`);
+        } else {
+            alert('Erro ao buscar pedidos: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('Erro: ' + error);
+    });
+}
+</script>
 {% endblock %}

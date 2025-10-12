@@ -610,7 +610,10 @@ def pedidos():
         # Buscar pedidos do usuário logado
         usuario = obter_usuario_logado()
         if not usuario:
+            print("❌ Usuário não logado, redirecionando para login")
             return redirect(url_for('login'))
+        
+        print(f"👤 Usuário logado: {usuario['email']}")
         
         conn = conectar_db()
         cursor = conn.cursor()
@@ -622,6 +625,8 @@ def pedidos():
         
         pedidos = cursor.fetchall()
         conn.close()
+        
+        print(f"📊 Encontrados {len(pedidos)} pedidos para {usuario['email']}")
         
         # Converter para formato mais legível
         pedidos_formatados = []
@@ -898,6 +903,39 @@ def atualizar_status_pedido():
             
     except Exception as e:
         print(f"❌ Erro ao atualizar status: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/debug-pedidos', methods=['GET'])
+def debug_pedidos():
+    """Endpoint para debug - ver todos os pedidos no banco"""
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar todos os pedidos
+        executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
+        pedidos = cursor.fetchall()
+        conn.close()
+        
+        pedidos_formatados = []
+        for pedido in pedidos:
+            pedidos_formatados.append({
+                'id': pedido[0],
+                'order_id': pedido[1],
+                'nome': pedido[2],
+                'email': pedido[3],
+                'status': pedido[13],
+                'total': float(pedido[14]),
+                'data_pedido': str(pedido[16])
+            })
+        
+        return jsonify({
+            "success": True,
+            "total_pedidos": len(pedidos_formatados),
+            "pedidos": pedidos_formatados
+        })
+        
+    except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
 # Sistema de carrinho híbrido (banco + memória)
@@ -2014,11 +2052,23 @@ def criar_admin_padrao():
             conn.close()
             print(f"👑 Usuário admin criado: {admin_email} / {admin_senha}")
         else:
+            # Atualizar senha do admin existente
+            admin_email = "admin@atlas.com"
+            admin_senha = "rafaelcardeal005"  # Nova senha segura
+            admin_nome = "Administrador Atlas"
+            
+            senha_hash = hash_senha(admin_senha)
+            
+            executar_query(cursor, '''
+                UPDATE usuario SET senha_hash = ?, nome = ? WHERE email = ? AND admin = 1
+            ''', (senha_hash, admin_nome, admin_email))
+            
+            conn.commit()
             conn.close()
-            print("👑 Usuário admin já existe")
+            print(f"👑 Senha do admin atualizada: {admin_email} / {admin_senha}")
             
     except Exception as e:
-        print(f"❌ Erro ao criar admin: {e}")
+        print(f"❌ Erro ao criar/atualizar admin: {e}")
 
 criar_admin_padrao()
 

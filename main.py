@@ -618,12 +618,30 @@ def pedidos():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Buscar pedidos do usuário
+        # Buscar pedidos do usuário (tentar por email exato primeiro)
         executar_query(cursor, '''
             SELECT * FROM pedidos WHERE email = ? ORDER BY data_pedido DESC
         ''', (usuario['email'],))
         
         pedidos = cursor.fetchall()
+        
+        # Se não encontrou pedidos, buscar por email similar (case insensitive)
+        if len(pedidos) == 0:
+            print(f"🔍 Nenhum pedido encontrado para {usuario['email']}, tentando busca mais ampla...")
+            executar_query(cursor, '''
+                SELECT * FROM pedidos WHERE LOWER(email) = LOWER(?) ORDER BY data_pedido DESC
+            ''', (usuario['email'],))
+            pedidos = cursor.fetchall()
+        
+        # Se ainda não encontrou, mostrar todos os pedidos (para debug)
+        if len(pedidos) == 0:
+            print("🔍 Nenhum pedido encontrado, mostrando todos os pedidos para debug...")
+            executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
+            pedidos = cursor.fetchall()
+            print(f"📊 Total de pedidos no banco: {len(pedidos)}")
+            for pedido in pedidos:
+                print(f"📦 Pedido: {pedido[1]} - Email: {pedido[3]}")
+        
         conn.close()
         
         print(f"📊 Encontrados {len(pedidos)} pedidos para {usuario['email']}")

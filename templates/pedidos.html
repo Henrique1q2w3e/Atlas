@@ -5,15 +5,8 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Meus Pedidos</h1>
-                    <p class="text-gray-600 mt-2">Acompanhe todos os seus pedidos e histórico de compras</p>
-                </div>
-                <button onclick="debugPedidos()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                    🔍 Debug Pedidos
-                </button>
-            </div>
+            <h1 class="text-3xl font-bold text-gray-900">Meus Pedidos</h1>
+            <p class="text-gray-600 mt-2">Acompanhe todos os seus pedidos e histórico de compras</p>
         </div>
 
         {% if pedidos %}
@@ -107,7 +100,17 @@
                         <i class="fas fa-shopping-bag text-gray-400 text-3xl"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">Nenhum pedido encontrado</h3>
-                    <p class="text-gray-600 mb-6">Você ainda não realizou nenhum pedido. Que tal começar a comprar?</p>
+                    <p class="text-gray-600 mb-4">Você ainda não realizou nenhum pedido. Que tal começar a comprar?</p>
+                    
+                    <!-- Informações de Debug -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left">
+                        <h4 class="text-sm font-medium text-blue-900 mb-2">🔍 Informações de Debug:</h4>
+                        <p class="text-xs text-blue-700 mb-1">• Verifique se você está logado</p>
+                        <p class="text-xs text-blue-700 mb-1">• Confirme se fez algum pedido</p>
+                        <p class="text-xs text-blue-700 mb-1">• Verifique os logs do servidor</p>
+                        <p class="text-xs text-blue-700">• Acesse: <a href="/admin/pedidos" class="underline">Painel Admin</a> para ver todos os pedidos</p>
+                    </div>
+                    
                     <a href="/produtos" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-medium rounded-md hover:from-yellow-600 hover:to-yellow-700 transition duration-200">
                         <i class="fas fa-store mr-2"></i>
                         Começar a Comprar
@@ -152,21 +155,3 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
-<script>
-function debugPedidos() {
-    fetch('/api/debug-pedidos')
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(`Total de pedidos no banco: ${data.total_pedidos}\n\nPedidos:\n${JSON.stringify(data.pedidos, null, 2)}`);
-        } else {
-            alert('Erro ao buscar pedidos: ' + data.error);
-        }
-    })
-    .catch(error => {
-        alert('Erro: ' + error);
-    });
-}
-</script>
-{% endblock %}

@@ -1099,7 +1099,7 @@ def restore_database():
         }), 500
 
 # Criar tabelas automaticamente quando o app iniciar
-print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE TEMPORÁRIA - INICIANDO...")
+print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE TEMPORÁRIA - TESTE PERSISTÊNCIA - INICIANDO...")
 print("✅ Sistema Atlas Suplementos iniciado!")
 print(f"📁 Diretório atual: {os.getcwd()}")
 print(f"📁 Templates: {os.path.exists('templates')}")

@@ -70,6 +70,20 @@ def conectar_db():
         print(f"💾 Usando SQLite local: {db_path}")
         return sqlite3.connect(db_path)
 
+def executar_query(cursor, query, params=None):
+    """Executar query com placeholders corretos para PostgreSQL ou SQLite"""
+    database_url = os.environ.get('DATABASE_URL')
+    
+    if database_url:
+        # PostgreSQL usa %s
+        if params:
+            # Converter ? para %s
+            query = query.replace('?', '%s')
+        cursor.execute(query, params)
+    else:
+        # SQLite usa ?
+        cursor.execute(query, params)
+
 def criar_tabelas():
     """Criar tabelas do banco de dados se não existirem"""
     try:
@@ -130,7 +144,7 @@ def obter_usuario_logado():
         print(f"👤 User ID na sessão: {session.get('user_id')}")
         conn = conectar_db()
         cursor = conn.cursor()
-        cursor.execute('SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
+        executar_query(cursor, 'SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
         usuario = cursor.fetchone()
         conn.close()
         
@@ -741,7 +755,7 @@ def api_login():
         cursor = conn.cursor()
         
         print("🔍 Buscando usuário...")
-        cursor.execute('SELECT id, nome, email, senha_hash FROM usuario WHERE email = ?', (email,))
+        executar_query(cursor, 'SELECT id, nome, email, senha_hash FROM usuario WHERE email = ?', (email,))
         usuario = cursor.fetchone()
         conn.close()
         
@@ -789,7 +803,7 @@ def api_registro():
         cursor = conn.cursor()
         
         # Verificar se email já existe
-        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        executar_query(cursor, 'SELECT id FROM usuario WHERE email = ?', (email,))
         if cursor.fetchone():
             conn.close()
             return jsonify({"success": False, "error": "Email já cadastrado"}), 400
@@ -801,7 +815,7 @@ def api_registro():
         print(f"   Email: {email}")
         print(f"   Senha (hash): {senha_hash}")
         
-        cursor.execute('''
+        executar_query(cursor, '''
             INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
             VALUES (?, ?, ?, ?, ?)
         ''', (nome, email, senha_hash, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 0))
@@ -843,7 +857,7 @@ def api_recuperar_senha():
         
         conn = conectar_db()
         cursor = conn.cursor()
-        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        executar_query(cursor, 'SELECT id FROM usuario WHERE email = ?', (email,))
         usuario = cursor.fetchone()
         conn.close()
         
@@ -873,9 +887,20 @@ def test_database():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Testar se a tabela existe
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
-        table_exists = cursor.fetchone()
+        database_url = os.environ.get('DATABASE_URL')
+        
+        if database_url:
+            # PostgreSQL
+            print("💾 Testando PostgreSQL...")
+            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name = 'usuario'")
+            table_exists = cursor.fetchone()
+            database_type = "PostgreSQL"
+        else:
+            # SQLite
+            print("💾 Testando SQLite...")
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
+            table_exists = cursor.fetchone()
+            database_type = "SQLite"
         
         if table_exists:
             # Contar usuários
@@ -888,14 +913,15 @@ def test_database():
                 "message": "Banco de dados funcionando!",
                 "table_exists": True,
                 "user_count": user_count,
-                "database_type": "SQLite"
+                "database_type": database_type
             })
         else:
             conn.close()
             return jsonify({
                 "success": False,
                 "message": "Tabela 'usuario' não existe",
-                "table_exists": False
+                "table_exists": False,
+                "database_type": database_type
             })
             
     except Exception as e:
@@ -920,7 +946,15 @@ def create_tables_endpoint():
         # Verificar se foi criada
         conn = conectar_db()
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
+        
+        database_url = os.environ.get('DATABASE_URL')
+        if database_url:
+            # PostgreSQL
+            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name = 'usuario'")
+        else:
+            # SQLite
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
+        
         table_exists = cursor.fetchone()
         
         if table_exists:
@@ -1003,7 +1037,7 @@ def create_test_user():
         cursor = conn.cursor()
         
         # Verificar se já existe
-        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        executar_query(cursor, 'SELECT id FROM usuario WHERE email = ?', (email,))
         if cursor.fetchone():
             conn.close()
             return jsonify({
@@ -1018,7 +1052,7 @@ def create_test_user():
         print(f"   Email: {email}")
         print(f"   Senha (hash): {senha_hash}")
         
-        cursor.execute('''
+        executar_query(cursor, '''
             INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
             VALUES (?, ?, ?, ?, ?)
         ''', (nome, email, senha_hash, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 0))
@@ -1107,7 +1141,7 @@ def restore_database():
         
         # Restaurar usuários
         for usuario_data in backup['usuarios']:
-            cursor.execute('''
+            executar_query(cursor, '''
                 INSERT INTO usuario (id, nome, email, senha_hash, data_criacao, admin)
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (

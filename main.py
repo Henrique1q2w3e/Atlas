@@ -24,9 +24,13 @@ import base64
 from datetime import datetime, timedelta
 import openpyxl
 from openpyxl import Workbook, load_workbook
+import requests
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
-app.secret_key = 'sua_chave_secreta_aqui'
+app.secret_key = os.environ.get('SECRET_KEY', 'atlas_suplementos_secret_key_2024_secure')
+app.config['SESSION_COOKIE_SECURE'] = False  # Para desenvolvimento
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Funções de autenticação
 def hash_senha(senha):
@@ -162,7 +166,13 @@ def criar_tabelas():
 
 def usuario_logado():
     """Verificar se usuário está logado (NÃO admin)"""
-    return 'user_id' in session and not session.get('is_admin_session', False)
+    print(f"🔍 Verificando login - Sessão: {dict(session)}")
+    print(f"🔍 user_id na sessão: {'user_id' in session}")
+    print(f"🔍 is_admin_session: {session.get('is_admin_session', False)}")
+    
+    resultado = 'user_id' in session and not session.get('is_admin_session', False)
+    print(f"🔍 usuario_logado() retorna: {resultado}")
+    return resultado
 
 def admin_logado():
     """Verificar se admin está logado"""
@@ -299,7 +309,7 @@ def obter_usuario_logado():
         if not usuario_logado():
             print("❌ Usuário não está logado")
             return None
-    
+        
         print(f"👤 User ID na sessão: {session.get('user_id')}")
         conn = conectar_db()
         cursor = conn.cursor()
@@ -327,7 +337,7 @@ def obter_usuario_logado():
         print(f"💥 Erro ao obter usuário logado: {e}")
         import traceback
         traceback.print_exc()
-    return None
+        return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -1168,21 +1178,21 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
                                    status, total, produtos)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
-                order_id,
-                dados_cliente.get('nome', ''),
-                dados_cliente.get('email', ''),
-                dados_cliente.get('telefone', ''),
-                dados_cliente.get('cpf', ''),
-                dados_cliente.get('data_nascimento', ''),
-                dados_cliente.get('cep', ''),
-                dados_cliente.get('cidade', ''),
-                dados_cliente.get('estado', ''),
-                dados_cliente.get('bairro', ''),
-                dados_cliente.get('endereco', ''),
-                dados_cliente.get('observacoes', ''),
-                status,
+            order_id,
+            dados_cliente.get('nome', ''),
+            dados_cliente.get('email', ''),
+            dados_cliente.get('telefone', ''),
+            dados_cliente.get('cpf', ''),
+            dados_cliente.get('data_nascimento', ''),
+            dados_cliente.get('cep', ''),
+            dados_cliente.get('cidade', ''),
+            dados_cliente.get('estado', ''),
+            dados_cliente.get('bairro', ''),
+            dados_cliente.get('endereco', ''),
+            dados_cliente.get('observacoes', ''),
+            status,
                 total,
-                produtos_str
+            produtos_str
             ))
             
             conn.commit()
@@ -1525,7 +1535,9 @@ def api_login():
             print(f"🔐 Verificando senha para usuário ID: {usuario[0]}")
             if verificar_senha(senha, usuario[3]):
                 session['user_id'] = usuario[0]
+                session['is_admin_session'] = False  # Garantir que não é admin
                 print("🎉 Login realizado com sucesso!")
+                print(f"🔍 Sessão após login: {dict(session)}")
                 return jsonify({
                     "success": True,
                     "message": "Login realizado com sucesso",

@@ -2205,7 +2205,7 @@ def criar_admin_padrao():
             executar_query(cursor, '''
                 INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
                 VALUES (?, ?, ?, ?, ?)
-            ''', (admin_nome, admin_email, senha_hash, obter_horario_brasil(), 1))
+            ''', (admin_nome, admin_email, senha_hash, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 1))
             
             conn.commit()
             conn.close()

@@ -1136,13 +1136,13 @@ def restore_database():
         }), 500
 
 # Criar tabelas automaticamente quando o app iniciar
-print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
+print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL - INICIANDO...")
 print("✅ Sistema Atlas Suplementos iniciado!")
 print(f"📁 Diretório atual: {os.getcwd()}")
 print(f"📁 Templates: {os.path.exists('templates')}")
 print(f"📁 Static: {os.path.exists('static')}")
 print(f"📁 index.html: {os.path.exists('templates/index.html')}")
-print("🔧 USANDO SQLITE - SEM PSYCOPG2!")
+print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente
 print("🔧 Criando tabelas automaticamente...")

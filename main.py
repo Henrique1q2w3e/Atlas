@@ -862,9 +862,28 @@ def admin_pedidos():
         
         print(f"📊 Encontrados {len(pedidos)} pedidos")
         
-        # Converter para formato mais legível
+        # Converter para formato mais legível com horário correto
         pedidos_formatados = []
         for pedido in pedidos:
+            # Converter data para horário do Brasil
+            data_pedido = pedido[16]
+            if isinstance(data_pedido, str):
+                # Se já é string, usar como está
+                data_formatada = data_pedido
+            else:
+                # Se é datetime, converter para Brasil
+                try:
+                    if data_pedido.tzinfo is None:
+                        # Se não tem timezone, assumir UTC
+                        data_pedido = data_pedido.replace(tzinfo=timezone.utc)
+                    
+                    # Converter para horário do Brasil (UTC-3)
+                    brasil_tz = timezone(timedelta(hours=-3))
+                    data_brasil = data_pedido.astimezone(brasil_tz)
+                    data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
+                except:
+                    data_formatada = str(data_pedido)
+            
             pedidos_formatados.append({
                 'id': pedido[0],
                 'order_id': pedido[1],
@@ -882,7 +901,7 @@ def admin_pedidos():
                 'status': pedido[13],
                 'total': float(pedido[14]),
                 'produtos': pedido[15],
-                'data_pedido': pedido[16]
+                'data_pedido': data_formatada
             })
         
         return render_template('admin_pedidos.html', pedidos=pedidos_formatados)

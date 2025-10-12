@@ -182,6 +182,50 @@
             color: #636e72;
             margin-top: 5px;
         }
+        
+        /* Filtros e Busca */
+        .filters-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+        }
+        
+        /* Responsividade para mobile */
+        @media (max-width: 768px) {
+            .filters-section .row > div {
+                margin-bottom: 15px;
+            }
+            .pedido-card .row > div {
+                margin-bottom: 15px;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            .action-buttons .btn {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -218,7 +262,60 @@
                 </div>
             </div>
 
+            <!-- Filtros e Busca -->
+            <div class="filters-section mb-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="searchInput" class="form-label">
+                                <i class="fas fa-search"></i> Buscar Pedido
+                            </label>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Nome, email, telefone ou ID do pedido...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="statusFilter" class="form-label">
+                                <i class="fas fa-filter"></i> Filtrar por Status
+                            </label>
+                            <select id="statusFilter" class="form-select">
+                                <option value="">Todos os Status</option>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Pago">Pago</option>
+                                <option value="Em Produção">Em Produção</option>
+                                <option value="Saiu para Entrega">Saiu para Entrega</option>
+                                <option value="Enviado">Enviado</option>
+                                <option value="Entregue">Entregue</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="sortBy" class="form-label">
+                                <i class="fas fa-sort"></i> Ordenar por
+                            </label>
+                            <select id="sortBy" class="form-select">
+                                <option value="data_desc">Data (Mais Recente)</option>
+                                <option value="data_asc">Data (Mais Antigo)</option>
+                                <option value="valor_desc">Valor (Maior)</option>
+                                <option value="valor_asc">Valor (Menor)</option>
+                                <option value="nome">Nome (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <button id="clearFilters" class="btn btn-outline-secondary w-100">
+                                <i class="fas fa-times"></i> Limpar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Lista de Pedidos -->
+            <div id="pedidosContainer">
             {% if pedidos %}
                 {% for pedido in pedidos %}
                 <div class="pedido-card">
@@ -319,6 +416,7 @@
                     <p class="text-muted">Os pedidos aparecerão aqui quando os clientes finalizarem suas compras.</p>
                 </div>
             {% endif %}
+            </div> <!-- Fechar pedidosContainer -->
         </div>
     </div>
 
@@ -374,6 +472,121 @@
                     alert('Erro ao atualizar status: ' + error);
                 });
             }
+        }
+        
+        // Sistema de Filtros e Busca
+        let allPedidos = [];
+        
+        // Coletar todos os pedidos na inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            const pedidoCards = document.querySelectorAll('.pedido-card');
+            allPedidos = Array.from(pedidoCards).map(card => {
+                const orderId = card.querySelector('h4').textContent.match(/#(.+?)\s/)[1];
+                const status = card.querySelector('.status-badge').textContent.trim();
+                const nome = card.querySelector('.info-row').textContent.replace('Cliente:', '').trim();
+                const email = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                    row.textContent.includes('Email:')
+                )?.textContent.replace('Email:', '').trim() || '';
+                const telefone = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                    row.textContent.includes('Telefone:')
+                )?.textContent.replace('Telefone:', '').trim() || '';
+                const total = parseFloat(card.querySelector('.total-box').textContent.replace('R$', '').replace(',', '.').trim());
+                const data = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                    row.textContent.includes('Data do Pedido:')
+                )?.textContent.replace('Data do Pedido:', '').trim() || '';
+                
+                return {
+                    element: card,
+                    orderId,
+                    status,
+                    nome,
+                    email,
+                    telefone,
+                    total,
+                    data,
+                    searchText: `${orderId} ${nome} ${email} ${telefone}`.toLowerCase()
+                };
+            });
+            
+            // Event listeners para filtros
+            document.getElementById('searchInput').addEventListener('input', filterPedidos);
+            document.getElementById('statusFilter').addEventListener('change', filterPedidos);
+            document.getElementById('sortBy').addEventListener('change', sortPedidos);
+            document.getElementById('clearFilters').addEventListener('click', clearFilters);
+        });
+        
+        function filterPedidos() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            allPedidos.forEach(pedido => {
+                let show = true;
+                
+                // Filtro de busca
+                if (searchTerm && !pedido.searchText.includes(searchTerm)) {
+                    show = false;
+                }
+                
+                // Filtro de status
+                if (statusFilter && pedido.status !== statusFilter) {
+                    show = false;
+                }
+                
+                pedido.element.style.display = show ? 'block' : 'none';
+            });
+            
+            updateStats();
+        }
+        
+        function sortPedidos() {
+            const sortBy = document.getElementById('sortBy').value;
+            const container = document.getElementById('pedidosContainer');
+            
+            let sortedPedidos = [...allPedidos].filter(p => p.element.style.display !== 'none');
+            
+            switch(sortBy) {
+                case 'data_desc':
+                    sortedPedidos.sort((a, b) => new Date(b.data) - new Date(a.data));
+                    break;
+                case 'data_asc':
+                    sortedPedidos.sort((a, b) => new Date(a.data) - new Date(b.data));
+                    break;
+                case 'valor_desc':
+                    sortedPedidos.sort((a, b) => b.total - a.total);
+                    break;
+                case 'valor_asc':
+                    sortedPedidos.sort((a, b) => a.total - b.total);
+                    break;
+                case 'nome':
+                    sortedPedidos.sort((a, b) => a.nome.localeCompare(b.nome));
+                    break;
+            }
+            
+            // Reordenar elementos no DOM
+            sortedPedidos.forEach(pedido => {
+                container.appendChild(pedido.element);
+            });
+        }
+        
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('sortBy').value = 'data_desc';
+            
+            allPedidos.forEach(pedido => {
+                pedido.element.style.display = 'block';
+            });
+            
+            sortPedidos();
+        }
+        
+        function updateStats() {
+            const visiblePedidos = allPedidos.filter(p => p.element.style.display !== 'none');
+            const pendentes = visiblePedidos.filter(p => p.status === 'Pendente').length;
+            const total = visiblePedidos.reduce((sum, p) => sum + p.total, 0);
+            
+            // Atualizar estatísticas (se necessário)
+            console.log(`Pedidos visíveis: ${visiblePedidos.length}, Pendentes: ${pendentes}, Total: R$ ${total.toFixed(2)}`);
         }
     </script>
 </body>

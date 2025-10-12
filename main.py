@@ -844,18 +844,20 @@ def create_tables_endpoint():
             "message": "Erro ao criar tabelas"
         }), 500
 
+# Criar tabelas automaticamente quando o app iniciar
+print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
+print("✅ Sistema Atlas Suplementos iniciado!")
+print(f"📁 Diretório atual: {os.getcwd()}")
+print(f"📁 Templates: {os.path.exists('templates')}")
+print(f"📁 Static: {os.path.exists('static')}")
+print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+print("🔧 USANDO SQLITE - SEM PSYCOPG2!")
+
+# Criar tabelas do banco de dados automaticamente
+print("🔧 Criando tabelas automaticamente...")
+criar_tabelas()
+
 if __name__ == '__main__':
-    print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
-    print("✅ Sistema Atlas Suplementos iniciado!")
-    print(f"📁 Diretório atual: {os.getcwd()}")
-    print(f"📁 Templates: {os.path.exists('templates')}")
-    print(f"📁 Static: {os.path.exists('static')}")
-    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
-    print("🔧 USANDO SQLITE - SEM PSYCOPG2!")
-    
-    # Criar tabelas do banco de dados
-    criar_tabelas()
-    
     # Configuração para produção
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') != 'production'

@@ -794,6 +794,38 @@ def test_database():
             "message": "Erro ao conectar com banco de dados"
         }), 500
 
+@app.route('/api/create-tables', methods=['POST'])
+def create_tables_endpoint():
+    """Rota para forçar a criação das tabelas"""
+    try:
+        print("🔧 Forçando criação das tabelas...")
+        criar_tabelas()
+        
+        # Verificar se foi criada
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
+        table_exists = cursor.fetchone()
+        conn.close()
+        
+        if table_exists:
+            return jsonify({
+                "success": True,
+                "message": "Tabelas criadas com sucesso!"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "message": "Erro ao criar tabelas"
+            })
+            
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Erro ao criar tabelas"
+        }), 500
+
 if __name__ == '__main__':
     print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
     print("✅ Sistema Atlas Suplementos iniciado!")

@@ -628,23 +628,14 @@ def pedidos():
         total_pedidos = cursor.fetchone()[0]
         print(f"📊 TOTAL de pedidos no banco: {total_pedidos}")
         
-        # TERCEIRO: Buscar pedidos do usuário (tentar por email exato primeiro)
-        print(f"🔍 Buscando pedidos para email exato: '{usuario['email']}'")
+        # BUSCAR PEDIDOS: Usar apenas email do usuário logado
+        print(f"🔍 Buscando pedidos para email do usuário logado: '{usuario['email']}'")
         executar_query(cursor, '''
             SELECT * FROM pedidos WHERE email = ? ORDER BY data_pedido DESC
         ''', (usuario['email'],))
         
         pedidos = cursor.fetchall()
-        print(f"📦 Encontrados {len(pedidos)} pedidos com email exato")
-        
-        # Se não encontrou pedidos, buscar por email similar (case insensitive)
-        if len(pedidos) == 0:
-            print(f"🔍 Nenhum pedido encontrado para '{usuario['email']}', tentando busca case insensitive...")
-            executar_query(cursor, '''
-                SELECT * FROM pedidos WHERE LOWER(email) = LOWER(?) ORDER BY data_pedido DESC
-            ''', (usuario['email'],))
-            pedidos = cursor.fetchall()
-            print(f"📦 Encontrados {len(pedidos)} pedidos com busca case insensitive")
+        print(f"📦 Encontrados {len(pedidos)} pedidos para {usuario['email']}")
         
         # Se ainda não encontrou, apenas logar para debug (NÃO mostrar todos os pedidos)
         if len(pedidos) == 0:
@@ -732,12 +723,15 @@ def api_admin_login():
         conn.close()
         
         if usuario and verificar_senha(senha, usuario[3]):
+            # Limpar sessão anterior para evitar conflitos
+            session.clear()
             session['user_id'] = usuario[0]
             session['admin'] = True
+            session['admin_mode'] = True  # Flag específica para admin
             print(f"👑 Admin logado: {usuario[1]} ({usuario[2]})")
             return jsonify({
                 "success": True,
-                "message": "Login realizado com sucesso",
+                "message": "Login de admin realizado com sucesso",
                 "redirect": "/admin/pedidos"
             })
         else:
@@ -757,7 +751,7 @@ def admin_pedidos():
         print("👑 Acessando página de administração de pedidos...")
         
         # Verificar se é admin
-        if not usuario_logado() or not session.get('admin'):
+        if not usuario_logado() or not session.get('admin') or not session.get('admin_mode'):
             return redirect(url_for('admin_login'))
         
         # Buscar pedidos do banco de dados
@@ -946,6 +940,20 @@ def atualizar_status_pedido():
             
     except Exception as e:
         print(f"❌ Erro ao atualizar status: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/admin-logout', methods=['POST'])
+def admin_logout():
+    """Logout do admin"""
+    try:
+        session.clear()
+        print("👑 Admin deslogado")
+        return jsonify({
+            "success": True,
+            "message": "Logout realizado com sucesso",
+            "redirect": "/"
+        })
+    except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/debug-pedidos', methods=['GET'])

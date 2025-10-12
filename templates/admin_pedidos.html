@@ -326,18 +326,23 @@
     <script>
         function logoutAdmin() {
             if (confirm('Deseja realmente sair da área administrativa?')) {
-                fetch('/api/logout', {
+                fetch('/api/admin-logout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
-                .then(() => {
-                    window.location.href = '/admin/login';
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/';
+                    } else {
+                        alert('Erro ao fazer logout: ' + data.error);
+                    }
                 })
                 .catch(error => {
                     console.error('Erro ao fazer logout:', error);
-                    window.location.href = '/admin/login';
+                    window.location.href = '/';
                 });
             }
         }

@@ -161,8 +161,12 @@ def criar_tabelas():
         traceback.print_exc()
 
 def usuario_logado():
-    """Verificar se usuário está logado"""
-    return 'user_id' in session
+    """Verificar se usuário está logado (NÃO admin)"""
+    return 'user_id' in session and not session.get('is_admin_session', False)
+
+def admin_logado():
+    """Verificar se admin está logado"""
+    return 'admin_user_id' in session and session.get('is_admin_session', False)
 
 def validar_email(email):
     """Valida formato do email"""
@@ -723,12 +727,13 @@ def api_admin_login():
         conn.close()
         
         if usuario and verificar_senha(senha, usuario[3]):
-            # Limpar sessão anterior para evitar conflitos
+            # Usar sessão completamente separada para admin
             session.clear()
-            session['user_id'] = usuario[0]
+            session['admin_user_id'] = usuario[0]  # Chave diferente para admin
             session['admin'] = True
-            session['admin_mode'] = True  # Flag específica para admin
-            print(f"👑 Admin logado: {usuario[1]} ({usuario[2]})")
+            session['admin_mode'] = True
+            session['is_admin_session'] = True  # Flag para identificar sessão de admin
+            print(f"👑 Admin logado: {usuario[1]} ({usuario[2]}) - Sessão separada")
             return jsonify({
                 "success": True,
                 "message": "Login de admin realizado com sucesso",
@@ -751,7 +756,7 @@ def admin_pedidos():
         print("👑 Acessando página de administração de pedidos...")
         
         # Verificar se é admin
-        if not usuario_logado() or not session.get('admin') or not session.get('admin_mode'):
+        if not admin_logado():
             return redirect(url_for('admin_login'))
         
         # Buscar pedidos do banco de dados

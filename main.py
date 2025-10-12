@@ -1013,6 +1013,100 @@ def create_test_user():
             "message": "Erro ao criar usuário de teste"
         }), 500
 
+@app.route('/api/backup-database', methods=['GET'])
+def backup_database():
+    """Rota para fazer backup do banco de dados"""
+    try:
+        print("💾 Fazendo backup do banco de dados...")
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar todos os usuários
+        cursor.execute('SELECT * FROM usuario')
+        usuarios = cursor.fetchall()
+        conn.close()
+        
+        # Criar backup em formato JSON
+        backup_data = {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "usuarios": []
+        }
+        
+        for usuario in usuarios:
+            backup_data["usuarios"].append({
+                "id": usuario[0],
+                "nome": usuario[1],
+                "email": usuario[2],
+                "senha_hash": usuario[3],
+                "data_criacao": usuario[4],
+                "admin": usuario[5]
+            })
+        
+        return jsonify({
+            "success": True,
+            "message": f"Backup criado com {len(usuarios)} usuários",
+            "backup": backup_data
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro ao fazer backup: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Erro ao fazer backup"
+        }), 500
+
+@app.route('/api/restore-database', methods=['POST'])
+def restore_database():
+    """Rota para restaurar banco de dados do backup"""
+    try:
+        print("🔄 Restaurando banco de dados...")
+        
+        data = request.get_json()
+        backup = data.get('backup')
+        
+        if not backup or 'usuarios' not in backup:
+            return jsonify({
+                "success": False,
+                "error": "Backup inválido"
+            }), 400
+        
+        # Limpar tabela atual
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM usuario")
+        
+        # Restaurar usuários
+        for usuario_data in backup['usuarios']:
+            cursor.execute('''
+                INSERT INTO usuario (id, nome, email, senha_hash, data_criacao, admin)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (
+                usuario_data['id'],
+                usuario_data['nome'],
+                usuario_data['email'],
+                usuario_data['senha_hash'],
+                usuario_data['data_criacao'],
+                usuario_data['admin']
+            ))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Banco restaurado com {len(backup['usuarios'])} usuários"
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro ao restaurar: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Erro ao restaurar banco"
+        }), 500
+
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
 print("✅ Sistema Atlas Suplementos iniciado!")
@@ -1033,3 +1127,4 @@ if __name__ == '__main__':
     
     print(f"🌐 Iniciando servidor na porta {port}")
     app.run(debug=debug, host='0.0.0.0', port=port)
+                                                

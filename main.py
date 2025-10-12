@@ -78,24 +78,40 @@ def usuario_logado():
 
 def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
-    if not usuario_logado():
+    try:
+        print("🔍 Verificando se usuário está logado...")
+        if not usuario_logado():
+            print("❌ Usuário não está logado")
+            return None
+        
+        print(f"👤 User ID na sessão: {session.get('user_id')}")
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        print(f"👤 Usuário encontrado no banco: {usuario}")
+        
+        if usuario:
+            user_data = {
+                'id': usuario[0],
+                'nome': usuario[1],
+                'email': usuario[2],
+                'data_criacao': usuario[3],
+                'admin': usuario[4]
+            }
+            print(f"✅ Dados do usuário preparados: {user_data}")
+            return user_data
+        else:
+            print("❌ Usuário não encontrado no banco de dados")
+            return None
+            
+    except Exception as e:
+        print(f"💥 Erro ao obter usuário logado: {e}")
+        import traceback
+        traceback.print_exc()
         return None
-    
-    conn = conectar_db()
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
-    usuario = cursor.fetchone()
-    conn.close()
-    
-    if usuario:
-        return {
-            'id': usuario[0],
-            'nome': usuario[1],
-            'email': usuario[2],
-            'data_criacao': usuario[3],
-            'admin': usuario[4]
-        }
-    return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -323,11 +339,25 @@ def contato():
 
 @app.route('/recuperar-senha')
 def recuperar_senha():
-    return render_template('recuperar_senha.html')
+    try:
+        print("🔑 Acessando recuperar senha...")
+        return render_template('recuperar_senha.html')
+    except Exception as e:
+        print(f"💥 Erro em recuperar senha: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Erro interno: {str(e)}", 500
 
 @app.route('/nova-senha')
 def nova_senha():
-    return render_template('nova_senha.html')
+    try:
+        print("🔑 Acessando nova senha...")
+        return render_template('nova_senha.html')
+    except Exception as e:
+        print(f"💥 Erro em nova senha: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Erro interno: {str(e)}", 500
 
 @app.route('/produto/<produto_id>')
 def produto_individual(produto_id):
@@ -335,16 +365,44 @@ def produto_individual(produto_id):
 
 @app.route('/perfil')
 def perfil():
-    if not usuario_logado():
-        return redirect(url_for('login'))
-    usuario = obter_usuario_logado()
-    return render_template('perfil.html', usuario=usuario)
+    try:
+        print("👤 Acessando perfil...")
+        if not usuario_logado():
+            print("❌ Usuário não logado, redirecionando para login")
+            return redirect(url_for('login'))
+        
+        print("✅ Usuário logado, obtendo dados...")
+        usuario = obter_usuario_logado()
+        print(f"👤 Dados do usuário: {usuario}")
+        
+        if not usuario:
+            print("❌ Erro ao obter dados do usuário")
+            return redirect(url_for('login'))
+            
+        return render_template('perfil.html', usuario=usuario)
+        
+    except Exception as e:
+        print(f"💥 Erro no perfil: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Erro interno: {str(e)}", 500
 
 @app.route('/pedidos')
 def pedidos():
-    if not usuario_logado():
-        return redirect(url_for('login'))
-    return render_template('pedidos.html')
+    try:
+        print("📦 Acessando pedidos...")
+        if not usuario_logado():
+            print("❌ Usuário não logado, redirecionando para login")
+            return redirect(url_for('login'))
+        
+        print("✅ Usuário logado, carregando pedidos...")
+        return render_template('pedidos.html')
+        
+    except Exception as e:
+        print(f"💥 Erro nos pedidos: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Erro interno: {str(e)}", 500
 
 # Sistema de carrinho em memória (simplificado)
 carrinho_global = []

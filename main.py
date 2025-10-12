@@ -10,8 +10,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, send_file
 import mercadopago
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import uuid
+import re
 # import pandas as pd  # Removido para compatibilidade com Render
 import json
 import sqlite3
@@ -162,6 +163,87 @@ def criar_tabelas():
 def usuario_logado():
     """Verificar se usuário está logado"""
     return 'user_id' in session
+
+def validar_email(email):
+    """Valida formato do email"""
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+def validar_cpf(cpf):
+    """Valida CPF brasileiro"""
+    # Remove caracteres não numéricos
+    cpf = re.sub(r'[^0-9]', '', cpf)
+    
+    # Verifica se tem 11 dígitos
+    if len(cpf) != 11:
+        return False
+    
+    # Verifica se todos os dígitos são iguais
+    if cpf == cpf[0] * 11:
+        return False
+    
+    # Validação do CPF
+    def calcular_digito(cpf, posicoes):
+        soma = sum(int(cpf[i]) * posicoes[i] for i in range(len(posicoes)))
+        resto = soma % 11
+        return 0 if resto < 2 else 11 - resto
+    
+    # Primeiro dígito verificador
+    posicoes1 = list(range(10, 1, -1))
+    digito1 = calcular_digito(cpf, posicoes1)
+    
+    # Segundo dígito verificador
+    posicoes2 = list(range(11, 1, -1))
+    digito2 = calcular_digito(cpf, posicoes2)
+    
+    return cpf[-2:] == f"{digito1}{digito2}"
+
+def validar_telefone(telefone):
+    """Valida telefone brasileiro"""
+    # Remove caracteres não numéricos
+    telefone = re.sub(r'[^0-9]', '', telefone)
+    
+    # Verifica se tem 10 ou 11 dígitos (com DDD)
+    if len(telefone) not in [10, 11]:
+        return False
+    
+    # Verifica se começa com DDD válido (11-99)
+    ddd = int(telefone[:2])
+    return 11 <= ddd <= 99
+
+def obter_horario_brasil():
+    """Retorna horário atual do Brasil (UTC-3)"""
+    utc_now = datetime.now(timezone.utc)
+    brasil_tz = timezone(timedelta(hours=-3))
+    return utc_now.astimezone(brasil_tz)
+
+def criar_notificacao(order_id, email, telefone, status, mensagem):
+    """Cria uma notificação para o cliente"""
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        executar_query(cursor, '''
+            INSERT INTO notificacoes (order_id, email, telefone, status, mensagem)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (order_id, email, telefone, status, mensagem))
+        
+        conn.commit()
+        conn.close()
+        print(f"📧 Notificação criada para {email}: {status}")
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar notificação: {e}")
+
+def obter_mensagem_status(status):
+    """Retorna mensagem personalizada para cada status"""
+    mensagens = {
+        'Pendente': 'Seu pedido foi recebido e está sendo processado! 🛒',
+        'Pago': 'Pagamento confirmado! Seu pedido está em produção! 💰',
+        'Enviado': 'Seu pedido saiu para entrega! 🚚',
+        'Entregue': 'Pedido entregue com sucesso! Obrigado pela preferência! 🎉'
+    }
+    return mensagens.get(status, f'Status do pedido atualizado para: {status}')
 
 def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
@@ -566,6 +648,68 @@ def admin_pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
+@app.route('/status-pedido')
+def status_pedido():
+    """Página para cliente verificar status do pedido"""
+    return render_template('status_pedido.html')
+
+@app.route('/api/buscar-pedido', methods=['POST'])
+def buscar_pedido():
+    """API para buscar pedido por ID e email"""
+    try:
+        data = request.get_json()
+        order_id = data.get('order_id')
+        email = data.get('email')
+        
+        if not order_id or not email:
+            return jsonify({"success": False, "error": "order_id e email são obrigatórios"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar pedido
+        executar_query(cursor, '''
+            SELECT * FROM pedidos WHERE order_id = ? AND email = ?
+        ''', (order_id, email))
+        
+        pedido = cursor.fetchone()
+        conn.close()
+        
+        if pedido:
+            pedido_formatado = {
+                'id': pedido[0],
+                'order_id': pedido[1],
+                'nome': pedido[2],
+                'email': pedido[3],
+                'telefone': pedido[4],
+                'cpf': pedido[5],
+                'data_nascimento': pedido[6],
+                'cep': pedido[7],
+                'cidade': pedido[8],
+                'estado': pedido[9],
+                'bairro': pedido[10],
+                'endereco': pedido[11],
+                'observacoes': pedido[12],
+                'status': pedido[13],
+                'total': float(pedido[14]),
+                'produtos': pedido[15],
+                'data_pedido': pedido[16]
+            }
+            
+            return jsonify({
+                "success": True,
+                "pedido": pedido_formatado
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Pedido não encontrado"
+            }), 404
+            
+    except Exception as e:
+        print(f"❌ Erro ao buscar pedido: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/api/atualizar-status', methods=['POST'])
 def atualizar_status_pedido():
     """API para atualizar status do pedido"""
@@ -580,6 +724,18 @@ def atualizar_status_pedido():
         conn = conectar_db()
         cursor = conn.cursor()
         
+        # Buscar dados do pedido
+        executar_query(cursor, '''
+            SELECT email, telefone, nome FROM pedidos WHERE order_id = ?
+        ''', (order_id,))
+        
+        pedido = cursor.fetchone()
+        if not pedido:
+            conn.close()
+            return jsonify({"success": False, "error": "Pedido não encontrado"}), 404
+        
+        email, telefone, nome = pedido
+        
         # Atualizar status
         executar_query(cursor, '''
             UPDATE pedidos SET status = ? WHERE order_id = ?
@@ -588,11 +744,22 @@ def atualizar_status_pedido():
         if cursor.rowcount > 0:
             conn.commit()
             conn.close()
+            
+            # Criar notificação
+            mensagem = obter_mensagem_status(novo_status)
+            criar_notificacao(order_id, email, telefone, novo_status, mensagem)
+            
             print(f"✅ Status do pedido {order_id} atualizado para {novo_status}")
-            return jsonify({"success": True, "message": f"Status atualizado para {novo_status}"})
+            print(f"📧 Notificação enviada para {email}")
+            
+            return jsonify({
+                "success": True, 
+                "message": f"Status atualizado para {novo_status}",
+                "notificacao_enviada": True
+            })
         else:
             conn.close()
-            return jsonify({"success": False, "error": "Pedido não encontrado"}), 404
+            return jsonify({"success": False, "error": "Erro ao atualizar status"}), 500
             
     except Exception as e:
         print(f"❌ Erro ao atualizar status: {e}")
@@ -682,6 +849,20 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
                 )
             ''')
             
+            # Criar tabela de notificações
+            executar_query(cursor, '''
+                CREATE TABLE IF NOT EXISTS notificacoes (
+                    id SERIAL PRIMARY KEY,
+                    order_id VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL,
+                    telefone VARCHAR(20),
+                    status VARCHAR(50) NOT NULL,
+                    mensagem TEXT NOT NULL,
+                    data_notificacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    enviada BOOLEAN DEFAULT FALSE
+                )
+            ''')
+            
             # Inserir pedido
             executar_query(cursor, '''
                 INSERT INTO pedidos (order_id, nome, email, telefone, cpf, data_nascimento, 
@@ -739,7 +920,7 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
             next_row = ws.max_row + 1
             pedido_data = [
                 order_id,
-                datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                obter_horario_brasil().strftime("%d/%m/%Y %H:%M:%S"),
                 dados_cliente.get('nome', ''),
                 dados_cliente.get('email', ''),
                 dados_cliente.get('telefone', ''),
@@ -997,8 +1178,21 @@ def criar_pagamento_simples():
         data = request.get_json()
         dados_cliente = data.get("dados_cliente", {})
         
+        # Validações obrigatórias
         if not dados_cliente.get('nome') or not dados_cliente.get('email'):
             return jsonify({"error": "Nome e email são obrigatórios"}), 400
+        
+        # Validação de email
+        if not validar_email(dados_cliente.get('email', '')):
+            return jsonify({"error": "Email inválido"}), 400
+        
+        # Validação de CPF (se fornecido)
+        if dados_cliente.get('cpf') and not validar_cpf(dados_cliente.get('cpf')):
+            return jsonify({"error": "CPF inválido"}), 400
+        
+        # Validação de telefone (se fornecido)
+        if dados_cliente.get('telefone') and not validar_telefone(dados_cliente.get('telefone')):
+            return jsonify({"error": "Telefone inválido"}), 400
 
         order_id = f"pedido_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         carrinho = obter_carrinho_usuario()

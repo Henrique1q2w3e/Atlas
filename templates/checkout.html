@@ -483,4 +483,17 @@ function irParaMercadoPago() {
     });
 }
 </script>
+
+<!-- Validação de formulário -->
+<script src="/static/js/validacao.js"></script>
+<script>
+// Validação antes de enviar o formulário
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    if (!validarFormulario()) {
+        e.preventDefault();
+        alert('Por favor, corrija os erros no formulário antes de continuar.');
+        return false;
+    }
+});
+</script>
 {% endblock %}

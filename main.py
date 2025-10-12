@@ -34,7 +34,12 @@ def hash_senha(senha):
 
 def verificar_senha(senha, hash_senha_armazenado):
     """Verificar se a senha está correta"""
-    return hash_senha(senha) == hash_senha_armazenado
+    senha_hash = hash_senha(senha)
+    print(f"🔐 Comparando senhas:")
+    print(f"   Senha digitada (hash): {senha_hash}")
+    print(f"   Senha armazenada: {hash_senha_armazenado}")
+    print(f"   São iguais: {senha_hash == hash_senha_armazenado}")
+    return senha_hash == hash_senha_armazenado
 
 def conectar_db():
     """Conectar ao banco de dados"""
@@ -704,6 +709,7 @@ def api_login():
         
         if usuario:
             print(f"✅ Usuário encontrado: {usuario[1]}")
+            print(f"🔐 Verificando senha para usuário ID: {usuario[0]}")
             if verificar_senha(senha, usuario[3]):
                 session['user_id'] = usuario[0]
                 print("🎉 Login realizado com sucesso!")
@@ -752,6 +758,11 @@ def api_registro():
         
         # Criar usuário
         senha_hash = hash_senha(senha)
+        print(f"🔐 Criando usuário:")
+        print(f"   Nome: {nome}")
+        print(f"   Email: {email}")
+        print(f"   Senha (hash): {senha_hash}")
+        
         cursor.execute('''
             INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
             VALUES (?, ?, ?, ?, ?)

@@ -652,6 +652,7 @@ def api_login():
                 return jsonify({
                     "success": True,
                     "message": "Login realizado com sucesso",
+                    "redirect": "/",
                     "usuario": {
                         "id": usuario[0],
                         "nome": usuario[1],
@@ -708,6 +709,7 @@ def api_registro():
         return jsonify({
             "success": True,
             "message": "Usuário criado com sucesso",
+            "redirect": "/",
             "usuario": {
                 "id": user_id,
                 "nome": nome,
@@ -742,13 +744,15 @@ def api_recuperar_senha():
             # Em produção, você enviaria um email aqui
             return jsonify({
                 "success": True,
-                "message": "Se o email existir, você receberá instruções para redefinir sua senha"
+                "message": "Se o email existir, você receberá instruções para redefinir sua senha",
+                "redirect": "/login"
             })
         else:
             # Por segurança, não revelamos se o email existe
             return jsonify({
                 "success": True,
-                "message": "Se o email existir, você receberá instruções para redefinir sua senha"
+                "message": "Se o email existir, você receberá instruções para redefinir sua senha",
+                "redirect": "/login"
             })
             
     except Exception as e:

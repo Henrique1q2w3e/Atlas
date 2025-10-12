@@ -335,14 +335,16 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = '/';
+                        // Usar o redirect do servidor ou ir para login do admin
+                        window.location.href = data.redirect || '/admin/login';
                     } else {
                         alert('Erro ao fazer logout: ' + data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Erro ao fazer logout:', error);
-                    window.location.href = '/';
+                    // Em caso de erro, ir para login do admin
+                    window.location.href = '/admin/login';
                 });
             }
         }

@@ -983,7 +983,7 @@ def admin_logout():
         return jsonify({
             "success": True,
             "message": "Logout de admin realizado com sucesso",
-            "redirect": "/"
+            "redirect": "/admin/login"  # Redirecionar para login do admin, não para home
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500

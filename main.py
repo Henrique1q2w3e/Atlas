@@ -167,27 +167,27 @@ def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
     try:
         print("🔍 Verificando se usuário está logado...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não está logado")
-        return None
-    
+            return None
+        
         print(f"👤 User ID na sessão: {session.get('user_id')}")
-    conn = conectar_db()
-    cursor = conn.cursor()
+        conn = conectar_db()
+        cursor = conn.cursor()
         executar_query(cursor, 'SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
-    usuario = cursor.fetchone()
-    conn.close()
+        usuario = cursor.fetchone()
+        conn.close()
         
         print(f"👤 Usuário encontrado no banco: {usuario}")
-    
-    if usuario:
+        
+        if usuario:
             user_data = {
-            'id': usuario[0],
-            'nome': usuario[1],
-            'email': usuario[2],
-            'data_criacao': usuario[3],
-            'admin': usuario[4]
-        }
+                'id': usuario[0],
+                'nome': usuario[1],
+                'email': usuario[2],
+                'data_criacao': usuario[3],
+                'admin': usuario[4]
+            }
             print(f"✅ Dados do usuário preparados: {user_data}")
             return user_data
         else:
@@ -198,7 +198,7 @@ def obter_usuario_logado():
         print(f"💥 Erro ao obter usuário logado: {e}")
         import traceback
         traceback.print_exc()
-    return None
+        return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -454,19 +454,19 @@ def produto_individual(produto_id):
 def perfil():
     try:
         print("👤 Acessando perfil...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
         
         print("✅ Usuário logado, obtendo dados...")
-    usuario = obter_usuario_logado()
+        usuario = obter_usuario_logado()
         print(f"👤 Dados do usuário: {usuario}")
         
         if not usuario:
             print("❌ Erro ao obter dados do usuário")
             return redirect(url_for('login'))
             
-    return render_template('perfil.html', usuario=usuario)
+        return render_template('perfil.html', usuario=usuario)
         
     except Exception as e:
         print(f"💥 Erro no perfil: {e}")
@@ -478,12 +478,12 @@ def perfil():
 def pedidos():
     try:
         print("📦 Acessando pedidos...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
         
         print("✅ Usuário logado, carregando pedidos...")
-    return render_template('pedidos.html')
+        return render_template('pedidos.html')
 
     except Exception as e:
         print(f"💥 Erro nos pedidos: {e}")
@@ -670,28 +670,28 @@ def adicionar_ao_carrinho():
             print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
             
             # Verificar se item já existe
-        item_existente = None
+            item_existente = None
             for item in carrinho_temporario:
-            if item['produto_id'] == produto_id and item['sabor'] == sabor:
-                item_existente = item
-                break
-        
-        if item_existente:
-            item_existente['quantidade'] += quantidade
-        else:
-            novo_item = {
-                'produto_id': produto_id,
-                'nome': nome,
-                'marca': marca,
-                'preco': preco,
-                'sabor': sabor,
-                'quantidade': quantidade,
-                'imagem': imagem
-            }
+                if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                    item_existente = item
+                    break
+            
+            if item_existente:
+                item_existente['quantidade'] += quantidade
+            else:
+                novo_item = {
+                    'produto_id': produto_id,
+                    'nome': nome,
+                    'marca': marca,
+                    'preco': preco,
+                    'sabor': sabor,
+                    'quantidade': quantidade,
+                    'imagem': imagem
+                }
                 carrinho_temporario.append(novo_item)
-        
-        return jsonify({
-            "success": True,
+            
+            return jsonify({
+                "success": True,
                 "carrinho": carrinho_temporario,
                 "message": "Produto adicionado ao carrinho temporário"
             })
@@ -1475,11 +1475,11 @@ def restore_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL DEFINITIVA - TESTE PERSISTÊNCIA - INICIANDO...")
-    print("✅ Sistema Atlas Suplementos iniciado!")
-    print(f"📁 Diretório atual: {os.getcwd()}")
-    print(f"📁 Templates: {os.path.exists('templates')}")
-    print(f"📁 Static: {os.path.exists('static')}")
-    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+print("✅ Sistema Atlas Suplementos iniciado!")
+print(f"📁 Diretório atual: {os.getcwd()}")
+print(f"📁 Templates: {os.path.exists('templates')}")
+print(f"📁 Static: {os.path.exists('static')}")
+print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente

@@ -997,6 +997,54 @@ def api_recuperar_senha():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/test-excel', methods=['POST'])
+def test_excel_save():
+    """Endpoint para testar salvamento no Excel"""
+    try:
+        print("🧪 TESTE: Salvando pedido de teste no Excel...")
+        
+        # Dados de teste
+        dados_cliente_teste = {
+            'nome': 'Teste Usuario',
+            'email': 'teste@teste.com',
+            'telefone': '11999999999',
+            'cpf': '12345678901',
+            'cep': '01234567',
+            'cidade': 'São Paulo',
+            'estado': 'SP',
+            'bairro': 'Centro',
+            'endereco': 'Rua Teste, 123',
+            'observacoes': 'Pedido de teste'
+        }
+        
+        carrinho_teste = [
+            {
+                'nome': 'Produto Teste',
+                'preco': 50.00,
+                'quantidade': 2,
+                'sabor': 'Chocolate'
+            }
+        ]
+        
+        order_id_teste = f"teste_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        
+        resultado = salvar_pedido_na_planilha(dados_cliente_teste, carrinho_teste, order_id_teste, "Teste")
+        
+        return jsonify({
+            "success": resultado,
+            "message": f"Teste de salvamento: {'Sucesso' if resultado else 'Falha'}",
+            "order_id": order_id_teste
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro no teste Excel: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
 @app.route('/api/test-db', methods=['GET'])
 def test_database():
     """Rota para testar se o banco de dados está funcionando"""

@@ -296,27 +296,27 @@ def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
     try:
         print("🔍 Verificando se usuário está logado...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não está logado")
-            return None
-        
+        return None
+    
         print(f"👤 User ID na sessão: {session.get('user_id')}")
-        conn = conectar_db()
-        cursor = conn.cursor()
+    conn = conectar_db()
+    cursor = conn.cursor()
         executar_query(cursor, 'SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
-        usuario = cursor.fetchone()
-        conn.close()
+    usuario = cursor.fetchone()
+    conn.close()
         
         print(f"👤 Usuário encontrado no banco: {usuario}")
-        
-        if usuario:
+    
+    if usuario:
             user_data = {
-                'id': usuario[0],
-                'nome': usuario[1],
-                'email': usuario[2],
-                'data_criacao': usuario[3],
-                'admin': usuario[4]
-            }
+            'id': usuario[0],
+            'nome': usuario[1],
+            'email': usuario[2],
+            'data_criacao': usuario[3],
+            'admin': usuario[4]
+        }
             print(f"✅ Dados do usuário preparados: {user_data}")
             return user_data
         else:
@@ -327,7 +327,7 @@ def obter_usuario_logado():
         print(f"💥 Erro ao obter usuário logado: {e}")
         import traceback
         traceback.print_exc()
-        return None
+    return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -583,19 +583,19 @@ def produto_individual(produto_id):
 def perfil():
     try:
         print("👤 Acessando perfil...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
         
         print("✅ Usuário logado, obtendo dados...")
-        usuario = obter_usuario_logado()
+    usuario = obter_usuario_logado()
         print(f"👤 Dados do usuário: {usuario}")
         
         if not usuario:
             print("❌ Erro ao obter dados do usuário")
             return redirect(url_for('login'))
             
-        return render_template('perfil.html', usuario=usuario)
+    return render_template('perfil.html', usuario=usuario)
         
     except Exception as e:
         print(f"💥 Erro no perfil: {e}")
@@ -607,9 +607,9 @@ def perfil():
 def pedidos():
     try:
         print("📦 Acessando pedidos...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
         
         # Buscar pedidos do usuário logado
         usuario = obter_usuario_logado()
@@ -701,6 +701,8 @@ def pedidos():
 @app.route('/admin/login')
 def admin_login():
     """Página de login para administradores"""
+    print("🔐 Acessando página de login de admin...")
+    print(f"🔍 Sessão atual: {dict(session)}")
     return render_template('admin_login.html')
 
 @app.route('/api/admin-login', methods=['POST'])
@@ -734,6 +736,7 @@ def api_admin_login():
             session['admin_mode'] = True
             session['is_admin_session'] = True  # Flag para identificar sessão de admin
             print(f"👑 Admin logado: {usuario[1]} ({usuario[2]}) - Sessão separada")
+            print(f"🔍 Sessão após login: {dict(session)}")
             return jsonify({
                 "success": True,
                 "message": "Login de admin realizado com sucesso",
@@ -754,9 +757,12 @@ def admin_pedidos():
     """Página para administrador ver todos os pedidos"""
     try:
         print("👑 Acessando página de administração de pedidos...")
+        print(f"🔍 Sessão atual: {dict(session)}")
+        print(f"🔍 admin_logado(): {admin_logado()}")
         
         # Verificar se é admin
         if not admin_logado():
+            print("❌ Admin não logado, redirecionando para login")
             return redirect(url_for('admin_login'))
         
         # Buscar pedidos do banco de dados
@@ -958,6 +964,28 @@ def admin_logout():
             "message": "Logout realizado com sucesso",
             "redirect": "/"
         })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/verificar-admin', methods=['GET'])
+def verificar_admin():
+    """Verificar se admin está logado"""
+    try:
+        print(f"🔍 Verificando admin - Sessão: {dict(session)}")
+        print(f"🔍 admin_logado(): {admin_logado()}")
+        
+        if admin_logado():
+            return jsonify({
+                "success": True,
+                "admin_logado": True,
+                "sessao": dict(session)
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "admin_logado": False,
+                "sessao": dict(session)
+            })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
@@ -1165,53 +1193,53 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
             print(f"❌ Erro ao salvar no banco: {e}")
         
         # 2. SALVAR NA PLANILHA (BACKUP)
-        try:
-            planilha_path = 'pedidos_atlas.xlsx'
+    try:
+        planilha_path = 'pedidos_atlas.xlsx'
             print(f"📊 Salvando pedido {order_id} na planilha: {planilha_path}")
-            
-            if os.path.exists(planilha_path):
+        
+        if os.path.exists(planilha_path):
                 print("📊 Carregando planilha existente...")
-                wb = load_workbook(planilha_path)
-                ws = wb.active
-            else:
+            wb = load_workbook(planilha_path)
+            ws = wb.active
+        else:
                 print("📊 Criando nova planilha...")
-                wb = Workbook()
-                ws = wb.active
-                ws.title = "Pedidos Atlas"
-                headers = [
-                    "ID Pedido", "Data", "Nome", "Email", "Telefone", "CPF", 
-                    "Data Nascimento", "CEP", "Cidade", "Estado", "Bairro", 
-                    "Endereço", "Observações", "Status", "Total", "Produtos"
-                ]
-                for col, header in enumerate(headers, 1):
-                    ws.cell(row=1, column=col, value=header)
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Pedidos Atlas"
+            headers = [
+                "ID Pedido", "Data", "Nome", "Email", "Telefone", "CPF", 
+                "Data Nascimento", "CEP", "Cidade", "Estado", "Bairro", 
+                "Endereço", "Observações", "Status", "Total", "Produtos"
+            ]
+            for col, header in enumerate(headers, 1):
+                ws.cell(row=1, column=col, value=header)
                 print("📊 Cabeçalhos criados na planilha")
             
-            next_row = ws.max_row + 1
-            pedido_data = [
-                order_id,
+        next_row = ws.max_row + 1
+        pedido_data = [
+            order_id,
                 obter_horario_brasil().strftime("%d/%m/%Y %H:%M:%S"),
-                dados_cliente.get('nome', ''),
-                dados_cliente.get('email', ''),
-                dados_cliente.get('telefone', ''),
-                dados_cliente.get('cpf', ''),
-                dados_cliente.get('data_nascimento', ''),
-                dados_cliente.get('cep', ''),
-                dados_cliente.get('cidade', ''),
-                dados_cliente.get('estado', ''),
-                dados_cliente.get('bairro', ''),
-                dados_cliente.get('endereco', ''),
-                dados_cliente.get('observacoes', ''),
-                status,
-                f"R$ {total:.2f}",
-                produtos_str
-            ]
-            
-            for col, value in enumerate(pedido_data, 1):
-                ws.cell(row=next_row, column=col, value=value)
-            
+            dados_cliente.get('nome', ''),
+            dados_cliente.get('email', ''),
+            dados_cliente.get('telefone', ''),
+            dados_cliente.get('cpf', ''),
+            dados_cliente.get('data_nascimento', ''),
+            dados_cliente.get('cep', ''),
+            dados_cliente.get('cidade', ''),
+            dados_cliente.get('estado', ''),
+            dados_cliente.get('bairro', ''),
+            dados_cliente.get('endereco', ''),
+            dados_cliente.get('observacoes', ''),
+            status,
+            f"R$ {total:.2f}",
+            produtos_str
+        ]
+        
+        for col, value in enumerate(pedido_data, 1):
+            ws.cell(row=next_row, column=col, value=value)
+        
             print(f"📊 Salvando planilha em: {planilha_path}")
-            wb.save(planilha_path)
+        wb.save(planilha_path)
             print(f"✅ Pedido {order_id} salvo na PLANILHA com sucesso!")
             
         except Exception as e:
@@ -1293,28 +1321,28 @@ def adicionar_ao_carrinho():
             print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
             
             # Verificar se item já existe
-            item_existente = None
+        item_existente = None
             for item in carrinho_temporario:
-                if item['produto_id'] == produto_id and item['sabor'] == sabor:
-                    item_existente = item
-                    break
-            
-            if item_existente:
-                item_existente['quantidade'] += quantidade
-            else:
-                novo_item = {
-                    'produto_id': produto_id,
-                    'nome': nome,
-                    'marca': marca,
-                    'preco': preco,
-                    'sabor': sabor,
-                    'quantidade': quantidade,
-                    'imagem': imagem
-                }
+            if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                item_existente = item
+                break
+        
+        if item_existente:
+            item_existente['quantidade'] += quantidade
+        else:
+            novo_item = {
+                'produto_id': produto_id,
+                'nome': nome,
+                'marca': marca,
+                'preco': preco,
+                'sabor': sabor,
+                'quantidade': quantidade,
+                'imagem': imagem
+            }
                 carrinho_temporario.append(novo_item)
-            
-            return jsonify({
-                "success": True,
+        
+        return jsonify({
+            "success": True,
                 "carrinho": carrinho_temporario,
                 "message": "Produto adicionado ao carrinho temporário"
             })
@@ -2111,11 +2139,11 @@ def restore_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL DEFINITIVA - TESTE PERSISTÊNCIA - INICIANDO...")
-print("✅ Sistema Atlas Suplementos iniciado!")
-print(f"📁 Diretório atual: {os.getcwd()}")
-print(f"📁 Templates: {os.path.exists('templates')}")
-print(f"📁 Static: {os.path.exists('static')}")
-print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+    print("✅ Sistema Atlas Suplementos iniciado!")
+    print(f"📁 Diretório atual: {os.getcwd()}")
+    print(f"📁 Templates: {os.path.exists('templates')}")
+    print(f"📁 Static: {os.path.exists('static')}")
+    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente

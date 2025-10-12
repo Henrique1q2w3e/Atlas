@@ -107,11 +107,11 @@ document.getElementById('recuperarForm').addEventListener('submit', function(e) 
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Mostra o token para demo (em produção, enviaria por email)
-            mostrarSucesso(`Token gerado: ${data.token}. Clique no link para alterar sua senha.`);
-            // Em produção, redirecionaria para uma página de confirmação
+            // Mostra mensagem de sucesso
+            mostrarSucesso(data.message);
+            // Redireciona conforme indicado pela API
             setTimeout(() => {
-                window.location.href = `/nova-senha/${data.token}`;
+                window.location.href = data.redirect || '/login';
             }, 2000);
         } else {
             mostrarErro(data.error);

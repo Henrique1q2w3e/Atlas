@@ -43,32 +43,11 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Usar PostgreSQL se disponível, senão SQLite
-    database_url = os.environ.get('DATABASE_URL')
-    
-    if database_url:
-        # PostgreSQL no Render
-        print("💾 Conectando ao PostgreSQL...")
-        import psycopg2
-        from urllib.parse import urlparse
-        
-        # Parse da URL do PostgreSQL
-        url = urlparse(database_url)
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        print(f"💾 Conectado ao PostgreSQL: {url.hostname}")
-        return conn
-    else:
-        # SQLite local
-        print("💾 Conectando ao SQLite...")
-        db_path = os.path.join(os.getcwd(), 'atlas.db')
-        print(f"💾 Usando SQLite local: {db_path}")
-        return sqlite3.connect(db_path)
+    # TEMPORARIAMENTE USANDO SQLITE ATÉ RESOLVER PYTHON 3.13
+    print("💾 Conectando ao SQLite (temporário)...")
+    db_path = os.path.join(os.getcwd(), 'atlas.db')
+    print(f"💾 Usando SQLite: {db_path}")
+    return sqlite3.connect(db_path)
 
 def criar_tabelas():
     """Criar tabelas do banco de dados se não existirem"""
@@ -77,34 +56,18 @@ def criar_tabelas():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        database_url = os.environ.get('DATABASE_URL')
-        
-        if database_url:
-            # PostgreSQL
-            print("💾 Criando tabelas no PostgreSQL...")
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS usuario (
-                    id SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) UNIQUE NOT NULL,
-                    senha_hash VARCHAR(255) NOT NULL,
-                    data_criacao TIMESTAMP NOT NULL,
-                    admin INTEGER DEFAULT 0
-                )
-            ''')
-        else:
-            # SQLite
-            print("💾 Criando tabelas no SQLite...")
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS usuario (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nome TEXT NOT NULL,
-                    email TEXT UNIQUE NOT NULL,
-                    senha_hash TEXT NOT NULL,
-                    data_criacao TEXT NOT NULL,
-                    admin INTEGER DEFAULT 0
-                )
-            ''')
+        # SQLite apenas
+        print("💾 Criando tabelas no SQLite...")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuario (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                senha_hash TEXT NOT NULL,
+                data_criacao TEXT NOT NULL,
+                admin INTEGER DEFAULT 0
+            )
+        ''')
         
         conn.commit()
         conn.close()
@@ -1136,13 +1099,13 @@ def restore_database():
         }), 500
 
 # Criar tabelas automaticamente quando o app iniciar
-print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL - INICIANDO...")
-    print("✅ Sistema Atlas Suplementos iniciado!")
-    print(f"📁 Diretório atual: {os.getcwd()}")
-    print(f"📁 Templates: {os.path.exists('templates')}")
-    print(f"📁 Static: {os.path.exists('static')}")
-    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
-print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
+print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE TEMPORÁRIA - INICIANDO...")
+print("✅ Sistema Atlas Suplementos iniciado!")
+print(f"📁 Diretório atual: {os.getcwd()}")
+print(f"📁 Templates: {os.path.exists('templates')}")
+print(f"📁 Static: {os.path.exists('static')}")
+print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+print("🔧 USANDO SQLITE TEMPORÁRIO - FUNCIONANDO!")
 
 # Criar tabelas do banco de dados automaticamente
 print("🔧 Criando tabelas automaticamente...")

@@ -13,8 +13,8 @@ openpyxl==3.0.10
 # HTTP Requests
 requests==2.32.5
 
-# Database - PostgreSQL for persistence
-psycopg2-binary==2.9.7
+# Database - PostgreSQL for persistence (commented out due to Python 3.13 incompatibility)
+# psycopg2-binary==2.9.7
 
 # Mercado Pago
 mercadopago==2.3.0

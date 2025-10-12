@@ -794,32 +794,50 @@ def test_database():
             "message": "Erro ao conectar com banco de dados"
         }), 500
 
-@app.route('/api/create-tables', methods=['POST'])
+@app.route('/api/create-tables', methods=['GET', 'POST'])
 def create_tables_endpoint():
-    """Rota para forçar a criação das tabelas"""
+    """Rota para forçar a criação das tabelas - SEM AUTENTICAÇÃO"""
     try:
         print("🔧 Forçando criação das tabelas...")
+        print("🔧 Executando criar_tabelas()...")
+        
+        # Executar criação das tabelas
         criar_tabelas()
+        
+        print("🔧 Verificando se tabela foi criada...")
         
         # Verificar se foi criada
         conn = conectar_db()
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
         table_exists = cursor.fetchone()
-        conn.close()
         
         if table_exists:
+            # Contar usuários
+            cursor.execute("SELECT COUNT(*) FROM usuario")
+            user_count = cursor.fetchone()[0]
+            conn.close()
+            
+            print(f"✅ Tabela criada com sucesso! Usuários: {user_count}")
             return jsonify({
                 "success": True,
-                "message": "Tabelas criadas com sucesso!"
+                "message": "Tabelas criadas com sucesso!",
+                "table_exists": True,
+                "user_count": user_count
             })
         else:
+            conn.close()
+            print("❌ Tabela não foi criada")
             return jsonify({
                 "success": False,
-                "message": "Erro ao criar tabelas"
+                "message": "Erro ao criar tabelas - tabela não existe",
+                "table_exists": False
             })
             
     except Exception as e:
+        print(f"❌ Erro ao criar tabelas: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
             "success": False,
             "error": str(e),

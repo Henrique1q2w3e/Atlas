@@ -491,6 +491,113 @@ def pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
+@app.route('/admin/pedidos')
+def admin_pedidos():
+    """Página para administrador ver todos os pedidos"""
+    try:
+        print("👑 Acessando página de administração de pedidos...")
+        
+        # Verificar se é admin (por enquanto, qualquer usuário logado pode ver)
+        if not usuario_logado():
+            return redirect(url_for('login'))
+        
+        # Buscar pedidos do banco de dados
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Criar tabela de pedidos se não existir
+        executar_query(cursor, '''
+            CREATE TABLE IF NOT EXISTS pedidos (
+                id SERIAL PRIMARY KEY,
+                order_id VARCHAR(255) UNIQUE NOT NULL,
+                nome VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                telefone VARCHAR(20),
+                cpf VARCHAR(20),
+                data_nascimento VARCHAR(20),
+                cep VARCHAR(20),
+                cidade VARCHAR(100),
+                estado VARCHAR(50),
+                bairro VARCHAR(100),
+                endereco TEXT,
+                observacoes TEXT,
+                status VARCHAR(50) DEFAULT 'Pendente',
+                total DECIMAL(10,2) NOT NULL,
+                produtos TEXT NOT NULL,
+                data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        # Buscar todos os pedidos
+        executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
+        pedidos = cursor.fetchall()
+        conn.close()
+        
+        print(f"📊 Encontrados {len(pedidos)} pedidos")
+        
+        # Converter para formato mais legível
+        pedidos_formatados = []
+        for pedido in pedidos:
+            pedidos_formatados.append({
+                'id': pedido[0],
+                'order_id': pedido[1],
+                'nome': pedido[2],
+                'email': pedido[3],
+                'telefone': pedido[4],
+                'cpf': pedido[5],
+                'data_nascimento': pedido[6],
+                'cep': pedido[7],
+                'cidade': pedido[8],
+                'estado': pedido[9],
+                'bairro': pedido[10],
+                'endereco': pedido[11],
+                'observacoes': pedido[12],
+                'status': pedido[13],
+                'total': float(pedido[14]),
+                'produtos': pedido[15],
+                'data_pedido': pedido[16]
+            })
+        
+        return render_template('admin_pedidos.html', pedidos=pedidos_formatados)
+        
+    except Exception as e:
+        print(f"💥 Erro na página de admin: {e}")
+        import traceback
+        traceback.print_exc()
+        return f"Erro interno: {str(e)}", 500
+
+@app.route('/api/atualizar-status', methods=['POST'])
+def atualizar_status_pedido():
+    """API para atualizar status do pedido"""
+    try:
+        data = request.get_json()
+        order_id = data.get('order_id')
+        novo_status = data.get('status')
+        
+        if not order_id or not novo_status:
+            return jsonify({"success": False, "error": "order_id e status são obrigatórios"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Atualizar status
+        executar_query(cursor, '''
+            UPDATE pedidos SET status = ? WHERE order_id = ?
+        ''', (novo_status, order_id))
+        
+        if cursor.rowcount > 0:
+            conn.commit()
+            conn.close()
+            print(f"✅ Status do pedido {order_id} atualizado para {novo_status}")
+            return jsonify({"success": True, "message": f"Status atualizado para {novo_status}"})
+        else:
+            conn.close()
+            return jsonify({"success": False, "error": "Pedido não encontrado"}), 404
+            
+    except Exception as e:
+        print(f"❌ Erro ao atualizar status: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 # Sistema de carrinho híbrido (banco + memória)
 carrinho_temporario = []  # Para usuários não logados
 
@@ -532,31 +639,9 @@ def obter_carrinho_usuario():
         return carrinho_temporario
 
 def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendente"):
-    """Salva o pedido na planilha pedidos_atlas.xlsx"""
+    """Salva o pedido na planilha pedidos_atlas.xlsx E no banco de dados"""
     try:
-        planilha_path = 'pedidos_atlas.xlsx'
-        print(f"📊 Salvando pedido {order_id} na planilha: {planilha_path}")
-        print(f"📁 Diretório atual: {os.getcwd()}")
-        print(f"📁 Arquivo existe: {os.path.exists(planilha_path)}")
-        
-        if os.path.exists(planilha_path):
-            print("📊 Carregando planilha existente...")
-            wb = load_workbook(planilha_path)
-            ws = wb.active
-        else:
-            print("📊 Criando nova planilha...")
-            wb = Workbook()
-            ws = wb.active
-            ws.title = "Pedidos Atlas"
-            headers = [
-                "ID Pedido", "Data", "Nome", "Email", "Telefone", "CPF", 
-                "Data Nascimento", "CEP", "Cidade", "Estado", "Bairro", 
-                "Endereço", "Observações", "Status", "Total", "Produtos"
-            ]
-            for col, header in enumerate(headers, 1):
-                ws.cell(row=1, column=col, value=header)
-            print("📊 Cabeçalhos criados na planilha")
-        
+        # Calcular total e produtos
         total = sum(item.get('preco', 0) * item.get('quantidade', 1) for item in carrinho)
         produtos_texto = []
         for item in carrinho:
@@ -565,41 +650,128 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
                 produto_info += f" - Sabor: {item.get('sabor')}"
             produto_info += f" (Qtd: {item.get('quantidade', 1)})"
             produtos_texto.append(produto_info)
-        
         produtos_str = " | ".join(produtos_texto)
-        next_row = ws.max_row + 1
         
-        pedido_data = [
-            order_id,
-            datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            dados_cliente.get('nome', ''),
-            dados_cliente.get('email', ''),
-            dados_cliente.get('telefone', ''),
-            dados_cliente.get('cpf', ''),
-            dados_cliente.get('data_nascimento', ''),
-            dados_cliente.get('cep', ''),
-            dados_cliente.get('cidade', ''),
-            dados_cliente.get('estado', ''),
-            dados_cliente.get('bairro', ''),
-            dados_cliente.get('endereco', ''),
-            dados_cliente.get('observacoes', ''),
-            status,
-            f"R$ {total:.2f}",
-            produtos_str
-        ]
+        print(f"📊 Salvando pedido {order_id} - Total: R$ {total:.2f}")
         
-        for col, value in enumerate(pedido_data, 1):
-            ws.cell(row=next_row, column=col, value=value)
+        # 1. SALVAR NO BANCO DE DADOS (PRINCIPAL)
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor()
+            
+            # Criar tabela se não existir
+            executar_query(cursor, '''
+                CREATE TABLE IF NOT EXISTS pedidos (
+                    id SERIAL PRIMARY KEY,
+                    order_id VARCHAR(255) UNIQUE NOT NULL,
+                    nome VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) NOT NULL,
+                    telefone VARCHAR(20),
+                    cpf VARCHAR(20),
+                    data_nascimento VARCHAR(20),
+                    cep VARCHAR(20),
+                    cidade VARCHAR(100),
+                    estado VARCHAR(50),
+                    bairro VARCHAR(100),
+                    endereco TEXT,
+                    observacoes TEXT,
+                    status VARCHAR(50) DEFAULT 'Pendente',
+                    total DECIMAL(10,2) NOT NULL,
+                    produtos TEXT NOT NULL,
+                    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            ''')
+            
+            # Inserir pedido
+            executar_query(cursor, '''
+                INSERT INTO pedidos (order_id, nome, email, telefone, cpf, data_nascimento, 
+                                   cep, cidade, estado, bairro, endereco, observacoes, 
+                                   status, total, produtos)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                order_id,
+                dados_cliente.get('nome', ''),
+                dados_cliente.get('email', ''),
+                dados_cliente.get('telefone', ''),
+                dados_cliente.get('cpf', ''),
+                dados_cliente.get('data_nascimento', ''),
+                dados_cliente.get('cep', ''),
+                dados_cliente.get('cidade', ''),
+                dados_cliente.get('estado', ''),
+                dados_cliente.get('bairro', ''),
+                dados_cliente.get('endereco', ''),
+                dados_cliente.get('observacoes', ''),
+                status,
+                total,
+                produtos_str
+            ))
+            
+            conn.commit()
+            conn.close()
+            print(f"✅ Pedido {order_id} salvo no BANCO DE DADOS com sucesso!")
+            
+        except Exception as e:
+            print(f"❌ Erro ao salvar no banco: {e}")
         
-        print(f"📊 Salvando planilha em: {planilha_path}")
-        wb.save(planilha_path)
-        print(f"✅ Pedido {order_id} salvo na planilha com sucesso!")
+        # 2. SALVAR NA PLANILHA (BACKUP)
+        try:
+            planilha_path = 'pedidos_atlas.xlsx'
+            print(f"📊 Salvando pedido {order_id} na planilha: {planilha_path}")
+            
+            if os.path.exists(planilha_path):
+                print("📊 Carregando planilha existente...")
+                wb = load_workbook(planilha_path)
+                ws = wb.active
+            else:
+                print("📊 Criando nova planilha...")
+                wb = Workbook()
+                ws = wb.active
+                ws.title = "Pedidos Atlas"
+                headers = [
+                    "ID Pedido", "Data", "Nome", "Email", "Telefone", "CPF", 
+                    "Data Nascimento", "CEP", "Cidade", "Estado", "Bairro", 
+                    "Endereço", "Observações", "Status", "Total", "Produtos"
+                ]
+                for col, header in enumerate(headers, 1):
+                    ws.cell(row=1, column=col, value=header)
+                print("📊 Cabeçalhos criados na planilha")
+            
+            next_row = ws.max_row + 1
+            pedido_data = [
+                order_id,
+                datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+                dados_cliente.get('nome', ''),
+                dados_cliente.get('email', ''),
+                dados_cliente.get('telefone', ''),
+                dados_cliente.get('cpf', ''),
+                dados_cliente.get('data_nascimento', ''),
+                dados_cliente.get('cep', ''),
+                dados_cliente.get('cidade', ''),
+                dados_cliente.get('estado', ''),
+                dados_cliente.get('bairro', ''),
+                dados_cliente.get('endereco', ''),
+                dados_cliente.get('observacoes', ''),
+                status,
+                f"R$ {total:.2f}",
+                produtos_str
+            ]
+            
+            for col, value in enumerate(pedido_data, 1):
+                ws.cell(row=next_row, column=col, value=value)
+            
+            print(f"📊 Salvando planilha em: {planilha_path}")
+            wb.save(planilha_path)
+            print(f"✅ Pedido {order_id} salvo na PLANILHA com sucesso!")
+            
+        except Exception as e:
+            print(f"❌ Erro ao salvar na planilha: {e}")
+        
         print(f"📊 Total: R$ {total:.2f}")
         print(f"📊 Produtos: {produtos_str}")
         return True
         
     except Exception as e:
-        print(f"❌ Erro ao salvar pedido na planilha: {e}")
+        print(f"❌ Erro geral ao salvar pedido: {e}")
         import traceback
         traceback.print_exc()
         return False

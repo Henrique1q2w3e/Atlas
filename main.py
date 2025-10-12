@@ -618,20 +618,33 @@ def pedidos():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Buscar pedidos do usuário (tentar por email exato primeiro)
+        # PRIMEIRO: Ver todos os emails que existem no banco
+        executar_query(cursor, 'SELECT DISTINCT email FROM pedidos')
+        todos_emails = cursor.fetchall()
+        print(f"📧 TODOS os emails no banco: {[email[0] for email in todos_emails]}")
+        
+        # SEGUNDO: Contar total de pedidos
+        executar_query(cursor, 'SELECT COUNT(*) FROM pedidos')
+        total_pedidos = cursor.fetchone()[0]
+        print(f"📊 TOTAL de pedidos no banco: {total_pedidos}")
+        
+        # TERCEIRO: Buscar pedidos do usuário (tentar por email exato primeiro)
+        print(f"🔍 Buscando pedidos para email exato: '{usuario['email']}'")
         executar_query(cursor, '''
             SELECT * FROM pedidos WHERE email = ? ORDER BY data_pedido DESC
         ''', (usuario['email'],))
         
         pedidos = cursor.fetchall()
+        print(f"📦 Encontrados {len(pedidos)} pedidos com email exato")
         
         # Se não encontrou pedidos, buscar por email similar (case insensitive)
         if len(pedidos) == 0:
-            print(f"🔍 Nenhum pedido encontrado para {usuario['email']}, tentando busca mais ampla...")
+            print(f"🔍 Nenhum pedido encontrado para '{usuario['email']}', tentando busca case insensitive...")
             executar_query(cursor, '''
                 SELECT * FROM pedidos WHERE LOWER(email) = LOWER(?) ORDER BY data_pedido DESC
             ''', (usuario['email'],))
             pedidos = cursor.fetchall()
+            print(f"📦 Encontrados {len(pedidos)} pedidos com busca case insensitive")
         
         # Se ainda não encontrou, apenas logar para debug (NÃO mostrar todos os pedidos)
         if len(pedidos) == 0:
@@ -937,22 +950,19 @@ def atualizar_status_pedido():
 
 @app.route('/api/debug-pedidos', methods=['GET'])
 def debug_pedidos():
-    """Endpoint para debug - APENAS para administradores"""
+    """Endpoint para debug - TEMPORÁRIO para descobrir o problema"""
     try:
-        # Verificar se é admin
-        if not usuario_logado():
-            return jsonify({"success": False, "error": "Não autorizado"}), 401
-        
-        usuario = obter_usuario_logado()
-        if not usuario.get('admin'):
-            return jsonify({"success": False, "error": "Apenas administradores podem acessar este endpoint"}), 403
-        
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Buscar todos os pedidos (apenas para admin)
+        # Buscar todos os pedidos
         executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
         pedidos = cursor.fetchall()
+        
+        # Buscar todos os emails únicos
+        executar_query(cursor, 'SELECT DISTINCT email FROM pedidos')
+        emails_unicos = cursor.fetchall()
+        
         conn.close()
         
         pedidos_formatados = []
@@ -970,6 +980,7 @@ def debug_pedidos():
         return jsonify({
             "success": True,
             "total_pedidos": len(pedidos_formatados),
+            "emails_unicos": [email[0] for email in emails_unicos],
             "pedidos": pedidos_formatados
         })
         

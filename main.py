@@ -43,20 +43,32 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Usar SQLite com diretório persistente no Render
-    print("💾 Conectando ao SQLite...")
+    # Usar PostgreSQL se disponível, senão SQLite
+    database_url = os.environ.get('DATABASE_URL')
     
-    # No Render, usar diretório do projeto que persiste melhor
-    if os.environ.get('RENDER'):
-        # Render - usar diretório do projeto
-        db_path = '/opt/render/project/src/atlas.db'
-        print(f"💾 Usando diretório Render: {db_path}")
+    if database_url:
+        # PostgreSQL no Render
+        print("💾 Conectando ao PostgreSQL...")
+        import psycopg2
+        from urllib.parse import urlparse
+        
+        # Parse da URL do PostgreSQL
+        url = urlparse(database_url)
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+        print(f"💾 Conectado ao PostgreSQL: {url.hostname}")
+        return conn
     else:
-        # Desenvolvimento local
+        # SQLite local
+        print("💾 Conectando ao SQLite...")
         db_path = os.path.join(os.getcwd(), 'atlas.db')
-        print(f"💾 Usando diretório local: {db_path}")
-    
-    return sqlite3.connect(db_path)
+        print(f"💾 Usando SQLite local: {db_path}")
+        return sqlite3.connect(db_path)
 
 def criar_tabelas():
     """Criar tabelas do banco de dados se não existirem"""
@@ -65,18 +77,34 @@ def criar_tabelas():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # SQLite sempre
-        print("💾 Criando tabelas no SQLite...")
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS usuario (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL,
-                senha_hash TEXT NOT NULL,
-                data_criacao TEXT NOT NULL,
-                admin INTEGER DEFAULT 0
-            )
-        ''')
+        database_url = os.environ.get('DATABASE_URL')
+        
+        if database_url:
+            # PostgreSQL
+            print("💾 Criando tabelas no PostgreSQL...")
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS usuario (
+                    id SERIAL PRIMARY KEY,
+                    nome VARCHAR(255) NOT NULL,
+                    email VARCHAR(255) UNIQUE NOT NULL,
+                    senha_hash VARCHAR(255) NOT NULL,
+                    data_criacao TIMESTAMP NOT NULL,
+                    admin INTEGER DEFAULT 0
+                )
+            ''')
+        else:
+            # SQLite
+            print("💾 Criando tabelas no SQLite...")
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS usuario (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    email TEXT UNIQUE NOT NULL,
+                    senha_hash TEXT NOT NULL,
+                    data_criacao TEXT NOT NULL,
+                    admin INTEGER DEFAULT 0
+                )
+            ''')
         
         conn.commit()
         conn.close()

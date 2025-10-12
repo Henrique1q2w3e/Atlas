@@ -862,38 +862,12 @@ def admin_pedidos():
         
         print(f"📊 Encontrados {len(pedidos)} pedidos")
         
-        # Converter para formato mais legível com horário correto
+        # Converter para formato mais legível - VERSÃO SIMPLIFICADA
         pedidos_formatados = []
-        for i, pedido in enumerate(pedidos):
-            print(f"🔍 Processando pedido {i+1}: {pedido[1] if len(pedido) > 1 else 'N/A'}")
-            print(f"🔍 Tipo da data: {type(pedido[16]) if len(pedido) > 16 else 'N/A'}")
-            print(f"🔍 Valor da data: {pedido[16] if len(pedido) > 16 else 'N/A'}")
-            
-            # Converter data para horário do Brasil
-            data_pedido = pedido[16] if len(pedido) > 16 else None
-            
-            if data_pedido is None:
-                data_formatada = "N/A"
-            elif isinstance(data_pedido, str):
-                # Se já é string, usar como está
-                data_formatada = data_pedido
-            else:
-                # Se é datetime, converter para Brasil
-                try:
-                    if hasattr(data_pedido, 'strftime'):
-                        if data_pedido.tzinfo is None:
-                            # Se não tem timezone, assumir UTC
-                            data_pedido = data_pedido.replace(tzinfo=timezone.utc)
-                        
-                        # Converter para horário do Brasil (UTC-3)
-                        brasil_tz = timezone(timedelta(hours=-3))
-                        data_brasil = data_pedido.astimezone(brasil_tz)
-                        data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
-                    else:
-                        data_formatada = str(data_pedido)
-                except Exception as e:
-                    print(f"❌ Erro ao formatar data do pedido {i+1}: {e}")
-                    data_formatada = str(data_pedido) if data_pedido else "N/A"
+        for pedido in pedidos:
+            # SIMPLIFICAR: usar data como string simples
+            data_pedido = pedido[16] if len(pedido) > 16 else "N/A"
+            data_formatada = str(data_pedido) if data_pedido else "N/A"
             
             pedidos_formatados.append({
                 'id': pedido[0],

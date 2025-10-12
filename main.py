@@ -532,11 +532,16 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
     """Salva o pedido na planilha pedidos_atlas.xlsx"""
     try:
         planilha_path = 'pedidos_atlas.xlsx'
+        print(f"📊 Salvando pedido {order_id} na planilha: {planilha_path}")
+        print(f"📁 Diretório atual: {os.getcwd()}")
+        print(f"📁 Arquivo existe: {os.path.exists(planilha_path)}")
         
         if os.path.exists(planilha_path):
+            print("📊 Carregando planilha existente...")
             wb = load_workbook(planilha_path)
             ws = wb.active
         else:
+            print("📊 Criando nova planilha...")
             wb = Workbook()
             ws = wb.active
             ws.title = "Pedidos Atlas"
@@ -547,6 +552,7 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
             ]
             for col, header in enumerate(headers, 1):
                 ws.cell(row=1, column=col, value=header)
+            print("📊 Cabeçalhos criados na planilha")
         
         total = sum(item.get('preco', 0) * item.get('quantidade', 1) for item in carrinho)
         produtos_texto = []
@@ -582,12 +588,17 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
         for col, value in enumerate(pedido_data, 1):
             ws.cell(row=next_row, column=col, value=value)
         
+        print(f"📊 Salvando planilha em: {planilha_path}")
         wb.save(planilha_path)
-        print(f"✅ Pedido {order_id} salvo na planilha")
+        print(f"✅ Pedido {order_id} salvo na planilha com sucesso!")
+        print(f"📊 Total: R$ {total:.2f}")
+        print(f"📊 Produtos: {produtos_str}")
         return True
         
     except Exception as e:
         print(f"❌ Erro ao salvar pedido na planilha: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def gerar_link_pagamento_simples(dados_cliente, order_id):
@@ -791,10 +802,14 @@ def criar_pagamento_simples():
         order_id = f"pedido_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
         carrinho = obter_carrinho_usuario()
         
+        print(f"🛒 Processando pedido {order_id}")
+        print(f"🛒 Carrinho: {len(carrinho)} itens")
+        print(f"🛒 Dados cliente: {dados_cliente.get('nome', 'N/A')} - {dados_cliente.get('email', 'N/A')}")
+        
         if salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, "Pendente"):
-            print(f"✅ Pedido {order_id} registrado na planilha")
+            print(f"✅ Pedido {order_id} registrado na planilha com sucesso!")
         else:
-            print(f"⚠️ Erro ao salvar pedido {order_id} na planilha")
+            print(f"⚠️ ERRO: Falha ao salvar pedido {order_id} na planilha!")
         
         result = gerar_link_pagamento_simples(dados_cliente, order_id)
         

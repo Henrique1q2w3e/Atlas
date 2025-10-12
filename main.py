@@ -166,10 +166,11 @@ def criar_tabelas():
 
 def usuario_logado():
     """Verificar se usuário está logado (NÃO admin)"""
-    print(f"🔍 Verificando login - Sessão: {dict(session)}")
+    print(f"🔍 Verificando login usuário normal - Sessão: {dict(session)}")
     print(f"🔍 user_id na sessão: {'user_id' in session}")
     print(f"🔍 is_admin_session: {session.get('is_admin_session', False)}")
     
+    # Usuário normal está logado se tem user_id E não é sessão de admin
     resultado = 'user_id' in session and not session.get('is_admin_session', False)
     print(f"🔍 usuario_logado() retorna: {resultado}")
     return resultado
@@ -739,14 +740,14 @@ def api_admin_login():
         conn.close()
         
         if usuario and verificar_senha(senha, usuario[3]):
-            # Usar sessão completamente separada para admin
-            session.clear()
+            # NÃO limpar a sessão - apenas adicionar dados do admin
+            # Preservar dados do usuário normal se existirem
             session['admin_user_id'] = usuario[0]  # Chave diferente para admin
             session['admin'] = True
             session['admin_mode'] = True
             session['is_admin_session'] = True  # Flag para identificar sessão de admin
-            print(f"👑 Admin logado: {usuario[1]} ({usuario[2]}) - Sessão separada")
-            print(f"🔍 Sessão após login: {dict(session)}")
+            print(f"👑 Admin logado: {usuario[1]} ({usuario[2]}) - Sessão preservada")
+            print(f"🔍 Sessão após login admin: {dict(session)}")
             return jsonify({
                 "success": True,
                 "message": "Login de admin realizado com sucesso",
@@ -965,13 +966,23 @@ def atualizar_status_pedido():
 
 @app.route('/api/admin-logout', methods=['POST'])
 def admin_logout():
-    """Logout do admin"""
+    """Logout do admin - NÃO afeta usuário normal"""
     try:
-        session.clear()
-        print("👑 Admin deslogado")
+        # Remover apenas dados do admin, preservar dados do usuário normal
+        if 'admin_user_id' in session:
+            del session['admin_user_id']
+        if 'admin' in session:
+            del session['admin']
+        if 'admin_mode' in session:
+            del session['admin_mode']
+        if 'is_admin_session' in session:
+            del session['is_admin_session']
+        
+        print("👑 Admin deslogado - usuário normal preservado")
+        print(f"🔍 Sessão após logout admin: {dict(session)}")
         return jsonify({
             "success": True,
-            "message": "Logout realizado com sucesso",
+            "message": "Logout de admin realizado com sucesso",
             "redirect": "/"
         })
     except Exception as e:

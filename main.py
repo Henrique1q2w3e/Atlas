@@ -709,35 +709,62 @@ def pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
+# Bloquear URLs antigas do admin
 @app.route('/admin/login')
-@app.route('/sistema-interno-gestao-vendas-2024')
+@app.route('/admin/pedidos')
 @app.route('/relatorios-financeiros-atlas')
+@app.route('/relatorios-financeiros-atlas/vendas')
+def admin_blocked():
+    """Bloquear acesso às URLs antigas do admin"""
+    print("🚫 Tentativa de acesso às URLs antigas do admin bloqueada")
+    return "Página não encontrada", 404
+
+@app.route('/sistema-interno-gestao-vendas-2024')
 def admin_login():
-    """Página de login para administradores - URLs mascaradas"""
+    """Página de login para administradores - URL secreta única"""
     print("🔐 Acessando página de login de admin...")
     print(f"🔍 Sessão atual: {dict(session)}")
     
-    # Verificação adicional de segurança
+    # Verificação de segurança
     referer = request.headers.get('Referer', '')
     user_agent = request.headers.get('User-Agent', '')
-    secret_token = request.args.get('token', '')
+    client_ip = request.remote_addr
     
     print(f"🔍 Referer: {referer}")
     print(f"🔍 User-Agent: {user_agent}")
-    print(f"🔍 Token secreto: {secret_token}")
+    print(f"🔍 IP: {client_ip}")
     
-    # Verificar token secreto (opcional - para acesso extra seguro)
-    expected_token = "atlas2024gestao"
-    if secret_token and secret_token != expected_token:
-        print("❌ Token secreto inválido")
-        return "Acesso negado", 403
+    # Verificar se vem de uma fonte confiável (opcional)
+    if referer and 'atlas-1h3w.onrender.com' not in referer:
+        print("⚠️ Acesso suspeito - referer não confiável")
     
     return render_template('admin_login.html')
 
 @app.route('/api/admin-login', methods=['POST'])
 def api_admin_login():
-    """API para login de administrador"""
+    """API para login de administrador com rate limiting"""
     try:
+        # Rate limiting
+        client_ip = request.remote_addr
+        current_time = time.time()
+        
+        # Limpar tentativas antigas
+        if client_ip in admin_login_attempts:
+            admin_login_attempts[client_ip] = [
+                attempt_time for attempt_time in admin_login_attempts[client_ip]
+                if current_time - attempt_time < TIME_WINDOW
+            ]
+        else:
+            admin_login_attempts[client_ip] = []
+        
+        # Verificar se excedeu o limite
+        if len(admin_login_attempts[client_ip]) >= MAX_LOGIN_ATTEMPTS:
+            print(f"🚫 Rate limit excedido para IP: {client_ip}")
+            return jsonify({
+                "success": False, 
+                "error": "Muitas tentativas de login. Tente novamente em 5 minutos."
+            }), 429
+        
         data = request.get_json()
         email = data.get('email')
         senha = data.get('senha')
@@ -758,6 +785,10 @@ def api_admin_login():
         conn.close()
         
         if usuario and verificar_senha(senha, usuario[3]):
+            # Login bem-sucedido - limpar tentativas
+            if client_ip in admin_login_attempts:
+                del admin_login_attempts[client_ip]
+            
             # NÃO limpar a sessão - apenas adicionar dados do admin
             # Preservar dados do usuário normal se existirem
             session['admin_user_id'] = usuario[0]  # Chave diferente para admin
@@ -772,6 +803,9 @@ def api_admin_login():
                 "redirect": "/sistema-interno-gestao-vendas-2024/pedidos"  # URL secreta
             })
         else:
+            # Login falhou - registrar tentativa
+            admin_login_attempts[client_ip].append(current_time)
+            print(f"❌ Tentativa de login admin falhada para IP: {client_ip}")
             return jsonify({
                 "success": False,
                 "error": "Credenciais inválidas ou usuário não é administrador"
@@ -781,9 +815,7 @@ def api_admin_login():
         print(f"❌ Erro no login admin: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/admin/pedidos')
 @app.route('/sistema-interno-gestao-vendas-2024/pedidos')
-@app.route('/relatorios-financeiros-atlas/vendas')
 def admin_pedidos():
     """Página para administrador ver todos os pedidos"""
     try:
@@ -1106,6 +1138,11 @@ def corrigir_email_pedidos():
 
 # Sistema de carrinho híbrido (banco + memória)
 carrinho_temporario = []  # Para usuários não logados
+
+# Sistema de rate limiting para admin
+admin_login_attempts = {}  # {ip: [timestamps]}
+MAX_LOGIN_ATTEMPTS = 5  # Máximo 5 tentativas
+TIME_WINDOW = 300  # 5 minutos
 
 def obter_carrinho_usuario():
     """Obtém o carrinho do usuário atual"""

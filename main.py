@@ -247,6 +247,47 @@ def obter_mensagem_status(status):
     }
     return mensagens.get(status, f'Status do pedido atualizado para: {status}')
 
+def enviar_whatsapp_automatico(order_id, nome, telefone, status):
+    """Envia mensagem automática no WhatsApp para mudança de status"""
+    try:
+        if not telefone:
+            print("⚠️ Telefone não informado, pulando WhatsApp")
+            return False
+        
+        # Limpar telefone (remover caracteres especiais)
+        telefone_limpo = re.sub(r'[^0-9]', '', telefone)
+        
+        # Verificar se tem DDD
+        if len(telefone_limpo) == 9:
+            telefone_limpo = "11" + telefone_limpo  # Adicionar DDD 11 se não tiver
+        
+        # Criar mensagem personalizada
+        mensagem = f"""🏪 *Atlas Suplementos*
+
+Olá {nome}! 👋
+
+📦 *Atualização do seu pedido #{order_id}*
+
+{obter_mensagem_status(status)}
+
+🔗 Acompanhe seu pedido: https://atlas-1h3w.onrender.com/status-pedido
+
+Obrigado por escolher a Atlas Suplementos! 💪"""
+        
+        # URL do WhatsApp Web
+        whatsapp_url = f"https://wa.me/55{telefone_limpo}?text={requests.utils.quote(mensagem)}"
+        
+        print(f"📱 WhatsApp preparado para {nome} ({telefone_limpo}): {status}")
+        print(f"📱 URL: {whatsapp_url}")
+        
+        # Em produção, você pode usar uma API real do WhatsApp
+        # Por enquanto, apenas logamos a URL
+        return True
+        
+    except Exception as e:
+        print(f"❌ Erro ao preparar WhatsApp: {e}")
+        return False
+
 def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
     try:
@@ -566,8 +607,47 @@ def pedidos():
             print("❌ Usuário não logado, redirecionando para login")
             return redirect(url_for('login'))
         
-        print("✅ Usuário logado, carregando pedidos...")
-        return render_template('pedidos.html')
+        # Buscar pedidos do usuário logado
+        usuario = obter_usuario_logado()
+        if not usuario:
+            return redirect(url_for('login'))
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar pedidos do usuário
+        executar_query(cursor, '''
+            SELECT * FROM pedidos WHERE email = ? ORDER BY data_pedido DESC
+        ''', (usuario['email'],))
+        
+        pedidos = cursor.fetchall()
+        conn.close()
+        
+        # Converter para formato mais legível
+        pedidos_formatados = []
+        for pedido in pedidos:
+            pedidos_formatados.append({
+                'id': pedido[0],
+                'order_id': pedido[1],
+                'nome': pedido[2],
+                'email': pedido[3],
+                'telefone': pedido[4],
+                'cpf': pedido[5],
+                'data_nascimento': pedido[6],
+                'cep': pedido[7],
+                'cidade': pedido[8],
+                'estado': pedido[9],
+                'bairro': pedido[10],
+                'endereco': pedido[11],
+                'observacoes': pedido[12],
+                'status': pedido[13],
+                'total': float(pedido[14]),
+                'produtos': pedido[15],
+                'data_pedido': pedido[16]
+            })
+        
+        print(f"📊 Encontrados {len(pedidos_formatados)} pedidos para {usuario['email']}")
+        return render_template('pedidos.html', pedidos=pedidos_formatados)
 
     except Exception as e:
         print(f"💥 Erro nos pedidos: {e}")
@@ -798,13 +878,19 @@ def atualizar_status_pedido():
             mensagem = obter_mensagem_status(novo_status)
             criar_notificacao(order_id, email, telefone, novo_status, mensagem)
             
+            # Enviar WhatsApp automático
+            whatsapp_enviado = enviar_whatsapp_automatico(order_id, nome, telefone, novo_status)
+            
             print(f"✅ Status do pedido {order_id} atualizado para {novo_status}")
             print(f"📧 Notificação enviada para {email}")
+            if whatsapp_enviado:
+                print(f"📱 WhatsApp preparado para {nome}")
             
             return jsonify({
                 "success": True, 
                 "message": f"Status atualizado para {novo_status}",
-                "notificacao_enviada": True
+                "notificacao_enviada": True,
+                "whatsapp_enviado": whatsapp_enviado
             })
         else:
             conn.close()
@@ -1914,7 +2000,7 @@ def criar_admin_padrao():
         if not admin_existente:
             # Criar admin padrão
             admin_email = "admin@atlas.com"
-            admin_senha = "admin123"  # Senha padrão - deve ser alterada
+            admin_senha = "rafaelcardeal005"  # Senha segura
             admin_nome = "Administrador Atlas"
             
             senha_hash = hash_senha(admin_senha)

@@ -199,6 +199,8 @@
             const statusText = {
                 'Pendente': '🛒 Pendente',
                 'Pago': '💰 Pago',
+                'Em Produção': '⚙️ Em Produção',
+                'Saiu para Entrega': '🚚 Saiu para Entrega',
                 'Enviado': '🚚 Enviado',
                 'Entregue': '🎉 Entregue'
             };
@@ -256,11 +258,15 @@
                             <strong>🛒 Pedido Recebido</strong>
                             <p class="text-muted mb-0">Seu pedido foi recebido e está sendo processado.</p>
                         </div>
-                        <div class="timeline-item ${pedido.status === 'Pago' ? 'active' : (pedido.status === 'Enviado' || pedido.status === 'Entregue' ? 'completed' : '')}">
+                        <div class="timeline-item ${pedido.status === 'Pago' ? 'active' : (['Em Produção', 'Saiu para Entrega', 'Enviado', 'Entregue'].includes(pedido.status) ? 'completed' : '')}">
                             <strong>💰 Pagamento Confirmado</strong>
                             <p class="text-muted mb-0">Pagamento confirmado! Seu pedido está em produção.</p>
                         </div>
-                        <div class="timeline-item ${pedido.status === 'Enviado' ? 'active' : (pedido.status === 'Entregue' ? 'completed' : '')}">
+                        <div class="timeline-item ${pedido.status === 'Em Produção' ? 'active' : (['Saiu para Entrega', 'Enviado', 'Entregue'].includes(pedido.status) ? 'completed' : '')}">
+                            <strong>⚙️ Em Produção</strong>
+                            <p class="text-muted mb-0">Seu pedido está sendo preparado com carinho!</p>
+                        </div>
+                        <div class="timeline-item ${pedido.status === 'Saiu para Entrega' || pedido.status === 'Enviado' ? 'active' : (pedido.status === 'Entregue' ? 'completed' : '')}">
                             <strong>🚚 Pedido Enviado</strong>
                             <p class="text-muted mb-0">Seu pedido saiu para entrega!</p>
                         </div>

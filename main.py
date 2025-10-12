@@ -754,12 +754,54 @@ def api_recuperar_senha():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/test-db', methods=['GET'])
+def test_database():
+    """Rota para testar se o banco de dados está funcionando"""
+    try:
+        print("🧪 Testando conexão com banco de dados...")
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Testar se a tabela existe
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'")
+        table_exists = cursor.fetchone()
+        
+        if table_exists:
+            # Contar usuários
+            cursor.execute("SELECT COUNT(*) FROM usuario")
+            user_count = cursor.fetchone()[0]
+            
+            conn.close()
+            return jsonify({
+                "success": True,
+                "message": "Banco de dados funcionando!",
+                "table_exists": True,
+                "user_count": user_count,
+                "database_type": "SQLite"
+            })
+        else:
+            conn.close()
+            return jsonify({
+                "success": False,
+                "message": "Tabela 'usuario' não existe",
+                "table_exists": False
+            })
+            
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Erro ao conectar com banco de dados"
+        }), 500
+
 if __name__ == '__main__':
+    print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
     print("✅ Sistema Atlas Suplementos iniciado!")
     print(f"📁 Diretório atual: {os.getcwd()}")
     print(f"📁 Templates: {os.path.exists('templates')}")
     print(f"📁 Static: {os.path.exists('static')}")
     print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+    print("🔧 USANDO SQLITE - SEM PSYCOPG2!")
     
     # Criar tabelas do banco de dados
     criar_tabelas()
@@ -768,4 +810,5 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('FLASK_ENV') != 'production'
     
+    print(f"🌐 Iniciando servidor na porta {port}")
     app.run(debug=debug, host='0.0.0.0', port=port)

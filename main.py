@@ -106,6 +106,21 @@ def criar_tabelas():
                     admin INTEGER DEFAULT 0
                 )
             ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS carrinho (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL,
+                    produto_id VARCHAR(255) NOT NULL,
+                    nome VARCHAR(255) NOT NULL,
+                    marca VARCHAR(255),
+                    preco DECIMAL(10,2) NOT NULL,
+                    sabor VARCHAR(255),
+                    quantidade INTEGER NOT NULL,
+                    imagem VARCHAR(500),
+                    data_adicionado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES usuario(id) ON DELETE CASCADE
+                )
+            ''')
         else:
             # SQLite
             print("💾 Criando tabelas no SQLite...")
@@ -117,6 +132,21 @@ def criar_tabelas():
                     senha_hash TEXT NOT NULL,
                     data_criacao TEXT NOT NULL,
                     admin INTEGER DEFAULT 0
+                )
+            ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS carrinho (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    produto_id TEXT NOT NULL,
+                    nome TEXT NOT NULL,
+                    marca TEXT,
+                    preco REAL NOT NULL,
+                    sabor TEXT,
+                    quantidade INTEGER NOT NULL,
+                    imagem TEXT,
+                    data_adicionado TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES usuario(id)
                 )
             ''')
         
@@ -461,12 +491,42 @@ def pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
-# Sistema de carrinho em memória (simplificado)
-carrinho_global = []
-
+# Sistema de carrinho persistente no banco de dados
 def obter_carrinho_usuario():
-    """Obtém o carrinho do usuário atual"""
-    return carrinho_global
+    """Obtém o carrinho do usuário atual do banco de dados"""
+    try:
+        if not usuario_logado():
+            return []
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar carrinho do usuário
+        executar_query(cursor, '''
+            SELECT produto_id, nome, marca, preco, sabor, quantidade, imagem
+            FROM carrinho WHERE user_id = ?
+        ''', (session['user_id'],))
+        
+        itens = cursor.fetchall()
+        conn.close()
+        
+        carrinho = []
+        for item in itens:
+            carrinho.append({
+                'produto_id': item[0],
+                'nome': item[1],
+                'marca': item[2],
+                'preco': float(item[3]),
+                'sabor': item[4],
+                'quantidade': item[5],
+                'imagem': item[6]
+            })
+        
+        return carrinho
+        
+    except Exception as e:
+        print(f"❌ Erro ao obter carrinho: {e}")
+        return []
 
 def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendente"):
     """Salva o pedido na planilha pedidos_atlas.xlsx"""
@@ -577,11 +637,17 @@ def gerar_link_pagamento_simples(dados_cliente, order_id):
 # API básica
 @app.route('/api/carrinho', methods=['GET'])
 def get_carrinho():
-    return jsonify(carrinho_global)
+    return jsonify(obter_carrinho_usuario())
 
 @app.route('/api/carrinho/adicionar', methods=['POST'])
 def adicionar_ao_carrinho():
     try:
+        if not usuario_logado():
+            return jsonify({
+                "success": False,
+                "error": "Usuário não logado"
+            }), 401
+        
         data = request.get_json()
         produto_id = data.get('produto_id')
         nome = data.get('nome')
@@ -591,29 +657,36 @@ def adicionar_ao_carrinho():
         quantidade = int(data.get('quantidade', 1))
         imagem = data.get('imagem', '/static/images/produto-placeholder.svg')
         
-        item_existente = None
-        for item in carrinho_global:
-            if item['produto_id'] == produto_id and item['sabor'] == sabor:
-                item_existente = item
-                break
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Verificar se item já existe
+        executar_query(cursor, '''
+            SELECT id, quantidade FROM carrinho 
+            WHERE user_id = ? AND produto_id = ? AND sabor = ?
+        ''', (session['user_id'], produto_id, sabor))
+        
+        item_existente = cursor.fetchone()
         
         if item_existente:
-            item_existente['quantidade'] += quantidade
+            # Atualizar quantidade
+            nova_quantidade = item_existente[1] + quantidade
+            executar_query(cursor, '''
+                UPDATE carrinho SET quantidade = ? WHERE id = ?
+            ''', (nova_quantidade, item_existente[0]))
         else:
-            novo_item = {
-                'produto_id': produto_id,
-                'nome': nome,
-                'marca': marca,
-                'preco': preco,
-                'sabor': sabor,
-                'quantidade': quantidade,
-                'imagem': imagem
-            }
-            carrinho_global.append(novo_item)
+            # Adicionar novo item
+            executar_query(cursor, '''
+                INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem))
+        
+        conn.commit()
+        conn.close()
         
         return jsonify({
             "success": True,
-            "carrinho": carrinho_global,
+            "carrinho": obter_carrinho_usuario(),
             "message": "Produto adicionado ao carrinho"
         })
         
@@ -626,16 +699,30 @@ def adicionar_ao_carrinho():
 @app.route('/api/carrinho/remover', methods=['POST'])
 def remover_do_carrinho():
     try:
+        if not usuario_logado():
+            return jsonify({
+                "success": False,
+                "error": "Usuário não logado"
+            }), 401
+        
         data = request.get_json()
         produto_id = data.get('produto_id')
         sabor = data.get('sabor')
         
-        carrinho_global[:] = [item for item in carrinho_global 
-                             if not (item['produto_id'] == produto_id and item['sabor'] == sabor)]
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        executar_query(cursor, '''
+            DELETE FROM carrinho 
+            WHERE user_id = ? AND produto_id = ? AND sabor = ?
+        ''', (session['user_id'], produto_id, sabor))
+        
+        conn.commit()
+        conn.close()
         
         return jsonify({
             "success": True,
-            "carrinho": carrinho_global,
+            "carrinho": obter_carrinho_usuario(),
             "message": "Produto removido do carrinho"
         })
         
@@ -648,12 +735,28 @@ def remover_do_carrinho():
 @app.route('/api/carrinho/limpar', methods=['POST'])
 def limpar_carrinho():
     try:
-        carrinho_global.clear()
+        if not usuario_logado():
+            return jsonify({
+                "success": False,
+                "error": "Usuário não logado"
+            }), 401
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        executar_query(cursor, '''
+            DELETE FROM carrinho WHERE user_id = ?
+        ''', (session['user_id'],))
+        
+        conn.commit()
+        conn.close()
+        
         return jsonify({
             "success": True,
-            "carrinho": carrinho_global,
+            "carrinho": obter_carrinho_usuario(),
             "message": "Carrinho limpo"
         })
+        
     except Exception as e:
         return jsonify({
             "success": False,

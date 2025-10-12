@@ -491,17 +491,20 @@ def pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
-# Sistema de carrinho persistente no banco de dados
+# Sistema de carrinho híbrido (banco + memória)
+carrinho_temporario = []  # Para usuários não logados
+
 def obter_carrinho_usuario():
-    """Obtém o carrinho do usuário atual do banco de dados"""
+    """Obtém o carrinho do usuário atual"""
     try:
         if not usuario_logado():
-            return []
+            print("⚠️ Usuário não logado - usando carrinho temporário")
+            return carrinho_temporario
         
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Buscar carrinho do usuário
+        # Buscar carrinho do usuário no banco
         executar_query(cursor, '''
             SELECT produto_id, nome, marca, preco, sabor, quantidade, imagem
             FROM carrinho WHERE user_id = ?
@@ -526,7 +529,7 @@ def obter_carrinho_usuario():
         
     except Exception as e:
         print(f"❌ Erro ao obter carrinho: {e}")
-        return []
+        return carrinho_temporario
 
 def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendente"):
     """Salva o pedido na planilha pedidos_atlas.xlsx"""
@@ -653,12 +656,6 @@ def get_carrinho():
 @app.route('/api/carrinho/adicionar', methods=['POST'])
 def adicionar_ao_carrinho():
     try:
-        if not usuario_logado():
-            return jsonify({
-                "success": False,
-                "error": "Usuário não logado"
-            }), 401
-        
         data = request.get_json()
         produto_id = data.get('produto_id')
         nome = data.get('nome')
@@ -668,6 +665,38 @@ def adicionar_ao_carrinho():
         quantidade = int(data.get('quantidade', 1))
         imagem = data.get('imagem', '/static/images/produto-placeholder.svg')
         
+        if not usuario_logado():
+            # Usar carrinho temporário
+            print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
+            
+            # Verificar se item já existe
+            item_existente = None
+            for item in carrinho_temporario:
+                if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                    item_existente = item
+                    break
+            
+            if item_existente:
+                item_existente['quantidade'] += quantidade
+            else:
+                novo_item = {
+                    'produto_id': produto_id,
+                    'nome': nome,
+                    'marca': marca,
+                    'preco': preco,
+                    'sabor': sabor,
+                    'quantidade': quantidade,
+                    'imagem': imagem
+                }
+                carrinho_temporario.append(novo_item)
+            
+            return jsonify({
+                "success": True,
+                "carrinho": carrinho_temporario,
+                "message": "Produto adicionado ao carrinho temporário"
+            })
+        
+        # Usuário logado - usar banco de dados
         conn = conectar_db()
         cursor = conn.cursor()
         

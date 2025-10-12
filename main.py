@@ -296,27 +296,27 @@ def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
     try:
         print("🔍 Verificando se usuário está logado...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não está logado")
-        return None
+            return None
     
         print(f"👤 User ID na sessão: {session.get('user_id')}")
-    conn = conectar_db()
-    cursor = conn.cursor()
+        conn = conectar_db()
+        cursor = conn.cursor()
         executar_query(cursor, 'SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
-    usuario = cursor.fetchone()
-    conn.close()
+        usuario = cursor.fetchone()
+        conn.close()
         
         print(f"👤 Usuário encontrado no banco: {usuario}")
-    
-    if usuario:
+        
+        if usuario:
             user_data = {
-            'id': usuario[0],
-            'nome': usuario[1],
-            'email': usuario[2],
-            'data_criacao': usuario[3],
-            'admin': usuario[4]
-        }
+                'id': usuario[0],
+                'nome': usuario[1],
+                'email': usuario[2],
+                'data_criacao': usuario[3],
+                'admin': usuario[4]
+            }
             print(f"✅ Dados do usuário preparados: {user_data}")
             return user_data
         else:

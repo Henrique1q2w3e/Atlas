@@ -43,9 +43,19 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Usar SQLite sempre por enquanto (mais estável no Render)
+    # Usar SQLite com Persistent Disk no Render
     print("💾 Conectando ao SQLite...")
-    db_path = os.path.join(os.getcwd(), 'atlas.db')
+    
+    # Verificar se estamos no Render (com Persistent Disk)
+    if os.path.exists('/data'):
+        # Render com Persistent Disk
+        db_path = '/data/atlas.db'
+        print(f"💾 Usando Persistent Disk: {db_path}")
+    else:
+        # Desenvolvimento local
+        db_path = os.path.join(os.getcwd(), 'atlas.db')
+        print(f"💾 Usando diretório local: {db_path}")
+    
     return sqlite3.connect(db_path)
 
 def criar_tabelas():

@@ -633,43 +633,55 @@ def pedidos():
             ''', (usuario['email'],))
             pedidos = cursor.fetchall()
         
-        # Se ainda não encontrou, mostrar todos os pedidos (para debug)
+        # Se ainda não encontrou, apenas logar para debug (NÃO mostrar todos os pedidos)
         if len(pedidos) == 0:
-            print("🔍 Nenhum pedido encontrado, mostrando todos os pedidos para debug...")
-            executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
-            pedidos = cursor.fetchall()
-            print(f"📊 Total de pedidos no banco: {len(pedidos)}")
-            for pedido in pedidos:
-                print(f"📦 Pedido: {pedido[1]} - Email: {pedido[3]}")
+            print(f"🔍 Nenhum pedido encontrado para {usuario['email']}")
+            # Buscar total de pedidos no banco para debug (sem mostrar dados)
+            executar_query(cursor, 'SELECT COUNT(*) FROM pedidos')
+            total_pedidos = cursor.fetchone()[0]
+            print(f"📊 Total de pedidos no banco: {total_pedidos}")
+            
+            # Buscar alguns emails diferentes para debug
+            executar_query(cursor, 'SELECT DISTINCT email FROM pedidos LIMIT 5')
+            emails_diferentes = cursor.fetchall()
+            print(f"📧 Emails diferentes no banco: {[email[0] for email in emails_diferentes]}")
         
         conn.close()
         
         print(f"📊 Encontrados {len(pedidos)} pedidos para {usuario['email']}")
         
-        # Converter para formato mais legível
+        # Converter para formato mais legível e validar segurança
         pedidos_formatados = []
         for pedido in pedidos:
-            pedidos_formatados.append({
-                'id': pedido[0],
-                'order_id': pedido[1],
-                'nome': pedido[2],
-                'email': pedido[3],
-                'telefone': pedido[4],
-                'cpf': pedido[5],
-                'data_nascimento': pedido[6],
-                'cep': pedido[7],
-                'cidade': pedido[8],
-                'estado': pedido[9],
-                'bairro': pedido[10],
-                'endereco': pedido[11],
-                'observacoes': pedido[12],
-                'status': pedido[13],
-                'total': float(pedido[14]),
-                'produtos': pedido[15],
-                'data_pedido': pedido[16]
-            })
+            # VALIDAÇÃO DE SEGURANÇA: Verificar se o pedido pertence ao usuário logado
+            pedido_email = pedido[3].lower() if pedido[3] else ""
+            usuario_email = usuario['email'].lower()
+            
+            if pedido_email == usuario_email:
+                pedidos_formatados.append({
+                    'id': pedido[0],
+                    'order_id': pedido[1],
+                    'nome': pedido[2],
+                    'email': pedido[3],
+                    'telefone': pedido[4],
+                    'cpf': pedido[5],
+                    'data_nascimento': pedido[6],
+                    'cep': pedido[7],
+                    'cidade': pedido[8],
+                    'estado': pedido[9],
+                    'bairro': pedido[10],
+                    'endereco': pedido[11],
+                    'observacoes': pedido[12],
+                    'status': pedido[13],
+                    'total': float(pedido[14]),
+                    'produtos': pedido[15],
+                    'data_pedido': pedido[16]
+                })
+            else:
+                print(f"⚠️ SEGURANÇA: Pedido {pedido[1]} não pertence ao usuário {usuario['email']} (pertence a {pedido[3]})")
         
-        print(f"📊 Encontrados {len(pedidos_formatados)} pedidos para {usuario['email']}")
+        print(f"🔒 Após validação de segurança: {len(pedidos_formatados)} pedidos válidos para {usuario['email']}")
+        
         return render_template('pedidos.html', pedidos=pedidos_formatados)
 
     except Exception as e:
@@ -925,12 +937,20 @@ def atualizar_status_pedido():
 
 @app.route('/api/debug-pedidos', methods=['GET'])
 def debug_pedidos():
-    """Endpoint para debug - ver todos os pedidos no banco"""
+    """Endpoint para debug - APENAS para administradores"""
     try:
+        # Verificar se é admin
+        if not usuario_logado():
+            return jsonify({"success": False, "error": "Não autorizado"}), 401
+        
+        usuario = obter_usuario_logado()
+        if not usuario.get('admin'):
+            return jsonify({"success": False, "error": "Apenas administradores podem acessar este endpoint"}), 403
+        
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Buscar todos os pedidos
+        # Buscar todos os pedidos (apenas para admin)
         executar_query(cursor, 'SELECT * FROM pedidos ORDER BY data_pedido DESC')
         pedidos = cursor.fetchall()
         conn.close()

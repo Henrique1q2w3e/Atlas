@@ -43,14 +43,14 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Usar SQLite com diretório temporário no Render (plano free)
+    # Usar SQLite com diretório persistente no Render
     print("💾 Conectando ao SQLite...")
     
-    # No Render free, usar diretório /tmp que persiste durante a sessão
+    # No Render, usar diretório do projeto que persiste melhor
     if os.environ.get('RENDER'):
-        # Render (plano free)
-        db_path = '/tmp/atlas.db'
-        print(f"💾 Usando diretório temporário Render: {db_path}")
+        # Render - usar diretório do projeto
+        db_path = '/opt/render/project/src/atlas.db'
+        print(f"💾 Usando diretório Render: {db_path}")
     else:
         # Desenvolvimento local
         db_path = os.path.join(os.getcwd(), 'atlas.db')
@@ -95,27 +95,27 @@ def obter_usuario_logado():
     """Obtém os dados do usuário logado"""
     try:
         print("🔍 Verificando se usuário está logado...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não está logado")
-            return None
-        
+        return None
+    
         print(f"👤 User ID na sessão: {session.get('user_id')}")
-        conn = conectar_db()
-        cursor = conn.cursor()
-        cursor.execute('SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
-        usuario = cursor.fetchone()
-        conn.close()
+    conn = conectar_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, nome, email, data_criacao, admin FROM usuario WHERE id = ?', (session['user_id'],))
+    usuario = cursor.fetchone()
+    conn.close()
         
         print(f"👤 Usuário encontrado no banco: {usuario}")
-        
-        if usuario:
+    
+    if usuario:
             user_data = {
-                'id': usuario[0],
-                'nome': usuario[1],
-                'email': usuario[2],
-                'data_criacao': usuario[3],
-                'admin': usuario[4]
-            }
+            'id': usuario[0],
+            'nome': usuario[1],
+            'email': usuario[2],
+            'data_criacao': usuario[3],
+            'admin': usuario[4]
+        }
             print(f"✅ Dados do usuário preparados: {user_data}")
             return user_data
         else:
@@ -126,7 +126,7 @@ def obter_usuario_logado():
         print(f"💥 Erro ao obter usuário logado: {e}")
         import traceback
         traceback.print_exc()
-        return None
+    return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -382,19 +382,19 @@ def produto_individual(produto_id):
 def perfil():
     try:
         print("👤 Acessando perfil...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
         
         print("✅ Usuário logado, obtendo dados...")
-        usuario = obter_usuario_logado()
+    usuario = obter_usuario_logado()
         print(f"👤 Dados do usuário: {usuario}")
         
         if not usuario:
             print("❌ Erro ao obter dados do usuário")
             return redirect(url_for('login'))
             
-        return render_template('perfil.html', usuario=usuario)
+    return render_template('perfil.html', usuario=usuario)
         
     except Exception as e:
         print(f"💥 Erro no perfil: {e}")
@@ -406,12 +406,12 @@ def perfil():
 def pedidos():
     try:
         print("📦 Acessando pedidos...")
-        if not usuario_logado():
+    if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-            return redirect(url_for('login'))
+        return redirect(url_for('login'))
         
         print("✅ Usuário logado, carregando pedidos...")
-        return render_template('pedidos.html')
+    return render_template('pedidos.html')
         
     except Exception as e:
         print(f"💥 Erro nos pedidos: {e}")
@@ -958,6 +958,59 @@ def reset_database():
             "success": False,
             "error": str(e),
             "message": "Erro ao resetar banco de dados"
+        }), 500
+
+@app.route('/api/create-test-user', methods=['POST'])
+def create_test_user():
+    """Rota para criar usuário de teste (útil para debug)"""
+    try:
+        print("👤 Criando usuário de teste...")
+        
+        # Dados do usuário de teste
+        nome = "Henrique Angelo"
+        email = "henriqueangegelo@gmail.com"
+        senha = "Henrique@15"
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Verificar se já existe
+        cursor.execute('SELECT id FROM usuario WHERE email = ?', (email,))
+        if cursor.fetchone():
+            conn.close()
+            return jsonify({
+                "success": True,
+                "message": "Usuário já existe no banco!"
+            })
+        
+        # Criar usuário
+        senha_hash = hash_senha(senha)
+        print(f"🔐 Criando usuário de teste:")
+        print(f"   Nome: {nome}")
+        print(f"   Email: {email}")
+        print(f"   Senha (hash): {senha_hash}")
+        
+        cursor.execute('''
+            INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (nome, email, senha_hash, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 0))
+        
+        conn.commit()
+        user_id = cursor.lastrowid
+        conn.close()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Usuário de teste criado com sucesso! ID: {user_id}",
+            "user_id": user_id
+        })
+        
+    except Exception as e:
+        print(f"❌ Erro ao criar usuário de teste: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Erro ao criar usuário de teste"
         }), 500
 
 # Criar tabelas automaticamente quando o app iniciar

@@ -240,6 +240,8 @@ def obter_mensagem_status(status):
     mensagens = {
         'Pendente': 'Seu pedido foi recebido e está sendo processado! 🛒',
         'Pago': 'Pagamento confirmado! Seu pedido está em produção! 💰',
+        'Em Produção': 'Seu pedido está sendo preparado com carinho! ⚙️',
+        'Saiu para Entrega': 'Seu pedido saiu para entrega! 🚚',
         'Enviado': 'Seu pedido saiu para entrega! 🚚',
         'Entregue': 'Pedido entregue com sucesso! Obrigado pela preferência! 🎉'
     }
@@ -573,15 +575,62 @@ def pedidos():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
+@app.route('/admin/login')
+def admin_login():
+    """Página de login para administradores"""
+    return render_template('admin_login.html')
+
+@app.route('/api/admin-login', methods=['POST'])
+def api_admin_login():
+    """API para login de administrador"""
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        senha = data.get('senha')
+        
+        if not email or not senha:
+            return jsonify({"success": False, "error": "Email e senha são obrigatórios"}), 400
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Buscar usuário admin
+        executar_query(cursor, '''
+            SELECT id, nome, email, senha_hash, admin FROM usuario 
+            WHERE email = ? AND admin = 1
+        ''', (email,))
+        
+        usuario = cursor.fetchone()
+        conn.close()
+        
+        if usuario and verificar_senha(senha, usuario[3]):
+            session['user_id'] = usuario[0]
+            session['admin'] = True
+            print(f"👑 Admin logado: {usuario[1]} ({usuario[2]})")
+            return jsonify({
+                "success": True,
+                "message": "Login realizado com sucesso",
+                "redirect": "/admin/pedidos"
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Credenciais inválidas ou usuário não é administrador"
+            }), 401
+            
+    except Exception as e:
+        print(f"❌ Erro no login admin: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @app.route('/admin/pedidos')
 def admin_pedidos():
     """Página para administrador ver todos os pedidos"""
     try:
         print("👑 Acessando página de administração de pedidos...")
         
-        # Verificar se é admin (por enquanto, qualquer usuário logado pode ver)
-        if not usuario_logado():
-            return redirect(url_for('login'))
+        # Verificar se é admin
+        if not usuario_logado() or not session.get('admin'):
+            return redirect(url_for('admin_login'))
         
         # Buscar pedidos do banco de dados
         conn = conectar_db()
@@ -1851,6 +1900,41 @@ print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 # Criar tabelas do banco de dados automaticamente
 print("🔧 Criando tabelas automaticamente...")
 criar_tabelas()
+
+# Criar usuário admin padrão se não existir
+def criar_admin_padrao():
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Verificar se já existe admin
+        executar_query(cursor, 'SELECT id FROM usuario WHERE admin = 1')
+        admin_existente = cursor.fetchone()
+        
+        if not admin_existente:
+            # Criar admin padrão
+            admin_email = "admin@atlas.com"
+            admin_senha = "admin123"  # Senha padrão - deve ser alterada
+            admin_nome = "Administrador Atlas"
+            
+            senha_hash = hash_senha(admin_senha)
+            
+            executar_query(cursor, '''
+                INSERT INTO usuario (nome, email, senha_hash, data_criacao, admin)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (admin_nome, admin_email, senha_hash, obter_horario_brasil(), 1))
+            
+            conn.commit()
+            conn.close()
+            print(f"👑 Usuário admin criado: {admin_email} / {admin_senha}")
+        else:
+            conn.close()
+            print("👑 Usuário admin já existe")
+            
+    except Exception as e:
+        print(f"❌ Erro ao criar admin: {e}")
+
+criar_admin_padrao()
 
 if __name__ == '__main__':
     # Configuração para produção

@@ -49,20 +49,40 @@ def conectar_db():
     if database_url:
         # PostgreSQL no Render
         print("💾 Conectando ao PostgreSQL...")
-        import psycopg2
         from urllib.parse import urlparse
         
         # Parse da URL do PostgreSQL
         url = urlparse(database_url)
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        print(f"💾 Conectado ao PostgreSQL: {url.hostname}")
-        return conn
+        
+        try:
+            # Tentar psycopg2 primeiro
+            import psycopg2
+            conn = psycopg2.connect(
+                database=url.path[1:],
+                user=url.username,
+                password=url.password,
+                host=url.hostname,
+                port=url.port
+            )
+            print(f"💾 Conectado ao PostgreSQL via psycopg2: {url.hostname}")
+            return conn
+        except Exception as e:
+            print(f"⚠️ psycopg2 falhou: {e}")
+            print("💾 Tentando pg8000...")
+            try:
+                import pg8000
+                conn = pg8000.connect(
+                    database=url.path[1:],
+                    user=url.username,
+                    password=url.password,
+                    host=url.hostname,
+                    port=url.port
+                )
+                print(f"💾 Conectado ao PostgreSQL via pg8000: {url.hostname}")
+                return conn
+            except Exception as e2:
+                print(f"❌ pg8000 também falhou: {e2}")
+                raise e2
     else:
         # SQLite local
         print("💾 Conectando ao SQLite...")

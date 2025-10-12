@@ -14,7 +14,9 @@ openpyxl==3.0.10
 requests==2.32.5
 
 # Database - PostgreSQL for persistence
-psycopg2-binary==2.9.7
+psycopg2-binary==2.9.9
+# Alternative if psycopg2 fails
+pg8000==1.30.3
 
 # Mercado Pago
 mercadopago==2.3.0

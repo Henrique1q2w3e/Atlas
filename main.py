@@ -382,19 +382,19 @@ def produto_individual(produto_id):
 def perfil():
     try:
         print("👤 Acessando perfil...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
         
         print("✅ Usuário logado, obtendo dados...")
-    usuario = obter_usuario_logado()
+        usuario = obter_usuario_logado()
         print(f"👤 Dados do usuário: {usuario}")
         
         if not usuario:
             print("❌ Erro ao obter dados do usuário")
             return redirect(url_for('login'))
             
-    return render_template('perfil.html', usuario=usuario)
+        return render_template('perfil.html', usuario=usuario)
         
     except Exception as e:
         print(f"💥 Erro no perfil: {e}")
@@ -406,12 +406,12 @@ def perfil():
 def pedidos():
     try:
         print("📦 Acessando pedidos...")
-    if not usuario_logado():
+        if not usuario_logado():
             print("❌ Usuário não logado, redirecionando para login")
-        return redirect(url_for('login'))
+            return redirect(url_for('login'))
         
         print("✅ Usuário logado, carregando pedidos...")
-    return render_template('pedidos.html')
+        return render_template('pedidos.html')
         
     except Exception as e:
         print(f"💥 Erro nos pedidos: {e}")
@@ -962,11 +962,11 @@ def reset_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO SQLITE - INICIANDO...")
-    print("✅ Sistema Atlas Suplementos iniciado!")
-    print(f"📁 Diretório atual: {os.getcwd()}")
-    print(f"📁 Templates: {os.path.exists('templates')}")
-    print(f"📁 Static: {os.path.exists('static')}")
-    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+print("✅ Sistema Atlas Suplementos iniciado!")
+print(f"📁 Diretório atual: {os.getcwd()}")
+print(f"📁 Templates: {os.path.exists('templates')}")
+print(f"📁 Static: {os.path.exists('static')}")
+print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO SQLITE - SEM PSYCOPG2!")
 
 # Criar tabelas do banco de dados automaticamente

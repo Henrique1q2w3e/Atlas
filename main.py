@@ -873,16 +873,20 @@ def admin_pedidos():
             else:
                 # Se é datetime, converter para Brasil
                 try:
-                    if data_pedido.tzinfo is None:
-                        # Se não tem timezone, assumir UTC
-                        data_pedido = data_pedido.replace(tzinfo=timezone.utc)
-                    
-                    # Converter para horário do Brasil (UTC-3)
-                    brasil_tz = timezone(timedelta(hours=-3))
-                    data_brasil = data_pedido.astimezone(brasil_tz)
-                    data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
-                except:
-                    data_formatada = str(data_pedido)
+                    if data_pedido and hasattr(data_pedido, 'strftime'):
+                        if data_pedido.tzinfo is None:
+                            # Se não tem timezone, assumir UTC
+                            data_pedido = data_pedido.replace(tzinfo=timezone.utc)
+                        
+                        # Converter para horário do Brasil (UTC-3)
+                        brasil_tz = timezone(timedelta(hours=-3))
+                        data_brasil = data_pedido.astimezone(brasil_tz)
+                        data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
+                    else:
+                        data_formatada = str(data_pedido) if data_pedido else "N/A"
+                except Exception as e:
+                    print(f"❌ Erro ao formatar data: {e}")
+                    data_formatada = str(data_pedido) if data_pedido else "N/A"
             
             pedidos_formatados.append({
                 'id': pedido[0],

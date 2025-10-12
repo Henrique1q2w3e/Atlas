@@ -481,19 +481,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             const pedidoCards = document.querySelectorAll('.pedido-card');
             allPedidos = Array.from(pedidoCards).map(card => {
-                const orderId = card.querySelector('h4').textContent.match(/#(.+?)\s/)[1];
-                const status = card.querySelector('.status-badge').textContent.trim();
-                const nome = card.querySelector('.info-row').textContent.replace('Cliente:', '').trim();
-                const email = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                // Verificações de segurança para evitar erros
+                const h4Element = card.querySelector('h4');
+                const orderId = h4Element ? h4Element.textContent.match(/#(.+?)\s/)?.[1] || 'N/A' : 'N/A';
+                
+                const statusElement = card.querySelector('.status-badge');
+                const status = statusElement ? statusElement.textContent.trim() : 'N/A';
+                
+                const infoRows = card.querySelectorAll('.info-row');
+                const nome = infoRows[0] ? infoRows[0].textContent.replace('Cliente:', '').trim() : 'N/A';
+                
+                const email = Array.from(infoRows).find(row => 
                     row.textContent.includes('Email:')
-                )?.textContent.replace('Email:', '').trim() || '';
-                const telefone = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                )?.textContent.replace('Email:', '').trim() || 'N/A';
+                
+                const telefone = Array.from(infoRows).find(row => 
                     row.textContent.includes('Telefone:')
-                )?.textContent.replace('Telefone:', '').trim() || '';
-                const total = parseFloat(card.querySelector('.total-box').textContent.replace('R$', '').replace(',', '.').trim());
-                const data = Array.from(card.querySelectorAll('.info-row')).find(row => 
+                )?.textContent.replace('Telefone:', '').trim() || 'N/A';
+                
+                const totalElement = card.querySelector('.total-box');
+                const total = totalElement ? parseFloat(totalElement.textContent.replace('R$', '').replace(',', '.').trim()) || 0 : 0;
+                
+                const data = Array.from(infoRows).find(row => 
                     row.textContent.includes('Data do Pedido:')
-                )?.textContent.replace('Data do Pedido:', '').trim() || '';
+                )?.textContent.replace('Data do Pedido:', '').trim() || 'N/A';
                 
                 return {
                     element: card,

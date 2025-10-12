@@ -862,12 +862,43 @@ def admin_pedidos():
         
         print(f"📊 Encontrados {len(pedidos)} pedidos")
         
-        # Converter para formato mais legível - VERSÃO SIMPLIFICADA
+        # Converter para formato mais legível com horário do Brasil
         pedidos_formatados = []
         for pedido in pedidos:
-            # SIMPLIFICAR: usar data como string simples
-            data_pedido = pedido[16] if len(pedido) > 16 else "N/A"
-            data_formatada = str(data_pedido) if data_pedido else "N/A"
+            # Converter data para horário do Brasil
+            data_pedido = pedido[16] if len(pedido) > 16 else None
+            
+            if data_pedido is None:
+                data_formatada = "N/A"
+            elif isinstance(data_pedido, str):
+                # Se já é string, tentar converter para datetime e depois para Brasil
+                try:
+                    from datetime import datetime
+                    # Tentar parsear a string como datetime
+                    if 'T' in data_pedido:
+                        dt = datetime.fromisoformat(data_pedido.replace('Z', '+00:00'))
+                    else:
+                        dt = datetime.strptime(data_pedido, '%Y-%m-%d %H:%M:%S.%f')
+                    
+                    # Converter para horário do Brasil (UTC-3)
+                    brasil_tz = timezone(timedelta(hours=-3))
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=timezone.utc)
+                    data_brasil = dt.astimezone(brasil_tz)
+                    data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
+                except:
+                    # Se não conseguir converter, usar como está
+                    data_formatada = data_pedido
+            else:
+                # Se é datetime, converter para Brasil
+                try:
+                    brasil_tz = timezone(timedelta(hours=-3))
+                    if data_pedido.tzinfo is None:
+                        data_pedido = data_pedido.replace(tzinfo=timezone.utc)
+                    data_brasil = data_pedido.astimezone(brasil_tz)
+                    data_formatada = data_brasil.strftime("%d/%m/%Y %H:%M (Brasil)")
+                except:
+                    data_formatada = str(data_pedido)
             
             pedidos_formatados.append({
                 'id': pedido[0],

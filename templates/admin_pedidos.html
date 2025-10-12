@@ -345,7 +345,7 @@
                                 <span class="info-label">Data do Pedido:</span>
                                 <span class="info-value">
                                     {% if pedido.data_pedido %}
-                                        {{ pedido.data_pedido.strftime('%d/%m/%Y %H:%M') }} (Brasil)
+                                        {{ pedido.data_pedido }}
                                     {% else %}
                                         N/A
                                     {% endif %}

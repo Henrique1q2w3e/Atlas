@@ -38,19 +38,10 @@ def verificar_senha(senha, hash_senha_armazenado):
 
 def conectar_db():
     """Conectar ao banco de dados"""
-    # Verificar se tem DATABASE_URL (PostgreSQL no Render)
-    database_url = os.environ.get('DATABASE_URL')
-    
-    if database_url:
-        # PostgreSQL no Render
-        import psycopg2
-        print("🐘 Conectando ao PostgreSQL...")
-        return psycopg2.connect(database_url)
-    else:
-        # SQLite local para desenvolvimento
-        print("💾 Conectando ao SQLite local...")
-        db_path = os.path.join(os.getcwd(), 'atlas.db')
-        return sqlite3.connect(db_path)
+    # Usar SQLite sempre por enquanto (mais estável no Render)
+    print("💾 Conectando ao SQLite...")
+    db_path = os.path.join(os.getcwd(), 'atlas.db')
+    return sqlite3.connect(db_path)
 
 def criar_tabelas():
     """Criar tabelas do banco de dados se não existirem"""
@@ -59,35 +50,18 @@ def criar_tabelas():
         conn = conectar_db()
         cursor = conn.cursor()
         
-        # Verificar se é PostgreSQL ou SQLite
-        database_url = os.environ.get('DATABASE_URL')
-        
-        if database_url:
-            # PostgreSQL
-            print("🐘 Criando tabelas no PostgreSQL...")
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS usuario (
-                    id SERIAL PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) UNIQUE NOT NULL,
-                    senha_hash TEXT NOT NULL,
-                    data_criacao TIMESTAMP NOT NULL,
-                    admin INTEGER DEFAULT 0
-                )
-            ''')
-        else:
-            # SQLite
-            print("💾 Criando tabelas no SQLite...")
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS usuario (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    nome TEXT NOT NULL,
-                    email TEXT UNIQUE NOT NULL,
-                    senha_hash TEXT NOT NULL,
-                    data_criacao TEXT NOT NULL,
-                    admin INTEGER DEFAULT 0
-                )
-            ''')
+        # SQLite sempre
+        print("💾 Criando tabelas no SQLite...")
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS usuario (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                senha_hash TEXT NOT NULL,
+                data_criacao TEXT NOT NULL,
+                admin INTEGER DEFAULT 0
+            )
+        ''')
         
         conn.commit()
         conn.close()

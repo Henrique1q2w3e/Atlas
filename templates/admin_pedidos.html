@@ -335,16 +335,16 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Usar o redirect do servidor ou ir para login do admin
-                        window.location.href = data.redirect || '/admin/login';
+                        // Usar o redirect do servidor ou ir para URL secreta
+                        window.location.href = data.redirect || '/sistema-interno-gestao-vendas-2024';
                     } else {
                         alert('Erro ao fazer logout: ' + data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Erro ao fazer logout:', error);
-                    // Em caso de erro, ir para login do admin
-                    window.location.href = '/admin/login';
+                    // Em caso de erro, ir para URL secreta
+                    window.location.href = '/sistema-interno-gestao-vendas-2024';
                 });
             }
         }

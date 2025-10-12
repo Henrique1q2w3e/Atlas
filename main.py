@@ -710,10 +710,28 @@ def pedidos():
         return f"Erro interno: {str(e)}", 500
 
 @app.route('/admin/login')
+@app.route('/sistema-interno-gestao-vendas-2024')
+@app.route('/relatorios-financeiros-atlas')
 def admin_login():
-    """Página de login para administradores"""
+    """Página de login para administradores - URLs mascaradas"""
     print("🔐 Acessando página de login de admin...")
     print(f"🔍 Sessão atual: {dict(session)}")
+    
+    # Verificação adicional de segurança
+    referer = request.headers.get('Referer', '')
+    user_agent = request.headers.get('User-Agent', '')
+    secret_token = request.args.get('token', '')
+    
+    print(f"🔍 Referer: {referer}")
+    print(f"🔍 User-Agent: {user_agent}")
+    print(f"🔍 Token secreto: {secret_token}")
+    
+    # Verificar token secreto (opcional - para acesso extra seguro)
+    expected_token = "atlas2024gestao"
+    if secret_token and secret_token != expected_token:
+        print("❌ Token secreto inválido")
+        return "Acesso negado", 403
+    
     return render_template('admin_login.html')
 
 @app.route('/api/admin-login', methods=['POST'])
@@ -751,7 +769,7 @@ def api_admin_login():
             return jsonify({
                 "success": True,
                 "message": "Login de admin realizado com sucesso",
-                "redirect": "/admin/pedidos"
+                "redirect": "/sistema-interno-gestao-vendas-2024/pedidos"  # URL secreta
             })
         else:
             return jsonify({
@@ -764,6 +782,8 @@ def api_admin_login():
         return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/admin/pedidos')
+@app.route('/sistema-interno-gestao-vendas-2024/pedidos')
+@app.route('/relatorios-financeiros-atlas/vendas')
 def admin_pedidos():
     """Página para administrador ver todos os pedidos"""
     try:
@@ -983,7 +1003,7 @@ def admin_logout():
         return jsonify({
             "success": True,
             "message": "Logout de admin realizado com sucesso",
-            "redirect": "/admin/login"  # Redirecionar para login do admin, não para home
+            "redirect": "/sistema-interno-gestao-vendas-2024"  # URL secreta
         })
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500

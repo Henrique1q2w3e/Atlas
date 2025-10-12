@@ -1192,8 +1192,58 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
         except Exception as e:
             print(f"❌ Erro ao salvar no banco: {e}")
         
-        # 2. PLANILHA REMOVIDA - usando apenas banco de dados
-        print(f"✅ Pedido {order_id} salvo apenas no banco de dados (planilha removida)")
+        # 2. SALVAR NA PLANILHA (BACKUP)
+        try:
+            planilha_path = 'pedidos_atlas.xlsx'
+            print(f"📊 Salvando pedido {order_id} na planilha: {planilha_path}")
+            
+            if os.path.exists(planilha_path):
+                print("📊 Carregando planilha existente...")
+                wb = load_workbook(planilha_path)
+                ws = wb.active
+            else:
+                print("📊 Criando nova planilha...")
+                wb = Workbook()
+                ws = wb.active
+                ws.title = "Pedidos Atlas"
+                headers = [
+                    "ID Pedido", "Data", "Nome", "Email", "Telefone", "CPF", 
+                    "Data Nascimento", "CEP", "Cidade", "Estado", "Bairro", 
+                    "Endereço", "Observações", "Status", "Total", "Produtos"
+                ]
+                for col, header in enumerate(headers, 1):
+                    ws.cell(row=1, column=col, value=header)
+                print("📊 Cabeçalhos criados na planilha")
+            
+            next_row = ws.max_row + 1
+            pedido_data = [
+                order_id,
+                obter_horario_brasil().strftime("%d/%m/%Y %H:%M:%S"),
+            dados_cliente.get('nome', ''),
+            dados_cliente.get('email', ''),
+            dados_cliente.get('telefone', ''),
+            dados_cliente.get('cpf', ''),
+            dados_cliente.get('data_nascimento', ''),
+            dados_cliente.get('cep', ''),
+            dados_cliente.get('cidade', ''),
+            dados_cliente.get('estado', ''),
+            dados_cliente.get('bairro', ''),
+            dados_cliente.get('endereco', ''),
+            dados_cliente.get('observacoes', ''),
+            status,
+            f"R$ {total:.2f}",
+            produtos_str
+        ]
+        
+        for col, value in enumerate(pedido_data, 1):
+            ws.cell(row=next_row, column=col, value=value)
+        
+            print(f"📊 Salvando planilha em: {planilha_path}")
+        wb.save(planilha_path)
+            print(f"✅ Pedido {order_id} salvo na PLANILHA com sucesso!")
+            
+        except Exception as e:
+            print(f"❌ Erro ao salvar na planilha: {e}")
         
         print(f"📊 Total: R$ {total:.2f}")
         print(f"📊 Produtos: {produtos_str}")
@@ -1271,11 +1321,11 @@ def adicionar_ao_carrinho():
             print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
             
             # Verificar se item já existe
-            item_existente = None
+        item_existente = None
             for item in carrinho_temporario:
-                if item['produto_id'] == produto_id and item['sabor'] == sabor:
-                    item_existente = item
-                    break
+            if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                item_existente = item
+                break
         
         if item_existente:
             item_existente['quantidade'] += quantidade
@@ -1289,13 +1339,13 @@ def adicionar_ao_carrinho():
                 'quantidade': quantidade,
                 'imagem': imagem
             }
-            carrinho_temporario.append(novo_item)
+                carrinho_temporario.append(novo_item)
         
         return jsonify({
             "success": True,
-            "carrinho": carrinho_temporario,
-            "message": "Produto adicionado ao carrinho temporário"
-        })
+                "carrinho": carrinho_temporario,
+                "message": "Produto adicionado ao carrinho temporário"
+            })
         
         # Usuário logado - usar banco de dados
         conn = conectar_db()
@@ -2089,11 +2139,11 @@ def restore_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL DEFINITIVA - TESTE PERSISTÊNCIA - INICIANDO...")
-print("✅ Sistema Atlas Suplementos iniciado!")
-print(f"📁 Diretório atual: {os.getcwd()}")
-print(f"📁 Templates: {os.path.exists('templates')}")
-print(f"📁 Static: {os.path.exists('static')}")
-print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+    print("✅ Sistema Atlas Suplementos iniciado!")
+    print(f"📁 Diretório atual: {os.getcwd()}")
+    print(f"📁 Templates: {os.path.exists('templates')}")
+    print(f"📁 Static: {os.path.exists('static')}")
+    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente

@@ -183,7 +183,13 @@ def admin_logado():
 
 def qualquer_usuario_logado():
     """Verificar se qualquer usuário está logado (normal ou admin)"""
-    return 'user_id' in session or admin_logado()
+    print(f"🔍 Verificando qualquer_usuario_logado - Sessão: {dict(session)}")
+    print(f"🔍 user_id na sessão: {'user_id' in session}")
+    print(f"🔍 admin_logado(): {admin_logado()}")
+    
+    resultado = 'user_id' in session or admin_logado()
+    print(f"🔍 qualquer_usuario_logado() retorna: {resultado}")
+    return resultado
 
 def validar_email(email):
     """Valida formato do email"""
@@ -1188,8 +1194,11 @@ TIME_WINDOW = 300  # 5 minutos
 def obter_carrinho_usuario():
     """Obtém o carrinho do usuário atual"""
     try:
+        print(f"🛒 obter_carrinho_usuario() - qualquer_usuario_logado(): {qualquer_usuario_logado()}")
+        
         if not qualquer_usuario_logado():
             print("⚠️ Usuário não logado - usando carrinho temporário")
+            print(f"🛒 Carrinho temporário tem {len(carrinho_temporario)} itens")
             return carrinho_temporario
         
         conn = conectar_db()
@@ -1384,6 +1393,9 @@ def adicionar_ao_carrinho():
         sabor = data.get('sabor')
         quantidade = int(data.get('quantidade', 1))
         imagem = data.get('imagem', '/static/images/produto-placeholder.svg')
+        
+        print(f"🛒 Tentando adicionar produto {produto_id} ao carrinho")
+        print(f"🛒 qualquer_usuario_logado(): {qualquer_usuario_logado()}")
         
         if not qualquer_usuario_logado():
             # Usar carrinho temporário

@@ -123,7 +123,7 @@ def criar_tabelas():
                     quantidade INTEGER NOT NULL,
                     imagem VARCHAR(500),
                     data_adicionado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(user_id, produto_id, sabor)
+                    UNIQUE(user_id, produto_id, sabor),
                     FOREIGN KEY (user_id) REFERENCES usuario(id) ON DELETE CASCADE
                 )
             ''')

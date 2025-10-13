@@ -634,6 +634,24 @@ def produto_individual(produto_id):
     produto = obter_dados_produto(produto_id)
     return render_template('produto_individual.html', produto_id=produto_id, produto=produto)
 
+@app.route('/api/outlet/estoque')
+def api_outlet_estoque():
+    """API para verificar estoque dos produtos do outlet"""
+    try:
+        estoque = {
+            'camiseta-golden': {
+                'vendido': False,
+                'disponivel': True
+            },
+            'camiseta-juice': {
+                'vendido': False,
+                'disponivel': True
+            }
+        }
+        return jsonify(estoque)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/perfil')
 def perfil():
     try:

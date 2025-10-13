@@ -1410,43 +1410,49 @@ def adicionar_ao_carrinho():
                 "message": "Produto adicionado ao carrinho temporário"
             })
         
-        # Usuário logado - usar banco de dados
+        # Usuário logado - usar banco de dados (OTIMIZADO)
         print(f"🛒 Adicionando produto {produto_id} ao carrinho do usuário {session['user_id']}")
         
-        conn = conectar_db()
-        cursor = conn.cursor()
-        
-        # Verificar se item já existe
-        executar_query(cursor, '''
-            SELECT id, quantidade FROM carrinho 
-            WHERE user_id = ? AND produto_id = ? AND sabor = ?
-        ''', (session['user_id'], produto_id, sabor))
-        
-        item_existente = cursor.fetchone()
-        
-        if item_existente:
-            # Atualizar quantidade
-            nova_quantidade = item_existente[1] + quantidade
-            executar_query(cursor, '''
-                UPDATE carrinho SET quantidade = ? WHERE id = ?
-            ''', (nova_quantidade, item_existente[0]))
-            print(f"✅ Quantidade atualizada para {nova_quantidade}")
-        else:
-            # Adicionar novo item
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor()
+            
+            # Usar UPSERT (INSERT ... ON CONFLICT) para ser mais rápido
             executar_query(cursor, '''
                 INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem))
-            print(f"✅ Novo item adicionado ao carrinho")
-        
-        conn.commit()
-        conn.close()
-        
-        # Retornar resposta rápida sem buscar carrinho completo
-        return jsonify({
-            "success": True,
-            "message": "Produto adicionado ao carrinho com sucesso!"
-        })
+                ON CONFLICT (user_id, produto_id, sabor) 
+                DO UPDATE SET quantidade = carrinho.quantidade + ?
+            ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem, quantidade))
+            
+            conn.commit()
+            conn.close()
+            print(f"✅ Produto adicionado/atualizado no carrinho")
+            
+            # Retornar resposta rápida
+            return jsonify({
+                "success": True,
+                "message": "Produto adicionado ao carrinho com sucesso!"
+            })
+            
+        except Exception as db_error:
+            print(f"❌ Erro no banco: {db_error}")
+            # Fallback: usar carrinho temporário se banco falhar
+            novo_item = {
+                'produto_id': produto_id,
+                'nome': nome,
+                'marca': marca,
+                'preco': preco,
+                'sabor': sabor,
+                'quantidade': quantidade,
+                'imagem': imagem
+            }
+            carrinho_temporario.append(novo_item)
+            
+            return jsonify({
+                "success": True,
+                "message": "Produto adicionado ao carrinho temporário (banco indisponível)"
+            })
         
     except Exception as e:
         return jsonify({

@@ -366,14 +366,7 @@
         // Atualizar botão baseado no estoque
         function atualizarBotao() {
             const btnComprar = document.getElementById('btn-comprar');
-            const produto = estoqueData['{{ produto_id }}'];
-            
-            if (produto && produto.vendido) {
-                btnComprar.classList.remove('atlas-button');
-                btnComprar.classList.add('bg-gray-500', 'cursor-not-allowed');
-                btnComprar.disabled = true;
-                btnComprar.innerHTML = '<i class="fas fa-times mr-2"></i><span class="btn-text">Esgotado</span>';
-            }
+            // Botão sempre habilitado para compra
         }
 
         // Função para adicionar ao carrinho
@@ -385,12 +378,7 @@
                 return;
             }
 
-            // Verificar se o item está disponível
-            const produto = estoqueData['{{ produto_id }}'];
-            if (!produto || produto.vendido) {
-                alert('Este item já foi vendido!');
-                return;
-            }
+            // Produto sempre disponível para compra
 
             // Criar objeto do produto para o carrinho
             const itemCarrinho = {

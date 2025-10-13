@@ -2338,6 +2338,41 @@ def fix_carrinho():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
+@app.route('/api/test-carrinho-simple', methods=['GET'])
+def test_carrinho_simple():
+    """Teste simples do carrinho"""
+    try:
+        if not usuario_logado():
+            return jsonify({"carrinho": carrinho_temporario, "message": "Carrinho temporário"})
+        
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        executar_query(cursor, '''
+            SELECT produto_id, nome, marca, preco, sabor, quantidade, imagem
+            FROM carrinho WHERE user_id = ?
+        ''', (session['user_id'],))
+        
+        itens = cursor.fetchall()
+        conn.close()
+        
+        carrinho = []
+        for item in itens:
+            carrinho.append({
+                'produto_id': item[0],
+                'nome': item[1],
+                'marca': item[2],
+                'preco': float(item[3]),
+                'sabor': item[4],
+                'quantidade': item[5],
+                'imagem': item[6]
+            })
+        
+        return jsonify({"carrinho": carrinho, "message": f"Encontrados {len(carrinho)} itens"})
+        
+    except Exception as e:
+        return jsonify({"error": str(e), "carrinho": []})
+
 criar_admin_padrao()
 
 if __name__ == '__main__':

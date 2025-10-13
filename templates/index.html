@@ -448,6 +448,619 @@
     </div>
 </section>
 
+<!-- SEÇÃO: Explore nossas categorias - NOVA VERSÃO -->
+<section class="categories-section bg-gradient-to-br from-gray-50 via-white to-gray-100 py-20 relative overflow-hidden">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-20 left-20 w-40 h-40 bg-yellow-400 bg-opacity-5 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-20 right-20 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 right-1/4 w-24 h-24 bg-yellow-400 bg-opacity-8 rounded-full animate-pulse delay-2000"></div>
+        <div class="absolute top-1/3 left-1/3 w-16 h-16 bg-yellow-400 bg-opacity-6 rounded-full animate-pulse delay-3000"></div>
+    </div>
+    
+    <!-- Título da seção -->
+    <div class="text-center mb-16 relative z-10">
+        <div class="inline-flex items-center px-4 py-2 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium mb-6">
+            <i class="fas fa-dumbbell mr-2"></i>
+            Categorias Premium
+        </div>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Explore nossas 
+            <span class="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+                categorias
+            </span>
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Descubra produtos organizados por categoria para encontrar exatamente o que você precisa
+        </p>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- Desktop Layout -->
+        <div class="hidden lg:grid lg:grid-cols-2 lg:gap-8">
+            <!-- Card Proteínas -->
+            <div class="lg:col-span-1">
+                <a href="/produtos?categoria=whey" 
+                   aria-label="Ir para Proteínas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1">
+                        <div class="w-full h-[1048px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/proteinas.png" 
+                                 alt="Proteínas" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-8 left-8 text-white hover:translate-y-[-8px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-4xl font-bold mt-2 hover:text-yellow-300 transition-colors duration-300">PROTEÍNAS</h3>
+                            <div class="mt-3 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-sm text-yellow-200 font-medium">Construa músculos mais fortes</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-6 right-6 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-lg"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Grid de 2 cards -->
+            <div class="lg:col-span-1 grid grid-rows-2 gap-8">
+                <!-- Card Aminoácidos -->
+                <a href="/produtos?categoria=aminoacidos" 
+                   aria-label="Ir para Aminoácidos" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:rotate-1">
+                        <div class="w-full h-[520px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/aminoacido.png" 
+                                 alt="Aminoácidos" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-6 left-6 text-white hover:translate-y-[-4px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-2xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
+                            <div class="mt-2 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-xs text-yellow-200 font-medium">Recuperação acelerada</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-sm"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Card Vitaminas -->
+                <a href="/produtos?categoria=vitaminas" 
+                   aria-label="Ir para Vitaminas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1">
+                        <div class="w-full h-[520px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 hover:shadow-yellow-400/20">
+                            <img src="/static/images/vitaminas.png" 
+                                 alt="Vitaminas" 
+                                 class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent hover:from-black/70 hover:via-yellow-400/10 hover:to-transparent transition-all duration-500"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-6 left-6 text-white hover:translate-y-[-4px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-2xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
+                            <div class="mt-2 opacity-0 hover:opacity-100 transition-opacity duration-500 delay-200">
+                                <p class="text-xs text-yellow-200 font-medium">Saúde e bem-estar</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 delay-300 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-sm"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Layout -->
+        <div class="lg:hidden space-y-6">
+            <!-- Card Proteínas Mobile -->
+            <a href="/produtos?categoria=whey" 
+               aria-label="Ir para Proteínas" 
+               class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                    <div class="w-full h-[210px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                        <img src="/static/images/proteinas-mobile.png" 
+                             alt="Proteínas" 
+                             class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                             onerror="this.src='/static/images/placeholder.png'">
+                        <!-- Overlay gradiente -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                        <!-- Efeito de brilho -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                    </div>
+                    <!-- Conteúdo -->
+                    <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                        <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                        <h3 class="text-xl font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">PROTEÍNAS</h3>
+                        <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                            <p class="text-xs text-yellow-200 font-medium">Construa músculos</p>
+                        </div>
+                    </div>
+                    <!-- Ícone -->
+                    <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                        <i class="fas fa-arrow-right text-white text-xs"></i>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Grid 2 colunas -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Card Aminoácidos Mobile -->
+                <a href="/produtos?categoria=aminoacidos" 
+                   aria-label="Ir para Aminoácidos" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                        <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                            <img src="/static/images/aminoacido-mobile.png" 
+                                 alt="Aminoácidos" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
+                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <p class="text-xs text-yellow-200 font-medium">Recuperação</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-xs"></i>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Card Vitaminas Mobile -->
+                <a href="/produtos?categoria=vitaminas" 
+                   aria-label="Ir para Vitaminas" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                        <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
+                            <img src="/static/images/vitaminas-mobile.png" 
+                                 alt="Vitaminas" 
+                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            <!-- Overlay gradiente -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                        </div>
+                        <!-- Conteúdo -->
+                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
+                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                <p class="text-xs text-yellow-200 font-medium">Saúde</p>
+                            </div>
+                        </div>
+                        <!-- Ícone -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                            <i class="fas fa-arrow-right text-white text-xs"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COLE AQUI - SEÇÃO: Qual seu esporte -->
+<section aria-labelledby="sports-title" class="sports-section bg-gradient-to-br from-gray-900 via-black to-gray-800 py-24 relative overflow-hidden">
+    <!-- Elementos decorativos de fundo -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-yellow-400 bg-opacity-10 rounded-full animate-pulse"></div>
+        <div class="absolute bottom-10 right-10 w-24 h-24 bg-yellow-400 bg-opacity-15 rounded-full animate-pulse delay-1000"></div>
+        <div class="absolute top-1/2 right-1/3 w-16 h-16 bg-yellow-400 bg-opacity-8 rounded-full animate-pulse delay-2000"></div>
+        <div class="absolute top-1/4 left-1/4 w-20 h-20 bg-yellow-400 bg-opacity-12 rounded-full animate-pulse delay-3000"></div>
+    </div>
+    
+    <h2 id="sports-title" class="sr-only">Qual seu esporte</h2>
+    
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <!-- Desktop Layout -->
+        <div class="hidden lg:grid lg:grid-cols-3 lg:gap-12 lg:items-start">
+            <!-- Coluna do título -->
+            <div class="lg:col-span-1">
+                <!-- Badge decorativo -->
+                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black rounded-full text-sm font-bold mb-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-dumbbell mr-2"></i>
+                    ESCOLHA SEU ESPORTE
+                </div>
+                
+                <h2 class="text-6xl font-black text-white leading-tight mb-6">
+                    QUAL SEU<br>
+                    <span class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+                        ESPORTE?
+                    </span>
+                </h2>
+                
+                <p class="text-lg text-gray-300 leading-relaxed max-w-md">
+                    Descubra os suplementos ideais para o seu esporte e alcance seus objetivos com produtos de alta qualidade.
+                </p>
+                
+                <!-- Elementos decorativos -->
+                <div class="mt-8 flex items-center space-x-4">
+                    <div class="w-12 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+                    <div class="w-8 h-1 bg-yellow-400 bg-opacity-50 rounded-full"></div>
+                    <div class="w-4 h-1 bg-yellow-400 bg-opacity-30 rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- Área de cards (coluna 2 e 3 juntas) -->
+            <div class="lg:col-span-2 grid grid-cols-2 gap-6">
+                <!-- Musculação -->
+                <a href="URL-MUSCULACAO" 
+                   aria-label="Ir para Musculação" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/muculacao.png" 
+                                 alt="Musculação" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">MUSCULAÇÃO</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Força e massa muscular</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-dumbbell text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Luta -->
+                <a href="URL-LUTA" 
+                   aria-label="Ir para Luta" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/luta.png" 
+                                 alt="Luta" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">LUTA</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Resistência e agilidade</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-fist-raised text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Bike -->
+                <a href="URL-BIKE" 
+                   aria-label="Ir para Bike" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/bike.png" 
+                                 alt="Bike" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">BIKE</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Endurance e velocidade</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-bicycle text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+                
+                <!-- Corrida -->
+                <a href="URL-CORRIDA" 
+                   aria-label="Ir para Corrida" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
+                    <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
+                        <div class="w-full h-[335px] rounded-3xl overflow-hidden shadow-2xl group-hover:shadow-3xl transition-all duration-700 group-hover:shadow-yellow-400/40 relative">
+                            <img src="/static/images/corrida.png" 
+                                 alt="Corrida" 
+                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                 onerror="this.src='/static/images/placeholder.png'">
+                            
+                            <!-- Overlay gradiente dinâmico melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/15 group-hover:to-transparent transition-all duration-700"></div>
+                            
+                            <!-- Efeito de brilho melhorado -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200 ease-out"></div>
+                            
+                            <!-- Efeito de partículas brilhantes -->
+                            <div class="absolute top-4 left-4 w-2 h-2 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200 animate-pulse"></div>
+                            <div class="absolute top-8 right-8 w-1 h-1 bg-yellow-300 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-400 animate-pulse"></div>
+                            <div class="absolute bottom-16 left-8 w-1.5 h-1.5 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 delay-600 animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Texto sobreposto com animação melhorada -->
+                        <div class="absolute bottom-6 left-6 text-white group-hover:translate-y-[-12px] transition-transform duration-500">
+                            <span class="text-xs font-bold uppercase tracking-widest opacity-90 group-hover:opacity-100 transition-opacity duration-300 text-yellow-200">ESPORTE</span>
+                            <h3 class="text-3xl font-black mt-2 group-hover:text-yellow-300 transition-colors duration-500 drop-shadow-lg">CORRIDA</h3>
+                            <div class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-300">
+                                <p class="text-sm text-yellow-200 font-semibold drop-shadow-md">Performance e resistência</p>
+                                <div class="w-12 h-0.5 bg-yellow-400 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 delay-500"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ícone flutuante melhorado -->
+                        <div class="absolute top-6 right-6 w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 delay-400 group-hover:scale-110 shadow-lg">
+                            <i class="fas fa-running text-white text-xl drop-shadow-md"></i>
+                        </div>
+                        
+                        <!-- Efeito de glow no hover -->
+                        <div class="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-r from-yellow-400/10 via-transparent to-yellow-400/10"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Layout -->
+        <div class="lg:hidden">
+            <!-- Título centralizado -->
+            <div class="text-center mb-12">
+                <!-- Badge decorativo mobile -->
+                <div class="inline-flex items-center px-4 py-2 bg-yellow-400 bg-opacity-20 text-yellow-300 rounded-full text-sm font-medium mb-6 border border-yellow-400 border-opacity-30">
+                    <i class="fas fa-dumbbell mr-2"></i>
+                    Escolha seu esporte
+                </div>
+                
+                <h2 class="text-4xl font-black text-white leading-tight mb-4">
+                    QUAL SEU<br>
+                    <span class="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+                        ESPORTE?
+                    </span>
+                </h2>
+                
+                <p class="text-base text-gray-300 leading-relaxed max-w-sm mx-auto">
+                    Descubra os suplementos ideais para o seu esporte
+                </p>
+                
+                <!-- Elementos decorativos mobile -->
+                <div class="mt-6 flex items-center justify-center space-x-3">
+                    <div class="w-8 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-full"></div>
+                    <div class="w-6 h-1 bg-yellow-400 bg-opacity-50 rounded-full"></div>
+                    <div class="w-4 h-1 bg-yellow-400 bg-opacity-30 rounded-full"></div>
+                </div>
+            </div>
+            
+            <!-- Carrossel horizontal -->
+            <div class="flex overflow-x-auto space-x-6 snap-x snap-mandatory pb-6 scrollbar-hide">
+                <!-- Musculação Mobile -->
+                <a href="URL-MUSCULACAO" 
+                   aria-label="Ir para Musculação" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/muculacao.png" 
+                                     alt="Musculação" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">MUSCULAÇÃO</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Força e massa</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-dumbbell text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Luta Mobile -->
+                <a href="URL-LUTA" 
+                   aria-label="Ir para Luta" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/luta.png" 
+                                     alt="Luta" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">LUTA</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Resistência</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-fist-raised text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Bike Mobile -->
+                <a href="URL-BIKE" 
+                   aria-label="Ir para Bike" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/bike.png" 
+                                     alt="Bike" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">BIKE</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Endurance</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-bicycle text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Corrida Mobile -->
+                <a href="URL-CORRIDA" 
+                   aria-label="Ir para Corrida" 
+                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
+                    <div class="flex-shrink-0 snap-start w-72">
+                        <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                            <div class="w-72 h-56 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-300">
+                                <img src="/static/images/corrida.png" 
+                                     alt="Corrida" 
+                                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                     onerror="this.src='/static/images/placeholder.png'">
+                                <!-- Overlay gradiente dinâmico -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
+                                <!-- Efeito de brilho sutil -->
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            </div>
+                            <!-- Texto sobreposto com animação -->
+                            <div class="absolute bottom-4 left-4 text-white hover:translate-y-[-2px] transition-transform duration-300">
+                                <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">ESPORTE</span>
+                                <h3 class="text-xl font-black mt-1 hover:text-yellow-300 transition-colors duration-300">CORRIDA</h3>
+                                <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                                    <p class="text-xs text-yellow-200 font-medium">Performance</p>
+                                </div>
+                            </div>
+                            <!-- Ícone flutuante mobile -->
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                                <i class="fas fa-running text-white text-xs"></i>
+                            </div>
+                            <!-- Borda brilhante no hover -->
+                            <div class="absolute inset-0 rounded-3xl border-2 border-transparent hover:border-yellow-400 hover:border-opacity-50 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!-- COLE AQUI - SEÇÃO: Marcas Parceiras -->
 <!-- INSTRUÇÕES: 

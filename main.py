@@ -1186,6 +1186,13 @@ def corrigir_email_pedidos():
 # Sistema de carrinho híbrido (banco + memória)
 carrinho_temporario = []  # Para usuários não logados
 
+def obter_carrinho_temporario():
+    """Obtém o carrinho temporário (sempre retorna a mesma instância)"""
+    global carrinho_temporario
+    if not hasattr(obter_carrinho_temporario, '_carrinho'):
+        obter_carrinho_temporario._carrinho = []
+    return obter_carrinho_temporario._carrinho
+
 # Sistema de rate limiting para admin
 admin_login_attempts = {}  # {ip: [timestamps]}
 MAX_LOGIN_ATTEMPTS = 5  # Máximo 5 tentativas
@@ -1198,8 +1205,9 @@ def obter_carrinho_usuario():
         
         if not qualquer_usuario_logado():
             print("⚠️ Usuário não logado - usando carrinho temporário")
-            print(f"🛒 Carrinho temporário tem {len(carrinho_temporario)} itens")
-            return carrinho_temporario
+            carrinho_temp = obter_carrinho_temporario()
+            print(f"🛒 Carrinho temporário tem {len(carrinho_temp)} itens")
+            return carrinho_temp
         
         conn = conectar_db()
         cursor = conn.cursor()
@@ -1229,7 +1237,7 @@ def obter_carrinho_usuario():
         
     except Exception as e:
         print(f"❌ Erro ao obter carrinho: {e}")
-        return carrinho_temporario
+        return obter_carrinho_temporario()
 
 def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendente"):
     """Salva o pedido na planilha pedidos_atlas.xlsx E no banco de dados"""
@@ -1402,14 +1410,16 @@ def adicionar_ao_carrinho():
             print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
             
             # Verificar se item já existe
+            carrinho_temp = obter_carrinho_temporario()
             item_existente = None
-            for item in carrinho_temporario:
+            for item in carrinho_temp:
                 if item['produto_id'] == produto_id and item['sabor'] == sabor:
                     item_existente = item
                     break
             
             if item_existente:
                 item_existente['quantidade'] += quantidade
+                print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
             else:
                 novo_item = {
                     'produto_id': produto_id,
@@ -1420,11 +1430,13 @@ def adicionar_ao_carrinho():
                     'quantidade': quantidade,
                     'imagem': imagem
                 }
-                carrinho_temporario.append(novo_item)
+                carrinho_temp.append(novo_item)
+                print(f"✅ Novo item adicionado ao carrinho temporário")
             
+            print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
             return jsonify({
                 "success": True,
-                "carrinho": carrinho_temporario,
+                "carrinho": carrinho_temp,
                 "message": "Produto adicionado ao carrinho temporário"
             })
         
@@ -1467,6 +1479,7 @@ def adicionar_ao_carrinho():
         except Exception as db_error:
             print(f"❌ Erro no banco: {db_error}")
             # Fallback: usar carrinho temporário se banco falhar
+            carrinho_temp = obter_carrinho_temporario()
             novo_item = {
                 'produto_id': produto_id,
                 'nome': nome,
@@ -1476,7 +1489,7 @@ def adicionar_ao_carrinho():
                 'quantidade': quantidade,
                 'imagem': imagem
             }
-            carrinho_temporario.append(novo_item)
+            carrinho_temp.append(novo_item)
             
             return jsonify({
                 "success": True,
@@ -1860,7 +1873,8 @@ def test_pedido_completo():
             conn.close()
             print("✅ Produto adicionado ao carrinho no banco")
         else:
-            carrinho_temporario.append(produto_teste)
+            carrinho_temp = obter_carrinho_temporario()
+            carrinho_temp.append(produto_teste)
             print("✅ Produto adicionado ao carrinho temporário")
         
         # 2. Verificar carrinho
@@ -2359,7 +2373,8 @@ def test_carrinho_simple():
     """Teste simples do carrinho"""
     try:
         if not qualquer_usuario_logado():
-            return jsonify({"carrinho": carrinho_temporario, "message": "Carrinho temporário"})
+            carrinho_temp = obter_carrinho_temporario()
+            return jsonify({"carrinho": carrinho_temp, "message": "Carrinho temporário"})
         
         conn = conectar_db()
         cursor = conn.cursor()

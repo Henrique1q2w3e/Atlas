@@ -1389,28 +1389,30 @@ def adicionar_ao_carrinho():
                 if item['produto_id'] == produto_id and item['sabor'] == sabor:
                     item_existente = item
                     break
-        
-        if item_existente:
-            item_existente['quantidade'] += quantidade
-        else:
-            novo_item = {
-                'produto_id': produto_id,
-                'nome': nome,
-                'marca': marca,
-                'preco': preco,
-                'sabor': sabor,
-                'quantidade': quantidade,
-                'imagem': imagem
-            }
-            carrinho_temporario.append(novo_item)
-        
-        return jsonify({
-            "success": True,
-            "carrinho": carrinho_temporario,
-            "message": "Produto adicionado ao carrinho temporário"
-        })
+            
+            if item_existente:
+                item_existente['quantidade'] += quantidade
+            else:
+                novo_item = {
+                    'produto_id': produto_id,
+                    'nome': nome,
+                    'marca': marca,
+                    'preco': preco,
+                    'sabor': sabor,
+                    'quantidade': quantidade,
+                    'imagem': imagem
+                }
+                carrinho_temporario.append(novo_item)
+            
+            return jsonify({
+                "success": True,
+                "carrinho": carrinho_temporario,
+                "message": "Produto adicionado ao carrinho temporário"
+            })
         
         # Usuário logado - usar banco de dados
+        print(f"🛒 Adicionando produto {produto_id} ao carrinho do usuário {session['user_id']}")
+        
         conn = conectar_db()
         cursor = conn.cursor()
         
@@ -1428,20 +1430,22 @@ def adicionar_ao_carrinho():
             executar_query(cursor, '''
                 UPDATE carrinho SET quantidade = ? WHERE id = ?
             ''', (nova_quantidade, item_existente[0]))
+            print(f"✅ Quantidade atualizada para {nova_quantidade}")
         else:
             # Adicionar novo item
             executar_query(cursor, '''
                 INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem))
+            print(f"✅ Novo item adicionado ao carrinho")
         
         conn.commit()
         conn.close()
         
+        # Retornar resposta rápida sem buscar carrinho completo
         return jsonify({
             "success": True,
-            "carrinho": obter_carrinho_usuario(),
-            "message": "Produto adicionado ao carrinho"
+            "message": "Produto adicionado ao carrinho com sucesso!"
         })
         
     except Exception as e:

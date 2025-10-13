@@ -167,19 +167,23 @@ def criar_tabelas():
         traceback.print_exc()
 
 def usuario_logado():
-    """Verificar se usuário está logado (pode ser admin ou usuário normal)"""
-    print(f"🔍 Verificando login usuário - Sessão: {dict(session)}")
+    """Verificar se usuário NORMAL está logado (não admin)"""
+    print(f"🔍 Verificando login usuário normal - Sessão: {dict(session)}")
     print(f"🔍 user_id na sessão: {'user_id' in session}")
     print(f"🔍 is_admin_session: {session.get('is_admin_session', False)}")
     
-    # Usuário está logado se tem user_id (independente de ser admin ou não)
-    resultado = 'user_id' in session
+    # Usuário normal está logado se tem user_id E não é sessão de admin
+    resultado = 'user_id' in session and not session.get('is_admin_session', False)
     print(f"🔍 usuario_logado() retorna: {resultado}")
     return resultado
 
 def admin_logado():
     """Verificar se admin está logado"""
     return 'admin_user_id' in session and session.get('is_admin_session', False)
+
+def qualquer_usuario_logado():
+    """Verificar se qualquer usuário está logado (normal ou admin)"""
+    return 'user_id' in session or admin_logado()
 
 def validar_email(email):
     """Valida formato do email"""
@@ -1184,7 +1188,7 @@ TIME_WINDOW = 300  # 5 minutos
 def obter_carrinho_usuario():
     """Obtém o carrinho do usuário atual"""
     try:
-        if not usuario_logado():
+        if not qualquer_usuario_logado():
             print("⚠️ Usuário não logado - usando carrinho temporário")
             return carrinho_temporario
         
@@ -1381,7 +1385,7 @@ def adicionar_ao_carrinho():
         quantidade = int(data.get('quantidade', 1))
         imagem = data.get('imagem', '/static/images/produto-placeholder.svg')
         
-        if not usuario_logado():
+        if not qualquer_usuario_logado():
             # Usar carrinho temporário
             print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
             
@@ -2342,7 +2346,7 @@ def fix_carrinho():
 def test_carrinho_simple():
     """Teste simples do carrinho"""
     try:
-        if not usuario_logado():
+        if not qualquer_usuario_logado():
             return jsonify({"carrinho": carrinho_temporario, "message": "Carrinho temporário"})
         
         conn = conectar_db()
@@ -2372,6 +2376,15 @@ def test_carrinho_simple():
         
     except Exception as e:
         return jsonify({"error": str(e), "carrinho": []})
+
+@app.route('/api/limpar-sessao', methods=['POST'])
+def limpar_sessao():
+    """Limpa toda a sessão"""
+    try:
+        session.clear()
+        return jsonify({"success": True, "message": "Sessão limpa com sucesso"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
 
 criar_admin_padrao()
 

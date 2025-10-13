@@ -2283,6 +2283,61 @@ def criar_admin_padrao():
     except Exception as e:
         print(f"❌ Erro ao criar/atualizar admin: {e}")
 
+@app.route('/api/fix-carrinho', methods=['POST'])
+def fix_carrinho():
+    """Recria a tabela carrinho com constraint UNIQUE"""
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        # Dropar tabela carrinho se existir
+        executar_query(cursor, 'DROP TABLE IF EXISTS carrinho')
+        
+        # Recriar tabela com constraint UNIQUE
+        database_url = os.environ.get('DATABASE_URL')
+        if database_url:
+            # PostgreSQL
+            executar_query(cursor, '''
+                CREATE TABLE carrinho (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL,
+                    produto_id VARCHAR(255) NOT NULL,
+                    nome VARCHAR(255) NOT NULL,
+                    marca VARCHAR(255),
+                    preco DECIMAL(10,2) NOT NULL,
+                    sabor VARCHAR(255),
+                    quantidade INTEGER NOT NULL,
+                    imagem VARCHAR(500),
+                    data_adicionado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(user_id, produto_id, sabor)
+                )
+            ''')
+        else:
+            # SQLite
+            executar_query(cursor, '''
+                CREATE TABLE carrinho (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    produto_id TEXT NOT NULL,
+                    nome TEXT NOT NULL,
+                    marca TEXT,
+                    preco REAL NOT NULL,
+                    sabor TEXT,
+                    quantidade INTEGER NOT NULL,
+                    imagem TEXT,
+                    data_adicionado TEXT DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(user_id, produto_id, sabor)
+                )
+            ''')
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({"success": True, "message": "Tabela carrinho recriada com constraint UNIQUE"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})
+
 criar_admin_padrao()
 
 if __name__ == '__main__':

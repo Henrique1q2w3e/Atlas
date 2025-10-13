@@ -1366,9 +1366,9 @@ def salvar_pedido_na_planilha(dados_cliente, carrinho, order_id, status="Pendent
             dados_cliente.get('endereco', ''),
             dados_cliente.get('observacoes', ''),
             status,
-                total,
+            total,
             produtos_str
-            ))
+        ))
             
             conn.commit()
             conn.close()
@@ -1492,9 +1492,9 @@ def adicionar_ao_carrinho():
         print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
         return jsonify({
             "success": True,
-                "carrinho": carrinho_temp,
-                "message": "Produto adicionado ao carrinho temporário"
-            })
+            "carrinho": carrinho_temp,
+            "message": "Produto adicionado ao carrinho temporário"
+        })
         
         # Usuário logado - usar banco de dados (OTIMIZADO)
         print(f"🛒 Adicionando produto {produto_id} ao carrinho do usuário {session['user_id']}")
@@ -1554,7 +1554,7 @@ def adicionar_ao_carrinho():
             return jsonify({
                 "success": True,
                 "message": "Produto adicionado ao carrinho temporário (banco indisponível)"
-        })
+            })
         
     except Exception as e:
         return jsonify({
@@ -1582,9 +1582,9 @@ def remover_do_carrinho():
         
         return jsonify({
             "success": True,
-                "carrinho": carrinho_temp,
-                "message": "Item removido do carrinho temporário"
-            })
+            "carrinho": carrinho_temp,
+            "message": "Item removido do carrinho temporário"
+        })
         
         # Usuário logado - remover do banco
         conn = conectar_db()
@@ -2382,11 +2382,11 @@ def restore_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL DEFINITIVA - TESTE PERSISTÊNCIA - INICIANDO...")
-    print("✅ Sistema Atlas Suplementos iniciado!")
-    print(f"📁 Diretório atual: {os.getcwd()}")
-    print(f"📁 Templates: {os.path.exists('templates')}")
-    print(f"📁 Static: {os.path.exists('static')}")
-    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+print("✅ Sistema Atlas Suplementos iniciado!")
+print(f"📁 Diretório atual: {os.getcwd()}")
+print(f"📁 Templates: {os.path.exists('templates')}")
+print(f"📁 Static: {os.path.exists('static')}")
+print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente

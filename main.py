@@ -123,6 +123,7 @@ def criar_tabelas():
                     quantidade INTEGER NOT NULL,
                     imagem VARCHAR(500),
                     data_adicionado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(user_id, produto_id, sabor)
                     FOREIGN KEY (user_id) REFERENCES usuario(id) ON DELETE CASCADE
                 )
             ''')
@@ -151,6 +152,7 @@ def criar_tabelas():
                     quantidade INTEGER NOT NULL,
                     imagem TEXT,
                     data_adicionado TEXT DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(user_id, produto_id, sabor),
                     FOREIGN KEY (user_id) REFERENCES usuario(id)
                 )
             ''')
@@ -1417,13 +1419,24 @@ def adicionar_ao_carrinho():
             conn = conectar_db()
             cursor = conn.cursor()
             
-            # Usar UPSERT (INSERT ... ON CONFLICT) para ser mais rápido
-            executar_query(cursor, '''
-                INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT (user_id, produto_id, sabor) 
-                DO UPDATE SET quantidade = carrinho.quantidade + ?
-            ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem, quantidade))
+            # Usar UPSERT para ser mais rápido
+            database_url = os.environ.get('DATABASE_URL')
+            if database_url:
+                # PostgreSQL
+                executar_query(cursor, '''
+                    INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (user_id, produto_id, sabor) 
+                    DO UPDATE SET quantidade = carrinho.quantidade + %s
+                ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem, quantidade))
+            else:
+                # SQLite
+                executar_query(cursor, '''
+                    INSERT INTO carrinho (user_id, produto_id, nome, marca, preco, sabor, quantidade, imagem)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT (user_id, produto_id, sabor) 
+                    DO UPDATE SET quantidade = carrinho.quantidade + ?
+                ''', (session['user_id'], produto_id, nome, marca, preco, sabor, quantidade, imagem, quantidade))
             
             conn.commit()
             conn.close()

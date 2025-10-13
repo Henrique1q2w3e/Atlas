@@ -71,6 +71,34 @@ class CarrinhoManager {
         }
     }
 
+    async atualizarQuantidade(produtoId, sabor, novaQuantidade) {
+        try {
+            console.log('🔄 Atualizando quantidade:', produtoId, sabor, novaQuantidade);
+            const response = await fetch('/api/carrinho/atualizar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    produto_id: produtoId, 
+                    sabor: sabor, 
+                    quantidade: novaQuantidade 
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                this.carrinho = data.carrinho;
+                this.atualizarContador();
+            } else {
+                console.error('❌ Erro ao atualizar quantidade:', data.error);
+            }
+        } catch (error) {
+            console.error('❌ Erro ao atualizar quantidade:', error);
+        }
+    }
+
     async limparCarrinho() {
         try {
             console.log('🗑️ Limpando carrinho...');
@@ -262,26 +290,9 @@ async function alterarQuantidadeCarrinho(index, delta) {
                 // Remover item se quantidade for 0 ou menor
                 await carrinhoManager.removerProduto(item.produto_id, item.sabor);
             } else {
-                // Atualizar quantidade
-                const response = await fetch('/api/carrinho/adicionar', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        produto_id: item.produto_id,
-                        nome: item.nome,
-                        preco: item.preco,
-                        sabor: item.sabor,
-                        quantidade: delta,
-                        imagem: item.imagem
-                    })
-                });
-                
-                if (response.ok) {
-                    await carrinhoManager.carregarCarrinho();
-                    atualizarModalCarrinho();
-                }
+                // Atualizar quantidade usando a nova API
+                await carrinhoManager.atualizarQuantidade(item.produto_id, item.sabor, novaQuantidade);
+                atualizarModalCarrinho();
             }
         }
     } catch (error) {

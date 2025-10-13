@@ -350,7 +350,7 @@ def obter_usuario_logado():
         print(f"💥 Erro ao obter usuário logado: {e}")
         import traceback
         traceback.print_exc()
-        return None
+    return None
 
 def obter_imagem_produto(marca, categoria):
     """Mapeia marca e categoria para imagem específica"""
@@ -758,7 +758,7 @@ def pedidos():
                     'produtos': pedido[15],
                     'data_pedido': pedido[16]
                 })
-            else:
+        else:
                 print(f"⚠️ SEGURANÇA: Pedido {pedido[1]} não pertence ao usuário {usuario['email']} (pertence a {pedido[3]})")
         
         print(f"🔒 Após validação de segurança: {len(pedidos_formatados)} pedidos válidos para {usuario['email']}")
@@ -1465,33 +1465,33 @@ def adicionar_ao_carrinho():
                 if item['produto_id'] == produto_id and item['sabor'] == sabor:
                     item_existente = item
                     break
-            
-            if item_existente:
-                item_existente['quantidade'] += quantidade
-                print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
-                # Salvar na sessão
-                session['carrinho_temporario'] = carrinho_temp
-                session.modified = True
-            else:
-                novo_item = {
-                    'produto_id': produto_id,
-                    'nome': nome,
-                    'marca': marca,
-                    'preco': preco,
-                    'sabor': sabor,
-                    'quantidade': quantidade,
-                    'imagem': imagem
-                }
-                carrinho_temp.append(novo_item)
-                print(f"✅ Novo item adicionado ao carrinho temporário")
-            
+        
+        if item_existente:
+            item_existente['quantidade'] += quantidade
+            print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
             # Salvar na sessão
             session['carrinho_temporario'] = carrinho_temp
             session.modified = True
-            
-            print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
-            return jsonify({
-                "success": True,
+        else:
+            novo_item = {
+                'produto_id': produto_id,
+                'nome': nome,
+                'marca': marca,
+                'preco': preco,
+                'sabor': sabor,
+                'quantidade': quantidade,
+                'imagem': imagem
+            }
+            carrinho_temp.append(novo_item)
+            print(f"✅ Novo item adicionado ao carrinho temporário")
+        
+        # Salvar na sessão
+        session['carrinho_temporario'] = carrinho_temp
+        session.modified = True
+        
+        print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
+        return jsonify({
+            "success": True,
                 "carrinho": carrinho_temp,
                 "message": "Produto adicionado ao carrinho temporário"
             })
@@ -1554,7 +1554,7 @@ def adicionar_ao_carrinho():
             return jsonify({
                 "success": True,
                 "message": "Produto adicionado ao carrinho temporário (banco indisponível)"
-            })
+        })
         
     except Exception as e:
         return jsonify({
@@ -1565,16 +1565,28 @@ def adicionar_ao_carrinho():
 @app.route('/api/carrinho/remover', methods=['POST'])
 def remover_do_carrinho():
     try:
-        if not usuario_logado():
-            return jsonify({
-                "success": False,
-                "error": "Usuário não logado"
-            }), 401
-        
         data = request.get_json()
         produto_id = data.get('produto_id')
         sabor = data.get('sabor')
         
+        if not produto_id or not sabor:
+            return jsonify({"success": False, "error": "Dados inválidos"}), 400
+        
+        if not qualquer_usuario_logado():
+            # Remover do carrinho temporário
+            carrinho_temp = obter_carrinho_temporario()
+            carrinho_temp[:] = [item for item in carrinho_temp 
+                             if not (item['produto_id'] == produto_id and item['sabor'] == sabor)]
+            session['carrinho_temporario'] = carrinho_temp
+            session.modified = True
+        
+        return jsonify({
+            "success": True,
+                "carrinho": carrinho_temp,
+                "message": "Item removido do carrinho temporário"
+            })
+        
+        # Usuário logado - remover do banco
         conn = conectar_db()
         cursor = conn.cursor()
         
@@ -1597,6 +1609,57 @@ def remover_do_carrinho():
             "success": False,
             "error": str(e)
         }), 500
+
+@app.route('/api/carrinho/atualizar', methods=['POST'])
+def atualizar_quantidade_carrinho():
+    """Atualiza a quantidade de um item no carrinho"""
+    try:
+        data = request.get_json()
+        produto_id = data.get('produto_id')
+        sabor = data.get('sabor')
+        nova_quantidade = int(data.get('quantidade', 1))
+        
+        if not produto_id or not sabor or nova_quantidade < 0:
+            return jsonify({"success": False, "error": "Dados inválidos"}), 400
+        
+        if nova_quantidade == 0:
+            # Se quantidade for 0, remover o item
+            return remover_do_carrinho()
+        
+        if not qualquer_usuario_logado():
+            # Atualizar no carrinho temporário
+            carrinho_temp = obter_carrinho_temporario()
+            for item in carrinho_temp:
+                if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                    item['quantidade'] = nova_quantidade
+                    break
+            
+            session['carrinho_temporario'] = carrinho_temp
+            session.modified = True
+            
+            return jsonify({
+                "success": True,
+                "carrinho": carrinho_temp,
+                "message": "Quantidade atualizada no carrinho temporário"
+            })
+        
+        # Usuário logado - atualizar no banco
+        conn = conectar_db()
+        cursor = conn.cursor()
+        
+        executar_query(cursor, '''
+            UPDATE carrinho 
+            SET quantidade = ? 
+            WHERE user_id = ? AND produto_id = ? AND sabor = ?
+        ''', (nova_quantidade, session['user_id'], produto_id, sabor))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({"success": True, "message": "Quantidade atualizada no carrinho"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route('/api/carrinho/limpar', methods=['POST'])
 def limpar_carrinho():
@@ -2319,11 +2382,11 @@ def restore_database():
 
 # Criar tabelas automaticamente quando o app iniciar
 print("🚀 ATLAS SUPLEMENTOS - VERSÃO POSTGRESQL DEFINITIVA - TESTE PERSISTÊNCIA - INICIANDO...")
-print("✅ Sistema Atlas Suplementos iniciado!")
-print(f"📁 Diretório atual: {os.getcwd()}")
-print(f"📁 Templates: {os.path.exists('templates')}")
-print(f"📁 Static: {os.path.exists('static')}")
-print(f"📁 index.html: {os.path.exists('templates/index.html')}")
+    print("✅ Sistema Atlas Suplementos iniciado!")
+    print(f"📁 Diretório atual: {os.getcwd()}")
+    print(f"📁 Templates: {os.path.exists('templates')}")
+    print(f"📁 Static: {os.path.exists('static')}")
+    print(f"📁 index.html: {os.path.exists('templates/index.html')}")
 print("🔧 USANDO POSTGRESQL - PERSISTÊNCIA GARANTIDA!")
 
 # Criar tabelas do banco de dados automaticamente

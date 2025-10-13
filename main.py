@@ -605,7 +605,7 @@ def obter_dados_produto(produto_id):
         'camiseta-golden': {
             'nome': 'Camiseta Golden Era',
             'preco': 129.90,
-            'preco_original': 259.80,
+            'preco_original': 129.90,
             'imagem': '/static/images/camiseta-golden.jpg',
             'descricao': 'Camiseta premium da linha Golden Era com design exclusivo.',
             'vendido': False
@@ -613,7 +613,7 @@ def obter_dados_produto(produto_id):
         'camiseta-juice': {
             'nome': 'Camiseta Juice of God',
             'preco': 129.90,
-            'preco_original': 259.80,
+            'preco_original': 129.90,
             'imagem': '/static/images/camiseta-juice.jpg',
             'descricao': 'Camiseta premium da linha Juice of God com design exclusivo.',
             'vendido': False

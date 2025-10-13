@@ -598,9 +598,35 @@ def nova_senha():
         traceback.print_exc()
         return f"Erro interno: {str(e)}", 500
 
+def obter_dados_produto(produto_id):
+    """Obtém dados específicos de um produto"""
+    # Dados dos produtos do outlet
+    produtos_outlet = {
+        'camiseta-golden': {
+            'nome': 'Camiseta Golden Era',
+            'preco': 129.90,
+            'imagem': '/static/images/camiseta-golden.jpg',
+            'descricao': 'Camiseta premium da linha Golden Era com design exclusivo.'
+        },
+        'camiseta-juice': {
+            'nome': 'Camiseta Juice of God',
+            'preco': 129.90,
+            'imagem': '/static/images/camiseta-juice.jpg',
+            'descricao': 'Camiseta premium da linha Juice of God com design exclusivo.'
+        }
+    }
+    
+    return produtos_outlet.get(produto_id, {
+        'nome': f'Produto {produto_id}',
+        'preco': 0.00,
+        'imagem': '/static/images/produto-placeholder.svg',
+        'descricao': 'Produto não encontrado.'
+    })
+
 @app.route('/produto/<produto_id>')
 def produto_individual(produto_id):
-    return render_template('produto_individual.html', produto_id=produto_id)
+    produto = obter_dados_produto(produto_id)
+    return render_template('produto_individual.html', produto_id=produto_id, produto=produto)
 
 @app.route('/perfil')
 def perfil():

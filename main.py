@@ -1187,11 +1187,10 @@ def corrigir_email_pedidos():
 carrinho_temporario = []  # Para usuários não logados
 
 def obter_carrinho_temporario():
-    """Obtém o carrinho temporário (sempre retorna a mesma instância)"""
-    global carrinho_temporario
-    if not hasattr(obter_carrinho_temporario, '_carrinho'):
-        obter_carrinho_temporario._carrinho = []
-    return obter_carrinho_temporario._carrinho
+    """Obtém o carrinho temporário usando sessão do Flask"""
+    if 'carrinho_temporario' not in session:
+        session['carrinho_temporario'] = []
+    return session['carrinho_temporario']
 
 # Sistema de rate limiting para admin
 admin_login_attempts = {}  # {ip: [timestamps]}
@@ -1420,6 +1419,9 @@ def adicionar_ao_carrinho():
             if item_existente:
                 item_existente['quantidade'] += quantidade
                 print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
+                # Salvar na sessão
+                session['carrinho_temporario'] = carrinho_temp
+                session.modified = True
             else:
                 novo_item = {
                     'produto_id': produto_id,
@@ -1432,6 +1434,10 @@ def adicionar_ao_carrinho():
                 }
                 carrinho_temp.append(novo_item)
                 print(f"✅ Novo item adicionado ao carrinho temporário")
+            
+            # Salvar na sessão
+            session['carrinho_temporario'] = carrinho_temp
+            session.modified = True
             
             print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
             return jsonify({
@@ -1490,6 +1496,10 @@ def adicionar_ao_carrinho():
                 'imagem': imagem
             }
             carrinho_temp.append(novo_item)
+            
+            # Salvar na sessão
+            session['carrinho_temporario'] = carrinho_temp
+            session.modified = True
             
             return jsonify({
                 "success": True,
@@ -1875,6 +1885,8 @@ def test_pedido_completo():
         else:
             carrinho_temp = obter_carrinho_temporario()
             carrinho_temp.append(produto_teste)
+            session['carrinho_temporario'] = carrinho_temp
+            session.modified = True
             print("✅ Produto adicionado ao carrinho temporário")
         
         # 2. Verificar carrinho

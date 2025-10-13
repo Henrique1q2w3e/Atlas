@@ -605,22 +605,28 @@ def obter_dados_produto(produto_id):
         'camiseta-golden': {
             'nome': 'Camiseta Golden Era',
             'preco': 129.90,
+            'preco_original': 259.80,
             'imagem': '/static/images/camiseta-golden.jpg',
-            'descricao': 'Camiseta premium da linha Golden Era com design exclusivo.'
+            'descricao': 'Camiseta premium da linha Golden Era com design exclusivo.',
+            'vendido': False
         },
         'camiseta-juice': {
             'nome': 'Camiseta Juice of God',
             'preco': 129.90,
+            'preco_original': 259.80,
             'imagem': '/static/images/camiseta-juice.jpg',
-            'descricao': 'Camiseta premium da linha Juice of God com design exclusivo.'
+            'descricao': 'Camiseta premium da linha Juice of God com design exclusivo.',
+            'vendido': False
         }
     }
     
     return produtos_outlet.get(produto_id, {
         'nome': f'Produto {produto_id}',
         'preco': 0.00,
+        'preco_original': 0.00,
         'imagem': '/static/images/produto-placeholder.svg',
-        'descricao': 'Produto não encontrado.'
+        'descricao': 'Produto não encontrado.',
+        'vendido': False
     })
 
 @app.route('/produto/<produto_id>')

@@ -167,13 +167,13 @@ def criar_tabelas():
         traceback.print_exc()
 
 def usuario_logado():
-    """Verificar se usuário está logado (NÃO admin)"""
-    print(f"🔍 Verificando login usuário normal - Sessão: {dict(session)}")
+    """Verificar se usuário está logado (pode ser admin ou usuário normal)"""
+    print(f"🔍 Verificando login usuário - Sessão: {dict(session)}")
     print(f"🔍 user_id na sessão: {'user_id' in session}")
     print(f"🔍 is_admin_session: {session.get('is_admin_session', False)}")
     
-    # Usuário normal está logado se tem user_id E não é sessão de admin
-    resultado = 'user_id' in session and not session.get('is_admin_session', False)
+    # Usuário está logado se tem user_id (independente de ser admin ou não)
+    resultado = 'user_id' in session
     print(f"🔍 usuario_logado() retorna: {resultado}")
     return resultado
 

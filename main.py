@@ -1453,49 +1453,48 @@ def adicionar_ao_carrinho():
         
         print(f"🛒 Tentando adicionar produto {produto_id} ao carrinho")
         print(f"🛒 qualquer_usuario_logado(): {qualquer_usuario_logado()}")
-        
+
+        # Se usuário não estiver logado, usar carrinho temporário na sessão
         if not qualquer_usuario_logado():
-            # Usar carrinho temporário
-            print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
-            
-            # Verificar se item já existe
-            carrinho_temp = obter_carrinho_temporario()
-            item_existente = None
-            for item in carrinho_temp:
-                if item['produto_id'] == produto_id and item['sabor'] == sabor:
-                    item_existente = item
-                    break
-        
-        if item_existente:
-            item_existente['quantidade'] += quantidade
-            print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
-            # Salvar na sessão
-            session['carrinho_temporario'] = carrinho_temp
-            session.modified = True
-        else:
-            novo_item = {
-                'produto_id': produto_id,
-                'nome': nome,
-                'marca': marca,
-                'preco': preco,
-                'sabor': sabor,
-                'quantidade': quantidade,
-                'imagem': imagem
-            }
-            carrinho_temp.append(novo_item)
-            print(f"✅ Novo item adicionado ao carrinho temporário")
-        
-        # Salvar na sessão
-        session['carrinho_temporario'] = carrinho_temp
-        session.modified = True
-        
-        print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
-        return jsonify({
-            "success": True,
-            "carrinho": carrinho_temp,
-            "message": "Produto adicionado ao carrinho temporário"
-        })
-        
+            try:
+                print("⚠️ Usuário não logado - adicionando ao carrinho temporário")
+                carrinho_temp = obter_carrinho_temporario()
+                item_existente = None
+                for item in carrinho_temp:
+                    if item['produto_id'] == produto_id and item['sabor'] == sabor:
+                        item_existente = item
+                        break
+
+                if item_existente:
+                    item_existente['quantidade'] += quantidade
+                    print(f"✅ Quantidade atualizada para {item_existente['quantidade']}")
+                else:
+                    novo_item = {
+                        'produto_id': produto_id,
+                        'nome': nome,
+                        'marca': marca,
+                        'preco': preco,
+                        'sabor': sabor,
+                        'quantidade': quantidade,
+                        'imagem': imagem
+                    }
+                    carrinho_temp.append(novo_item)
+                    print(f"✅ Novo item adicionado ao carrinho temporário")
+
+                # Salvar na sessão
+                session['carrinho_temporario'] = carrinho_temp
+                session.modified = True
+
+                print(f"🛒 Carrinho temporário agora tem {len(carrinho_temp)} itens")
+                return jsonify({
+                    "success": True,
+                    "carrinho": carrinho_temp,
+                    "message": "Produto adicionado ao carrinho temporário"
+                })
+            except Exception as se:
+                print(f"❌ Erro ao manipular carrinho temporário: {se}")
+                return jsonify({"success": False, "error": str(se)}), 500
+
         # Usuário logado - usar banco de dados (OTIMIZADO)
         print(f"🛒 Adicionando produto {produto_id} ao carrinho do usuário {session['user_id']}")
         
@@ -1574,35 +1573,43 @@ def remover_do_carrinho():
         
         if not qualquer_usuario_logado():
             # Remover do carrinho temporário
-            carrinho_temp = obter_carrinho_temporario()
-            carrinho_temp[:] = [item for item in carrinho_temp 
-                             if not (item['produto_id'] == produto_id and item['sabor'] == sabor)]
-            session['carrinho_temporario'] = carrinho_temp
-            session.modified = True
-        
-        return jsonify({
-            "success": True,
-            "carrinho": carrinho_temp,
-            "message": "Item removido do carrinho temporário"
-        })
-        
+            try:
+                carrinho_temp = obter_carrinho_temporario()
+                carrinho_temp[:] = [item for item in carrinho_temp 
+                                 if not (item['produto_id'] == produto_id and item['sabor'] == sabor)]
+                session['carrinho_temporario'] = carrinho_temp
+                session.modified = True
+
+                return jsonify({
+                    "success": True,
+                    "carrinho": carrinho_temp,
+                    "message": "Item removido do carrinho temporário"
+                })
+            except Exception as ste:
+                print(f"❌ Erro ao remover do carrinho temporário: {ste}")
+                return jsonify({"success": False, "error": str(ste)}), 500
+
         # Usuário logado - remover do banco
-        conn = conectar_db()
-        cursor = conn.cursor()
-        
-        executar_query(cursor, '''
-            DELETE FROM carrinho 
-            WHERE user_id = ? AND produto_id = ? AND sabor = ?
-        ''', (session['user_id'], produto_id, sabor))
-        
-        conn.commit()
-        conn.close()
-        
-        return jsonify({
-            "success": True,
-            "carrinho": obter_carrinho_usuario(),
-            "message": "Produto removido do carrinho"
-        })
+        try:
+            conn = conectar_db()
+            cursor = conn.cursor()
+            
+            executar_query(cursor, '''
+                DELETE FROM carrinho 
+                WHERE user_id = ? AND produto_id = ? AND sabor = ?
+            ''', (session['user_id'], produto_id, sabor))
+            
+            conn.commit()
+            conn.close()
+            
+            return jsonify({
+                "success": True,
+                "carrinho": obter_carrinho_usuario(),
+                "message": "Produto removido do carrinho"
+            })
+        except Exception as dbe:
+            print(f"❌ Erro ao remover do banco: {dbe}")
+            return jsonify({"success": False, "error": str(dbe)}), 500
         
     except Exception as e:
         return jsonify({
@@ -1624,7 +1631,36 @@ def atualizar_quantidade_carrinho():
         
         if nova_quantidade == 0:
             # Se quantidade for 0, remover o item
-            return remover_do_carrinho()
+            if not qualquer_usuario_logado():
+                # Remover do carrinho temporário (sessão)
+                carrinho_temp = obter_carrinho_temporario()
+                novo_carrinho = [item for item in carrinho_temp if not (item['produto_id'] == produto_id and item['sabor'] == sabor)]
+
+                session['carrinho_temporario'] = novo_carrinho
+                session.modified = True
+
+                return jsonify({
+                    "success": True,
+                    "carrinho": novo_carrinho,
+                    "message": "Produto removido do carrinho temporário"
+                })
+
+            # Usuário logado - remover do banco
+            try:
+                conn = conectar_db()
+                cursor = conn.cursor()
+
+                executar_query(cursor, '''
+                    DELETE FROM carrinho WHERE user_id = ? AND produto_id = ? AND sabor = ?
+                ''', (session['user_id'], produto_id, sabor))
+
+                conn.commit()
+                conn.close()
+
+                return jsonify({"success": True, "message": "Produto removido do carrinho"})
+            except Exception as dbe:
+                print(f"❌ Erro ao remover do banco: {dbe}")
+                return jsonify({"success": False, "error": str(dbe)}), 500
         
         if not qualquer_usuario_logado():
             # Atualizar no carrinho temporário

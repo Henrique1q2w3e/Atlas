@@ -513,7 +513,7 @@
             <!-- Grid de 2 cards -->
             <div class="lg:col-span-1 grid grid-rows-2 gap-8">
                 <!-- Card Aminoácidos -->
-                <a href="/produtos?categoria=aminoacidos" 
+                <a href="/produtos?categoria=vitaminas" 
                    aria-label="Ir para Aminoácidos" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:rotate-1">
@@ -543,7 +543,7 @@
                 </a>
                 
                 <!-- Card Vitaminas -->
-                <a href="/produtos?categoria=vitaminas" 
+                <a href="produtos?categoria=vitaminas" 
                    aria-label="Ir para Vitaminas" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="relative cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1">
@@ -608,61 +608,61 @@
             
             <!-- Grid 2 colunas -->
             <div class="grid grid-cols-2 gap-3">
-                <!-- Card Aminoácidos Mobile -->
-                <a href="/produtos?categoria=aminoacidos" 
+                <!-- Aminoácidos Mobile -->
+                <a href="produtos?categoria=creatina" 
                    aria-label="Ir para Aminoácidos" 
-                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
-                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                   class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative group cursor-pointer transition-all duration-300 active:scale-95">
                         <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
                             <img src="/static/images/aminoacido-mobile.png" 
                                  alt="Aminoácidos" 
-                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                  onerror="this.src='/static/images/placeholder.png'">
-                            <!-- Overlay gradiente -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
-                            <!-- Efeito de brilho -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            <!-- Overlay gradiente dinâmico -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/10 group-hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho sutil -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-800"></div>
                         </div>
-                        <!-- Conteúdo -->
-                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
-                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
-                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
-                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                        <!-- Texto sobreposto com animação -->
+                        <div class="absolute bottom-3 left-3 text-white group-hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 group-hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 group-hover:text-yellow-300 transition-colors duration-300">AMINOÁCIDOS</h3>
+                            <div class="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                                 <p class="text-xs text-yellow-200 font-medium">Recuperação</p>
                             </div>
                         </div>
-                        <!-- Ícone -->
-                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                        <!-- Ícone flutuante mobile -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200 group-hover:scale-110">
                             <i class="fas fa-arrow-right text-white text-xs"></i>
                         </div>
                     </div>
                 </a>
                 
-                <!-- Card Vitaminas Mobile -->
-                <a href="/produtos?categoria=vitaminas" 
+                <!-- Vitaminas Mobile -->
+                <a href="produtos?categoria=vitaminas" 
                    aria-label="Ir para Vitaminas" 
-                   class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
-                    <div class="relative cursor-pointer transition-all duration-300 active:scale-95">
+                   class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl">
+                    <div class="relative group cursor-pointer transition-all duration-300 active:scale-95">
                         <div class="w-full h-[353px] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300">
                             <img src="/static/images/vitaminas-mobile.png" 
                                  alt="Vitaminas" 
-                                 class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                  onerror="this.src='/static/images/placeholder.png'">
-                            <!-- Overlay gradiente -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent hover:from-black/60 hover:via-yellow-400/10 hover:to-transparent transition-all duration-300"></div>
-                            <!-- Efeito de brilho -->
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-800"></div>
+                            <!-- Overlay gradiente dinâmico -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/60 group-hover:via-yellow-400/10 group-hover:to-transparent transition-all duration-300"></div>
+                            <!-- Efeito de brilho sutil -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-800"></div>
                         </div>
-                        <!-- Conteúdo -->
-                        <div class="absolute bottom-3 left-3 text-white hover:translate-y-[-2px] transition-transform duration-300">
-                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
-                            <h3 class="text-lg font-bold mt-1 hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
-                            <div class="mt-1 opacity-0 hover:opacity-100 transition-opacity duration-300 delay-100">
+                        <!-- Texto sobreposto com animação -->
+                        <div class="absolute bottom-3 left-3 text-white group-hover:translate-y-[-2px] transition-transform duration-300">
+                            <span class="text-xs font-medium uppercase tracking-wider opacity-90 group-hover:opacity-100 transition-opacity duration-300">SUPLEMENTOS</span>
+                            <h3 class="text-lg font-bold mt-1 group-hover:text-yellow-300 transition-colors duration-300">VITAMINAS</h3>
+                            <div class="mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
                                 <p class="text-xs text-yellow-200 font-medium">Saúde</p>
                             </div>
                         </div>
-                        <!-- Ícone -->
-                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300 delay-200 hover:scale-110">
+                        <!-- Ícone flutuante mobile -->
+                        <div class="absolute top-2 right-2 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 delay-200 group-hover:scale-110">
                             <i class="fas fa-arrow-right text-white text-xs"></i>
                         </div>
                     </div>
@@ -717,7 +717,7 @@
             <!-- Área de cards (coluna 2 e 3 juntas) -->
             <div class="lg:col-span-2 grid grid-cols-2 gap-6">
                 <!-- Musculação -->
-                <a href="URL-MUSCULACAO" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Musculação" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
                     <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
@@ -760,7 +760,7 @@
                 </a>
                 
                 <!-- Luta -->
-                <a href="URL-LUTA" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Luta" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
                     <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
@@ -803,7 +803,7 @@
                 </a>
                 
                 <!-- Bike -->
-                <a href="URL-BIKE" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Bike" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
                     <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:-rotate-1">
@@ -846,7 +846,7 @@
                 </a>
                 
                 <!-- Corrida -->
-                <a href="URL-CORRIDA" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Corrida" 
                    class="category-card block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl group">
                     <div class="relative cursor-pointer transition-all duration-700 hover:scale-[1.02] hover:rotate-1">
@@ -922,7 +922,7 @@
             <!-- Carrossel horizontal -->
             <div class="flex overflow-x-auto space-x-6 snap-x snap-mandatory pb-6 scrollbar-hide">
                 <!-- Musculação Mobile -->
-              <a href="URL-MUSCULACAO" 
+              <a href="produtos?categoria=todas" 
                    aria-label="Ir para Musculação" 
                    class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="flex-shrink-0 snap-start w-72">
@@ -956,7 +956,7 @@
                 </a>
                 
                 <!-- Luta Mobile -->
-                <a href="URL-LUTA" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Luta" 
                    class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="flex-shrink-0 snap-start w-72">
@@ -990,7 +990,7 @@
                 </a>
                 
                 <!-- Bike Mobile -->
-               <a href="URL-BIKE" 
+               <a href="produtos?categoria=todas" 
                    aria-label="Ir para Bike" 
                    class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="flex-shrink-0 snap-start w-72">
@@ -1024,7 +1024,7 @@
                 </a>
                 
                 <!-- Corrida Mobile -->
-                <a href="URL-CORRIDA" 
+                <a href="produtos?categoria=todas" 
                    aria-label="Ir para Corrida" 
                    class="block focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-3xl">
                     <div class="flex-shrink-0 snap-start w-72">
@@ -1064,7 +1064,7 @@
 
 <!-- COLE AQUI - SEÇÃO: Marcas Parceiras -->
 <!-- INSTRUÇÕES: 
-- Substitua URL-MARCA pelas URLs reais das marcas
+- Substitua produtos?categoria=todas pelas URLs reais das marcas
 - Para adicionar mais marcas: copie um bloco <a>...</a> e altere href, src e alt
 - Para remover marcas: delete o bloco <a>...</a> correspondente
 - Se imagem não existir, será usado /static/images/placeholder.png
@@ -1092,7 +1092,7 @@
     <div class="hidden lg:flex lg:overflow-hidden lg:no-scrollbar lg:w-screen">
         <div class="flex animate-scroll gap-6" style="animation-duration: 30s;">
             <!-- MAX -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca MAX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1104,7 +1104,7 @@
             </a>
             
             <!-- Adaptogen -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Adaptogen" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1116,7 +1116,7 @@
             </a>
             
             <!-- Nutrata -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Nutrata" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1128,7 +1128,7 @@
             </a>
             
             <!-- DUX -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca DUX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1140,7 +1140,7 @@
             </a>
             
             <!-- Atlética -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Atlética" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1152,7 +1152,7 @@
             </a>
             
             <!-- Probiotica -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Probiotica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1164,7 +1164,7 @@
             </a>
             
             <!-- Bold -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Bold" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1176,7 +1176,7 @@
             </a>
             
             <!-- Under -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Under" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1188,7 +1188,7 @@
             </a>
             
             <!-- Integral Médica -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Integral Médica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1200,7 +1200,7 @@
             </a>
             
             <!-- FTW -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca FTW" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1212,7 +1212,7 @@
             </a>
             
             <!-- Shark Pro -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Shark Pro" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1225,7 +1225,7 @@
             
             <!-- Duplicação para loop contínuo -->
             <!-- MAX -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca MAX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1237,7 +1237,7 @@
             </a>
             
             <!-- Adaptogen -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Adaptogen" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1249,7 +1249,7 @@
             </a>
             
             <!-- Nutrata -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Nutrata" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1261,7 +1261,7 @@
             </a>
             
             <!-- DUX -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca DUX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1273,7 +1273,7 @@
             </a>
             
             <!-- Atlética -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Atlética" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1285,7 +1285,7 @@
             </a>
             
             <!-- Probiotica -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Probiotica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1297,7 +1297,7 @@
             </a>
             
             <!-- Bold -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Bold" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1309,7 +1309,7 @@
             </a>
             
             <!-- Under -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Under" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1321,7 +1321,7 @@
             </a>
             
             <!-- Integral Médica -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Integral Médica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1333,7 +1333,7 @@
             </a>
             
             <!-- FTW -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca FTW" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1345,7 +1345,7 @@
             </a>
             
             <!-- Shark Pro -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Shark Pro" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1362,7 +1362,7 @@
     <div class="lg:hidden overflow-hidden no-scrollbar w-screen">
         <div class="flex animate-scroll gap-6" style="animation-duration: 25s;">
             <!-- MAX Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca MAX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1374,7 +1374,7 @@
             </a>
             
             <!-- Adaptogen Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Adaptogen" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1386,7 +1386,7 @@
             </a>
             
             <!-- Nutrata Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Nutrata" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1398,7 +1398,7 @@
             </a>
             
             <!-- DUX Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca DUX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1410,7 +1410,7 @@
             </a>
             
             <!-- Atlética Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Atlética" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1422,7 +1422,7 @@
             </a>
             
             <!-- Probiotica Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Probiotica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1434,7 +1434,7 @@
             </a>
             
             <!-- Bold Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Bold" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1446,7 +1446,7 @@
             </a>
             
             <!-- Under Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Under" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1458,7 +1458,7 @@
             </a>
             
             <!-- Integral Médica Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Integral Médica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1470,7 +1470,7 @@
             </a>
             
             <!-- FTW Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca FTW" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1482,7 +1482,7 @@
             </a>
             
             <!-- Shark Pro Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Shark Pro" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1495,19 +1495,18 @@
             
             <!-- Duplicação para loop contínuo Mobile -->
             <!-- MAX Mobile -->
-            <a href="URL-MARCA" 
-               aria-label="Ir para a marca MAX" 
-               class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            
+              
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
                     <img src="/static/images/logo-max.png" 
                          alt="MAX" 
                          class="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300"
                          onerror="this.src='/static/images/placeholder.png'">
                 </div>
-            </a>
+            
             
             <!-- Adaptogen Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Adaptogen" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1519,7 +1518,7 @@
             </a>
             
             <!-- Nutrata Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Nutrata" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1531,7 +1530,7 @@
             </a>
             
             <!-- DUX Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca DUX" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1543,7 +1542,7 @@
             </a>
             
             <!-- Atlética Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Atlética" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1555,7 +1554,7 @@
             </a>
             
             <!-- Probiotica Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Probiotica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1567,7 +1566,7 @@
             </a>
             
             <!-- Bold Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Bold" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1579,7 +1578,7 @@
             </a>
             
             <!-- Under Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Under" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1591,7 +1590,7 @@
             </a>
             
             <!-- Integral Médica Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Integral Médica" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1603,7 +1602,7 @@
             </a>
             
             <!-- FTW Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca FTW" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">
@@ -1615,7 +1614,7 @@
             </a>
             
             <!-- Shark Pro Mobile -->
-            <a href="URL-MARCA" 
+            <a href="produtos?categoria=todas" 
                aria-label="Ir para a marca Shark Pro" 
                class="flex-shrink-0 w-[270px] h-[100px] bg-gray-50 rounded-2xl flex items-center justify-center hover:bg-white hover:shadow-lg transition-all duration-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400">
                 <div class="w-full h-full flex items-center justify-center overflow-hidden rounded-xl">

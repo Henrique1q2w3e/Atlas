@@ -538,6 +538,545 @@ def carregar_produtos():
                 'descricao': f"Suplemento {categoria} da marca {marca}",
                 'estoque': 10
             }
+            # --- Overrides pontuais por produto (atualizar um por um) ---
+            try:
+                marca_lower = marca.lower().strip()
+                categoria_raw_lower = categoria.lower().strip()
+
+                # MAX - Whey Isolado: atualizar preço, sabores e imagens específicas
+                if marca_lower == 'max' and 'whey' in categoria_raw_lower and 'isol' in categoria_raw_lower:
+                    produto['preco'] = 160.00
+                    produto['sabores'] = ['cookies', 'baunilha', 'morango']
+
+                    # Card / lista
+                    produto['imagem'] = '/static/images/whey-isolado-max-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-isolado-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-isolado-max-card-mobile.png'
+
+                    # Imagens do modal (desktop)
+                    produto['imagens'] = [
+                        '/static/images/whey-isolado-max-modal-frente.png',
+                        '/static/images/whey-isolado-max-modal-meta.png',
+                        '/static/images/whey-isolado-max-modal-tablea.png'
+                    ]
+
+                    # Imagens do modal (mobile)
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-isolado-max-modal-mobile-frente.png',
+                        '/static/images/whey-isolado-max-modal-mobile-meta.png',
+                        '/static/images/whey-isolado-max-modal-mobile-tabela.png'
+                    ]
+
+                # MAX - Whey Concentrado: atualizar preço, sabores e imagens específicas
+                elif marca_lower == 'max' and 'whey' in categoria_raw_lower and 'concentr' in categoria_raw_lower:
+                    produto['preco'] = 119.90
+                    produto['sabores'] = ['morango', 'chocolate', 'baunilha', 'cookies']
+
+                    # Card / lista
+                    produto['imagem'] = '/static/images/whey-concentrado-max-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-concentrado-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-concentrado-max-card-mobile.png'
+
+                    # Imagens do modal (desktop)
+                    produto['imagens'] = [
+                        '/static/images/whey-concentrado-max-modal-frente.png',
+                        '/static/images/whey-concentrado-max-modal-meta.png',
+                        '/static/images/whey-concentrado-max-modal-tebela.png'
+                    ]
+
+                    # Imagens do modal (mobile)
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-concentrado-max-modal-frente-mobile.png',
+                        '/static/images/whey-concentrado-max-modal-meta-mobile.png',
+                        '/static/images/whey-concentrado-max-modal-tebela-mobile.png'
+                    ]
+                
+                # MAX - Whey 3W (1,8kg): atualizar preço, sabores e imagens específicas
+                elif marca_lower == 'max' and 'whey' in categoria_raw_lower and ('3w' in categoria_raw_lower or '3 w' in categoria_raw_lower):
+                    produto['preco'] = 280.00
+
+                    # Alguns registros usam texto de sabores confuso; padronizar para lista limpa
+                    produto['sabores'] = ['chocolate', 'morango', 'baunilha']
+
+                    # Card / lista (se não existir card desktop, manter imagem padrão)
+                    # Usar a versão mobile como card desktop (arquivo fornecido)
+                    produto['imagem_principal'] = '/static/images/whey-3w-max-card-mobile.png'
+                    produto['imagem_mobile'] = '/static/images/whey-3w-max-card-mobile.png'
+
+                    # Imagens do modal (desktop)
+                    produto['imagens'] = [
+                        '/static/images/whey-3w-max-modal-frente.png',
+                        '/static/images/whey-3w-max-modal-meta.png',
+                        '/static/images/whey-3w-max-modal-tabela.png'
+                    ]
+
+                    # Imagens do modal (mobile)
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-3w-max-modal-frente-mobile.png',
+                        '/static/images/whey-3w-max-modal-meta-mobile.png',
+                        '/static/images/whey-3w-max-modal-tabela-mobile.png'
+                    ]
+                
+                # MAX - Horus (pré-treino)
+                elif marca_lower == 'max' and ('horus' in categoria_raw_lower or 'pré' in categoria_raw_lower and 'horus' in categoria_raw_lower):
+                    produto['nome'] = 'MAX - HORUS PRÉ TREINO'
+                    produto['preco'] = 89.90
+                    produto['sabores'] = ['amora', 'blue ice', 'citrus', 'limao yuzu', 'frutas vermelhas', 'maçã verde']
+                    produto['imagem'] = '/static/images/horus-max-card.png'
+                    produto['imagem_principal'] = '/static/images/horus-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/horus-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/horus-max-modal-frente.png',
+                        '/static/images/horus-max-modal-meta.png',
+                        '/static/images/horus-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/horus-max-modal-frente-mobile.png',
+                        '/static/images/horus-max-modal-meta-mobile.png',
+                        '/static/images/horus-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Égide (pré-treino)
+                elif marca_lower == 'max' and 'égide' in categoria_raw_lower or ('egide' in categoria_raw_lower):
+                    produto['preco'] = 89.90
+                    produto['sabores'] = ['abacaxi com hortelã', 'abacaxi com manga', 'frutas silvestres', 'frutas vermelhas']
+                    produto['imagem'] = '/static/images/egide-max-card.png'
+                    produto['imagem_principal'] = '/static/images/egide-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/egide-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/egide-max-modal-frente.png',
+                        '/static/images/egide-max-modal-meta.png',
+                        '/static/images/egide-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/egide-max-modal-frente-mobile.png',
+                        '/static/images/egide-max-modal-meta-mobile.png',
+                        '/static/images/egide-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Fire Black (sabor padrão)
+                elif marca_lower == 'max' and 'fire' in categoria_raw_lower:
+                    produto['preco'] = 49.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/fire-max-card.png'
+                    produto['imagem_principal'] = '/static/images/fire-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/fire-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/fire-max-modal-frente.png',
+                        '/static/images/fire-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/fire-max-modal-frente-mobile.png',
+                        '/static/images/fire-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Multivitamínico
+                elif marca_lower == 'max' and 'multivit' in categoria_raw_lower:
+                    produto['preco'] = 59.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/multivitaminico-max-card.png'
+                    produto['imagem_principal'] = '/static/images/multivitaminico-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/multivitaminico-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/multivitaminico-max-modal-frente.png',
+                        '/static/images/multivitaminico-max-modal-meta.png',
+                        '/static/images/multivitaminico-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/multivitaminico-max-modal-frente-mobile.png',
+                        '/static/images/multivitaminico-max-modal-meta-mobile.png',
+                        '/static/images/multivitaminico-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Creatina 150g
+                elif marca_lower == 'max' and 'creatina' in categoria_raw_lower and '150' in categoria_raw_lower:
+                    produto['preco'] = 49.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina150-max-card.png'
+                    produto['imagem_principal'] = '/static/images/creatina150-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/creatina150-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/creatina150-max-modal-frente.png',
+                        '/static/images/creatina150-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/creatina150-max-modal-frente-mobile.png',
+                        '/static/images/creatina150-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Creatina 300g
+                elif marca_lower == 'max' and 'creatina' in categoria_raw_lower and '300' in categoria_raw_lower:
+                    produto['preco'] = 99.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina300-max-card.png'
+                    produto['imagem_principal'] = '/static/images/creatina300-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/creatina300-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/creatina300-max-modal-frente.png',
+                        '/static/images/creatina300-max-modal-frente-mobile.png'
+                    ]
+                    
+                # MAX - Hipercalórico
+                elif marca_lower == 'max' and ('hiper' in categoria_raw_lower or 'hipercalor' in categoria_raw_lower):
+                    produto['preco'] = 89.90
+                    produto['sabores'] = ['Chocolate', 'morango', 'baunilha']
+                    produto['imagem'] = '/static/images/hipercalorico-max-card.png'
+                    produto['imagem_principal'] = '/static/images/hipercalorico-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/hipercalorico-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/hipercalorico-max-modal-frente.png',
+                        '/static/images/hipercalorico-max-modal-meta.png',
+                        '/static/images/hipercalorico-max-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/hipercalorico-max-modal-frente-mobile.png',
+                        '/static/images/hipercalorico-max-modal-meta-mobile.png',
+                        '/static/images/hipercalorico-max-modal-tabela-mobile.png'
+                    ]
+
+                # MAX - Pre treino sem cafeína
+                elif marca_lower == 'max' and 'pre' in categoria_raw_lower and 'sem' in categoria_raw_lower and 'cafe' in categoria_raw_lower:
+                    produto['preco'] = 99.90
+                    produto['sabores'] = ['citrus']
+                    produto['imagem'] = '/static/images/pre-sem-cafeina-max-card.png'
+                    produto['imagem_principal'] = '/static/images/pre-sem-cafeina-max-card.png'
+                    produto['imagem_mobile'] = '/static/images/pre-sem-cafeina-max-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/pre-sem-cafeina-max-modal-frente.png',
+                        '/static/images/pre-sem-cafeina-max-modal-tabela.png',
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/pre-sem-cafeina-max-modal-frente-mobile.png',
+                        '/static/images/pre-sem-cafeina-max-modal-tabela-mobile.png',
+                    ]
+                
+                # ADAPTOGEN - Gold Whey
+                elif marca_lower == 'adaptogen' and ('gold' in categoria_raw_lower or 'gold whey' in categoria_raw_lower):
+                    produto['preco'] = 119.90
+                    produto['sabores'] = ['baunilha', 'chocolate', 'chocotella', 'coco', 'cookies', 'doce de leite', 'morango', 'original']
+                    produto['imagem'] = '/static/images/whey-gold-adaptogen-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-gold-adaptogen-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-gold-adaptogen-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-gold-adaptogen-modal-frente.png',
+                        '/static/images/whey-gold-adaptogen-modal-meta.png',
+                        '/static/images/whey-gold-adaptogen-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-gold-adaptogen-modal-frente-mobile.png',
+                        '/static/images/whey-gold-adaptogen-modal-meta-mobile.png',
+                        '/static/images/whey-gold-adaptogen-modal-tabela-mobile.png'
+                    ]
+
+                # ADAPTOGEN - Linha Tasty
+                elif marca_lower == 'adaptogen' and ('tasty' in categoria_raw_lower or 'linha tasty' in categoria_raw_lower or 'tasty' in produto.get('nome','').lower()):
+                    produto['preco'] = 189.90
+                    produto['sabores'] = [
+                        'chiclete','chocolate suíço','chocolate peanut butter','chocomaltine','chocotella','churros','coco',
+                        'cookies and cream','doce de leite','leite condensado','manga','mousse de chocolate','milho verde','morango','original','pistache'
+                    ]
+                    produto['imagem'] = '/static/images/whey-tasty-adaptogen-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-tasty-adaptogen-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-tasty-adaptogen-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-tasty-adaptogen-modal-frente.png',
+                        '/static/images/whey-tasty-adaptogen-modal-meta.png',
+                        '/static/images/whey-tasty-adaptogen-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-tasty-adaptogen-modal-frente-mobile.png',
+                        '/static/images/whey-tasty-adaptogen-modal-meta-mobile.png',
+                        '/static/images/whey-tasty-adaptogen-modal-tabela-mobile.png'
+                    ]
+
+                # ATLETICA / ATLHETICA - Whey Tech, Best, Creatinas, Barrinha, Multivitamínico
+                elif marca_lower in ('atlhetica', 'atletica') and ('whey tech' in categoria_raw_lower or 'tech' in categoria_raw_lower):
+                    produto['preco'] = 109.90
+                    produto['sabores'] = ['chocolate', 'leite', 'morango', 'cookies & cream', 'baunilha']
+                    produto['imagem'] = '/static/images/whey-tech-atlhetica-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-tech-atlhetica-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-tech-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/whey-tech-atlhetica-modal-frente.png']
+                    produto['imagens_mobile'] = ['/static/images/whey-tech-atlhetica-modal-frente-mobile.png']
+
+                elif marca_lower in ('atlhetica', 'atletica') and ('best' in categoria_raw_lower or 'best whey' in categoria_raw_lower):
+                    produto['preco'] = 139.90
+                    produto['sabores'] = ['achocolatado toddy','original','pistache','dadinho','dulce de leche','strawberry milk shake','brownie chocolate branco','double chocolate','cookies & cream','cacau & avelã','beijinho de coco']
+                    produto['imagem'] = '/static/images/whey-best-atlhetica-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-best-atlhetica-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-best-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/whey-best-atlhetica-modal-frente.png']
+                    produto['imagens_mobile'] = ['/static/images/whey-best-atlhetica-modal-frente-mobile.png']
+
+                elif marca_lower in ('atlhetica', 'atletica') and 'creatina' in categoria_raw_lower and '150' in categoria_raw_lower:
+                    produto['preco'] = 89.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina150-atlhetica-card-mobile.png'
+                    produto['imagem_principal'] = '/static/images/creatina150-atlhetica-card-mobile.png'
+                    produto['imagem_mobile'] = '/static/images/creatina150-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/creatina150-atlhetica-modal-frente.png','/static/images/creatina150-atlhetica-modal-frente(1).png']
+                    produto['imagens_mobile'] = ['/static/images/creatina150-atlhetica-modal-frente-mobile.png']
+
+                elif marca_lower in ('atlhetica', 'atletica') and 'creatina' in categoria_raw_lower and '300' in categoria_raw_lower:
+                    produto['preco'] = 89.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina300-atlhetica-card.png'
+                    produto['imagem_principal'] = '/static/images/creatina300-atlhetica-card.png'
+                    produto['imagem_mobile'] = '/static/images/creatina300-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/creatina300-atlhetica-modal-frente.png']
+                    produto['imagens_mobile'] = ['/static/images/creatina300-atlhetica-modal-frente-mobile.png']
+
+                elif marca_lower in ('atlhetica', 'atletica') and 'barrinha' in categoria_raw_lower:
+                    produto['preco'] = 11.00
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/barrinha-atlhetica-card.png'
+                    produto['imagem_principal'] = '/static/images/barrinha-atlhetica-card.png'
+                    produto['imagem_mobile'] = '/static/images/barrinha-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/barrinha-atlhetica-modal-frente.png']
+                    produto['imagens_mobile'] = ['/static/images/barrinha-atlhetica-modal-frente-mobile.png']
+
+                elif marca_lower in ('atlhetica', 'atletica') and 'multivit' in categoria_raw_lower:
+                    produto['preco'] = 67.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/multivitaminico-atlhetica-card-mobile.png'
+                    produto['imagem_principal'] = '/static/images/multivitaminico-atlhetica-card-mobile.png'
+                    produto['imagem_mobile'] = '/static/images/multivitaminico-atlhetica-card-mobile.png'
+                    produto['imagens'] = ['/static/images/multivitaminico-atlhetica-modal-frente.png','/static/images/multivitaminico-atlhetica-modal-frente(1).png']
+                    produto['imagens_mobile'] = ['/static/images/multivitaminico-atlhetica-modal-frente-mobile.png']
+
+                # ATLETICA - Linha Monster (atribuir imagens da Probiotica)
+                elif 'monster' in produto.get('nome','').lower():
+                    produto['imagem'] = '/static/images/whey-monster-probiotica-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-monster-probiotica-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-monster-probiotica-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-monster-probiotica-modal-frente.png',
+                        '/static/images/whey-monster-probiotica-modal-tabela.png',
+                        '/static/images/whey-monster-probiotica-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-monster-probiotica-modal-frente-mobile.png',
+                        '/static/images/whey-monster-probiotica-modal-tabela-mobile.png'
+                    ]
+
+                # NUTRA - Whey Concentrado
+                elif marca_lower == 'nutra' and 'concentr' in categoria_raw_lower:
+                    produto['preco'] = 149.90
+                    produto['sabores'] = ['banana','creme de baunilha','chocolate com coco','double chocolate','cookies and cream','strawberry milk shake']
+                    produto['imagem'] = '/static/images/whey-concentrado-nutra-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-concentrado-nutra-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-concentrado-nutra-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-concentrado-nutra-modal-frente.png',
+                        '/static/images/whey-concentrado-nutra-modal-meta.png',
+                        '/static/images/whey-concentrado-nutra-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-concentrado-nutra-modal-frente-mobile.png',
+                        '/static/images/whey-concentrado-nutra-modal-meta-mobile.png',
+                        '/static/images/whey-concentrado-nutra-modal-tabela-mobile.png'
+                    ]
+
+                # NUTRA - Whey Isolado
+                elif marca_lower == 'nutra' and 'isol' in categoria_raw_lower:
+                    produto['preco'] = 169.90
+                    produto['sabores'] = ['chocolate','creme de coco','creme de baunilha']
+                    produto['imagem'] = '/static/images/whey-isolado-nutra-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-isolado-nutra-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-isolado-nutra-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-isolado-nutra-modal-frente.png',
+                        '/static/images/whey-isolado-nutra-modal-meta.png',
+                        '/static/images/whey-isolado-nutra-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-isolado-nutra-modal-frente-mobile.png',
+                        '/static/images/whey-isolado-nutra-modal-frente-mobile(1).png',
+                        '/static/images/whey-isolado-nutra-modal-frente-mobile(2).png'
+                    ]
+
+                # NUTRA - Barrinhas
+                elif marca_lower == 'nutra' and 'barrinha' in categoria_raw_lower:
+                    produto['preco'] = 17.00
+                    produto['sabores'] = ['banoffee','dulce de leche','dulce de leite','morango','brownie de chocolate']
+                    produto['imagem'] = '/static/images/barrinha-nutra-card.png'
+                    produto['imagem_principal'] = '/static/images/barrinha-nutra-card.png'
+                    produto['imagem_mobile'] = '/static/images/barrinha-nutra-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/barrinha-nutra-modal-frente.png',
+                        '/static/images/barrinha-nutra-modal-meta.png',
+                        '/static/images/barrinha-nutra-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/barrinha-nutra-modal-frente-mobile.png',
+                        '/static/images/barrinha-nutra-modal-meta-mobile.png',
+                        '/static/images/barrinha-nutra-modal-tabela-mobile.png'
+                    ]
+
+                # BOLD - Barrinha
+                elif marca_lower == 'bold' and 'barrinha' in categoria_raw_lower:
+                    produto['preco'] = 12.00
+                    produto['sabores'] = ['Cookies and cream', 'Combo essências', 'Tube pistache', 'Tube caixa mista', 'Caixa mix']
+                    produto['imagem'] = '/static/images/barrinha-bold-card.png'
+                    produto['imagem_principal'] = '/static/images/barrinha-bold-card.png'
+                    produto['imagem_mobile'] = '/static/images/barrinha-bold-card-mobile.png'
+                    produto['imagens'] = ['/static/images/barrinha-bold-modal-frente.png']
+                    produto['imagens_mobile'] = ['/static/images/barrinha-bold-modal-frente-mobile.png']
+
+                # FTW - Whey Concentrado
+                elif marca_lower == 'ftw' and 'concentr' in categoria_raw_lower:
+                    produto['preco'] = 99.90
+                    produto['sabores'] = ['cookies', 'chocolate', 'morango']
+                    produto['imagem'] = '/static/images/whey-concentrado-ftw-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-concentrado-ftw-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-concentrado-ftw-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-concentrado-ftw-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-concentrado-ftw-modal-frente-mobile.png'
+                    ]
+
+                # FTW - Whey 3W
+                elif marca_lower == 'ftw' and ('3w' in categoria_raw_lower or '3 w' in categoria_raw_lower):
+                    produto['preco'] = 189.90
+                    produto['sabores'] = [
+                        'wheyzinho','doce de leite argentino','chocolate','cookies','chocolate maltado',
+                        'mini chocolate sortidos','chocolate com avelã','diamante negro','chocolate branco',
+                        'baunilha','banana caramelizada','morango','beijinho','iogurte grego','chocoball'
+                    ]
+                    produto['imagem'] = '/static/images/whey-3w-ftw-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-3w-ftw-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-3w-ftw-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-3w-ftw-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-3w-ftw-modal-frente-mobile.png'
+                    ]
+
+                # FTW - Creatina
+                elif marca_lower == 'ftw' and 'creatina' in categoria_raw_lower:
+                    produto['preco'] = 99.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina-ftw-card.png'
+                    produto['imagem_principal'] = '/static/images/creatina-ftw-card.png'
+                    produto['imagem_mobile'] = '/static/images/creatina-ftw-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/creatina-ftw-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/creatina-ftw-modal-frente-mobile.png'
+                    ]
+
+                # FTW - Pré-treino
+                elif marca_lower == 'ftw' and ('pré' in categoria_raw_lower or 'pre' in categoria_raw_lower or 'pré-treino' in categoria_raw_lower):
+                    produto['preco'] = 89.90
+                    produto['sabores'] = ['diabo verde']
+                    produto['imagem'] = '/static/images/pre-treino-ftw-card.png'
+                    produto['imagem_principal'] = '/static/images/pre-treino-ftw-card.png'
+                    produto['imagem_mobile'] = '/static/images/pre-treino-ftw-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/pre-treino-ftw-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/pre-treino-ftw-modal-frente-mobile.png'
+                    ]
+
+                # DUX - Whey Concentrado
+                elif marca_lower == 'dux' and 'concentr' in categoria_raw_lower:
+                    produto['preco'] = 149.90
+                    produto['sabores'] = ['torta de limão','chocolate','cookies','banoffe','butter cookies','doce de leite','cappucino','caramelo salgado','coco','baunilha']
+                    produto['imagem'] = '/static/images/whey-concentrado-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-concentrado-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-concentrado-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-concentrado-dux-modal-frente.png',
+                        '/static/images/whey-concentrado-dux-modal-meta.png',
+                        '/static/images/whey-concentrado-dux-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-concentrado-dux-modal-frente-mobile.png',
+                        '/static/images/whey-concentrado-dux-modal-meta-mobile.png',
+                        '/static/images/whey-concentrado-dux-modal-tabela-mobile.png'
+                    ]
+
+                # DUX - Whey Isolado
+                elif marca_lower == 'dux' and 'isol' in categoria_raw_lower:
+                    produto['preco'] = 189.90
+                    produto['sabores'] = ['cappuccino','chocolate','morango','neutro','chocolate branco','cookies','coco','doce de leite']
+                    produto['imagem'] = '/static/images/whey-isolado-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/whey-isolado-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/whey-isolado-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/whey-isolado-dux-modal-frente.png',
+                        '/static/images/whey-isolado-dux-modal-meta.png',
+                        '/static/images/whey-isolado-dux-modal-tabela.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/whey-isolado-dux-modal-frente-mobile.png',
+                        '/static/images/whey-isolado-dux-modal-meta-mobile.png',
+                        '/static/images/whey-isolado-dux-modal-tabela-mobile.png'
+                    ]
+
+                # DUX - Creatina 300g
+                elif marca_lower == 'dux' and 'creatina' in categoria_raw_lower and '300' in categoria_raw_lower:
+                    produto['preco'] = 189.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/creatina-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/creatina-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/creatina-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/creatina-dux-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/creatina-dux-modal-frente-mobile.png'
+                    ]
+
+                # DUX - Multivitamínico
+                elif marca_lower == 'dux' and ('multivit' in categoria_raw_lower or 'vitamina' in categoria_raw_lower):
+                    produto['preco'] = 69.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/multivitaminco-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/multivitaminco-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/multivitaminco-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/multivitaminco-dux-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/multivitaminco-dux-modal-frente-mobile.png'
+                    ]
+
+                # DUX - Cápsula de cafeína
+                elif marca_lower == 'dux' and ('cafe' in categoria_raw_lower or 'cápsula' in categoria_raw_lower or 'capsula' in categoria_raw_lower):
+                    produto['preco'] = 79.90
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/cafeina-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/cafeina-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/cafeina-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/cafeina-dux-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/cafeina-dux-modal-frente-mobile.png'
+                    ]
+
+                # DUX - Ômega 3
+                elif marca_lower == 'dux' and ('omega' in categoria_raw_lower or 'ômega' in categoria_raw_lower):
+                    produto['preco'] = 64.60
+                    produto['sabores'] = []
+                    produto['imagem'] = '/static/images/omega3-dux-card.png'
+                    produto['imagem_principal'] = '/static/images/omega3-dux-card.png'
+                    produto['imagem_mobile'] = '/static/images/omega3-dux-card-mobile.png'
+                    produto['imagens'] = [
+                        '/static/images/omega3-dux-modal-frente.png'
+                    ]
+                    produto['imagens_mobile'] = [
+                        '/static/images/omega3-dux-modal-frente-mobile.png'
+                    ]
+            except Exception:
+                # Não falhar o carregamento por causa de um override
+                pass
             produtos.append(produto)
         
         return produtos
